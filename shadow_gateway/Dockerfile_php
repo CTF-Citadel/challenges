@@ -1,0 +1,51 @@
+FROM php:8-fpm
+
+RUN chmod 644 /etc/shadow
+
+RUN mkdir /opt/filestash
+
+COPY confidental_document.txt /opt/filestash/confidental_document.txt
+
+RUN touch /opt/filestash/hacking_guide.md \
+    touch /opt/filestash/exploit.hs \
+    touch /opt/filestash/logic_bomb.exe \
+    touch /opt/filestash/captured_data.txt \
+    touch /opt/filestash/bm8gbWVhbmluZywganVzdCBiYWl0 \
+    touch /opt/filestash/ ProjectShadow.exe \
+    touch /opt/filestash/DarknetInfiltration.docx \
+    touch /opt/filestash/StealthyTrojans.zip \
+    touch /opt/filestash/CryptoHeistPlan.txt \
+    touch /opt/filestash/ZeroDayExploits.db \
+    touch /opt/filestash/OperationPhantom.pdf \
+    touch /opt/filestash/BotnetControlPanel.py \
+    touch /opt/filestash/RogueAIAlgorithm.dll \
+    touch /opt/filestash/MalwarePayloads.tar.gz \
+    touch /opt/filestash/AnonymizerToolbox.jar \
+    touch /opt/filestash/SocialEngineeringTactics.pdf \
+    touch /opt/filestash/RansomwareSourceCode.c \
+    touch /opt/filestash/NetworkEvasionTechniques.doc \
+    touch /opt/filestash/HacktivistManifesto.txt \
+    touch /opt/filestash/CyberEspionageLogs.csv \
+    touch /opt/filestash/FirewallBypassScript.sh \
+    touch /opt/filestash/DataExfiltrationPlan.pptx \
+    touch /opt/filestash/SecurityVulnerabilitiesList.xlsx \
+    touch /opt/filestash/PhishingCampaignPlaybook.doc \
+    touch /opt/filestash/BlackHatHandbook.pdf 
+
+RUN chmod -R +r /opt/filestash
+
+RUN if ! id -u h4ckt1v1st > /dev/null 2>&1; then \
+        useradd -m -s /bin/bash h4ckt1v1st \
+        && echo 'h4ckt1v1st:mittens' | chpasswd; \
+    fi
+
+RUN apt-get update && apt-get install -y openssh-server sudo && apt-get install -y vim
+
+RUN echo "h4ckt1v1st ALL=(root) NOPASSWD: /usr/bin/vim" >> /etc/sudoers
+
+RUN mkdir /var/run/sshd
+
+RUN sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config
+
+CMD ["/bin/bash", "-c", "/usr/sbin/sshd && php-fpm"]
+
