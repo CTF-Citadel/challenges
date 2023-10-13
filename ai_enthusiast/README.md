@@ -15,5 +15,6 @@ Travel through various online platforms and use your knowledge of different prog
 Flag Format:
 ```
 TH{Part_1,Part_2,Part_3,Part_4}
+All the words are in lowercase except the first letter.
 ```
 
