@@ -1,6 +1,6 @@
-#AI-Enthusiast Walkthrough
+# AI-Enthusiast Walkthrough
 
-##Introduction:
+## Introduction:
 Welcome to the OSINT (Open-Source Intelligence) Puzzle: 'The AI Enthusiast!'
 In this captivating online challenge, you will embark on a thrilling search across the
 vast expanse of the internet to uncover the secrets of a passionate individual known
