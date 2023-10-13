@@ -9,3 +9,10 @@ Flag Format:
 ```
 TH{UUID}
 ```
+
+
+Hint:
+
+<details><summary>Hint</summary>
+   - Use steghide
+</details>
