@@ -1,2 +1,0 @@
-Flag for hidden: TH{0535c3a6-699d-11ee-8c99-0242ac120002}
-Flag for ai_enthusiast: TH{Basic,Haskell,Cobol,Lua}

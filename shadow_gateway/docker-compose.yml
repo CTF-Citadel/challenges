@@ -16,8 +16,10 @@ services:
       context: .  
       dockerfile: Dockerfile_php  
     volumes:
-      - ./goldnugget.txt:/root/goldnugget.txt
       - ./instructions.txt:/home/h4ckt1v1st/instructions.txt
       - ./web_files:/var/www/html
+      - ./entrypoint.sh:/entrypoint.sh
     ports:
       - '22:22'
+    environment:
+      - flag=${flag}
