@@ -6,6 +6,10 @@ RUN mkdir /opt/filestash
 
 COPY confidental_document.txt /opt/filestash/confidental_document.txt
 
+COPY entrypoint.sh /usr/local/bin/entrypoint.sh
+
+RUN chmod +x /usr/local/bin/entrypoint.sh
+
 RUN touch /opt/filestash/hacking_guide.md \
     touch /opt/filestash/exploit.hs \
     touch /opt/filestash/logic_bomb.exe \
@@ -36,7 +40,7 @@ RUN chmod -R +r /opt/filestash
 
 RUN if ! id -u h4ckt1v1st > /dev/null 2>&1; then \
         useradd -m -s /bin/bash h4ckt1v1st \
-        && echo 'h4ckt1v1st:mittens' | chpasswd; \
+        && echo 'h4ckt1v1st:lekkerding' | chpasswd; \
     fi
 
 RUN apt-get update && apt-get install -y openssh-server sudo && apt-get install -y vim
@@ -47,6 +51,6 @@ RUN mkdir /var/run/sshd
 
 RUN sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config
 
-CMD ["/bin/bash", "-c", "/usr/sbin/sshd && php-fpm"]
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 
-ENTRYPOINT [ "/entrypoint.sh" ]
+CMD ["/bin/bash", "-c", "/usr/sbin/sshd && php-fpm"]

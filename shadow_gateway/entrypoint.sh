@@ -1,11 +1,8 @@
-#!/bin/sh
+#!/bin/bash
 
-touch /root/goldnugget.txt
+mkdir /root/ && touch /root/goldnugget.txt
 
 echo $flag > /root/goldnugget.txt
 
-export flag=""  
-
-echo '' > /entrypoint.sh
-
-exec "$@"
+/usr/sbin/sshd
+php-fpm
