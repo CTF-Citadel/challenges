@@ -1,18 +1,9 @@
 version: '3'
 
 services:
-  create-files:
+  webserver:
     build:
       context: .
-      dockerfile: Dockerfile-create-files
-    volumes:
-      - ./FileNigma:/opt/FileNigma
-
-  apache:
-    image: httpd:latest
+      dockerfile: DOCKERFILE
     ports:
       - "80:80"
-    volumes:
-      - ./FileNigma:/usr/local/apache2/htdocs
-    depends_on:
-      - create-files

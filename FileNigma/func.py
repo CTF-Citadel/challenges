@@ -19,7 +19,7 @@ def generate_large_random_string():
     return content
 
 # Directory to store the files inside the Docker container
-directory = '/opt/FileNigma'
+directory = '/usr/local/apache2/htdocs'
 
 # Create 100 files
 for i in range(1, 101):
