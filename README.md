@@ -14,3 +14,4 @@
 | Role Forge | Easy | Open | Web | 0% done |
 | Dans Vacation | Easy | Open | OSINT | 100% done |
 | FileNigma | Easy | Open | MISC | 80% done |
+| Pcap Pandemonium | Easy | Open | Forensics | 90% done |
