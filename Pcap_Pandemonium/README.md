@@ -10,7 +10,7 @@ But I can't bruteforce his password. Maybe you can find something?
 Task:
 
 ```
-Find anything that you mind find suspicios
+Find anything that you mind find suspicious
 ```
 
 Flag Format:
