@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Input file
-input_file="./test.pcapng"
+input_file="./input.pcapng"
 
 # Output file
 output_file="./capture.pcapng"
