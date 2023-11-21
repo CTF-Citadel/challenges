@@ -7,3 +7,5 @@ services:
       dockerfile: DOCKERFILE
     ports:
       - "80:80"
+    environment:
+      - FLAG=${FLAG}
