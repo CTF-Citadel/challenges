@@ -33,7 +33,7 @@ Nmap done: 1 IP address (1 host up) scanned in 6.26 seconds
 ```
 
 Taking a look at the website. <br/>
-![Alt text]()
+![grafik](https://github.com/CTF-Citadel/challenges/assets/110562298/034c85ff-385a-4ec1-90a7-b171e036a217)
 
 Seeing this error message and looking at the description, anybody should know that this either means spoofing your IP address to `192.168.1.101` or adding some kind of request header to `192.168.1.101`. <br/>
 
@@ -42,10 +42,10 @@ Using the `Intercept` option you can reload the webpage. <br/>
 Now you add the following reuqest-header `X-Forwarded-For: 192.168.1.101`. <br/>
 
 Seems like this worked. <br/>
-![Alt text]()
+![grafik](https://github.com/CTF-Citadel/challenges/assets/110562298/c85badea-589b-4dda-8709-61dbaeaf9529)
 
 Inputing just the letter `a` we receive the following output. <br/>
-![Alt text]()
+![grafik](https://github.com/CTF-Citadel/challenges/assets/110562298/ac68f542-b6c3-494d-9836-3d77f83a5011)
 
 After trying around some things you could maybe input `ls -R` which grants you the result below. <br/>
 ```php
