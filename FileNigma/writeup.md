@@ -1,15 +1,24 @@
 # Introduction
 
-"We've stumbled upon a zipped folder, and hidden within it lies the flag. Can you uncover its location?
+We've stumbled upon a cluster of files, and hidden within it lies the flag. Can you uncover its location?
 
-Let's go ahead and download the folder. It's in .tar.gz format, so we need to unzip it first.
-![image](https://github.com/CTF-Citadel/challenges/assets/115781703/bf1e4a74-7bd1-4063-8a1d-62f35148d72c)
+Let's go ahead and start the container, and we can see a bunch of files:
+![image](https://github.com/CTF-Citadel/challenges/assets/115781703/5c85ed11-9c18-4a57-b5e0-4fbdfd2047ab)
 
 
-After unzipping it we find 100 .txt files
+Since we are searching for the flag with the format 'TH{,' we can use the following script to get the files:
+```sh
+#!/bin/bash
 
-Since we are searching for the flag with the format 'TH{,' we can try to grep for it.
-![image](https://github.com/CTF-Citadel/challenges/assets/115781703/4c5c020d-412c-4547-9849-57ee13b0a6f4)
+for i in {1..99}; do
+        wget http://10.1.1.128/file_$i.txt
+done
+```
+The script uses the "wget" command to get all the files to our local file system and then we can use the "grep" command to search for the flag format:
+
+```sh
+grep -ro 'TH{.*}' *
+```
 
 And we get the flag!
 
