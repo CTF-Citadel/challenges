@@ -2,7 +2,11 @@ FROM httpd:latest
 
 WORKDIR /usr/local/apache2/htdocs
 
-COPY func.py /
+ARG FLAG=default_value
+
+ENV FLAG=${FLAG}
+
+COPY * /
 
 RUN apt-get update && apt-get install -y python3
 

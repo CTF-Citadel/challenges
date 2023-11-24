@@ -2,10 +2,13 @@ version: '3'
 
 services:
   webserver:
+    environment:
+      - FLAG=${FLAG}
     build:
       context: .
       dockerfile: DOCKERFILE
+      args:
+        FLAG: ${FLAG}
     ports:
       - "80:80"
-    environment:
-      - FLAG=${FLAG}
+
