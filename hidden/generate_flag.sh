@@ -16,7 +16,6 @@ passphrase="Password"
 steghide embed -cf wood.jpg -ef goldnugget.txt --passphrase "$passphrase"
 # The "--passphrase" option is used to provide the passphrase directly to steghide.
 
-
 # Install nginx
 apt-get update
 apt-get install -y nginx
@@ -34,6 +33,9 @@ echo "server {
     try_files \$uri \$uri/ =404;
   }
   location = /goldnugget.txt {
+    deny all;
+  }
+  location = /generate_flag.sh {
     deny all;
   }
 }" > /etc/nginx/sites-available/default
