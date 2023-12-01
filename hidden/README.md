@@ -14,5 +14,5 @@ TH{UUID}
 Hint:
 
 <details><summary>Hint</summary>
-   - Use steghide
+   - Brute-force
 </details>
