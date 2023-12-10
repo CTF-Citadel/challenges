@@ -1,0 +1,30 @@
+[
+    {
+      "challengeID": "TH0",
+      "challengeTitle": "AI-Enthusiast",
+      "challengeDescription": "elcome to the OSINT (Open-Source Intelligence) Puzzle: 'The AI Enthusiast!'\nIn this captivating online challenge, you will embark on a thrilling search across the vast expanse of the internet to uncover the secrets of a passionate individual known only by the username 'ailover123_'. Your mission is to gather information about this enigmatic person who loves sharing captivating pictures from their self-made AI.",
+      "flagFormat": "TH{part1,part2,part3,part4}",
+      "hints": {
+        "hint1": "Pay attention to input fields that interact with a database.",
+        "hint2": "Explore the possibility of injecting SQL code to manipulate the query."
+      }
+    },
+    {
+      "challengeID": "TH1",
+      "challengeTitle": "Shadow Gateway",
+      "challengeDescription": "We got intel about the internal-network of a notorious hacker group.\nTheir network, accessible only from '192.168.1.0/24', has intercepted crucial documents, including a CTF flag.\n\nCan you recover the flag?",
+      "flagFormat": "TH{UUID}",
+      "hints": {
+        "hint1": "Maybe you will need to add a certain Request Header",
+        "hint2": "Seems like those hackers just use linux bash for their web archive",
+        "hint3": "An Insider told us that he installed a backdoor in /etc/bin"
+      }
+    },
+    {
+        "challengeID": "TH2",
+        "challengeTitle": "Dans' Vacation",
+        "challengeDescription": "Welcome to the OSINT (Open-Source Intelligence) Puzzle: 'Dan's Vacation'\nDan is a Cyber Security Expert, but at the moment he is on vacation. The problem is we need him right now. Can you find him?",
+        "flagFormat": "TH{Location_Country}"
+      }
+  ]
+  
