@@ -2,7 +2,7 @@
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["crypto_code"])) {
     $userInput = $_POST["crypto_code"];
 
-    $searchResults = shell_exec("ls /opt/filestash/ | grep " . $userInput);
+    $searchResults = shell_exec("ls /opt/filestash/ | grep " $userInput);
 }
 ?>
 

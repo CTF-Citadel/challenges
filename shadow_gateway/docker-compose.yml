@@ -19,6 +19,6 @@ services:
       - ./instructions.txt:/home/h4ckt1v1st/instructions.txt
       - ./web_files:/var/www/html
     ports:
-      - '222:22'
+      - '22:22'
     environment:
       - flag=${flag}
