@@ -2,10 +2,15 @@
 
 > [!NOTE]
 >
-> When brainstorming I got the idea of a relatively simple challenge focusing on `SQL-injection`. 
-> Instead of using simple MySQL I wanted to use a DB which has a slightly different SQL syntax.
+> When brainstorming I got the idea of a simple `Command-Injection`. <br/>
+> Only command injection would be a bit little so I also wanted to add maybe some privilege escalation and also hash cracking.
 
 ## Challenge Development
+
+> [!NOTE]
+> 
+> For a better user experience every CTF challenge needs some kind of storyline. <br/>
+> In this challenge I tried to build the storyline around some kind of hackergroup which obtained data.
 
 Starting off I created the system archtiecture with `docker-compose.yml`. <br/>
 ```yml

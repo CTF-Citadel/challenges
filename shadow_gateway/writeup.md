@@ -8,10 +8,7 @@ Their network, accessible only from '192.168.1.0/24', has intercepted crucial do
 Can you recover the flag?
 ```
 
-## Flag Format
-```
-TH{UUID}
-```
+## Writeup
 
 Starting off with recon you should detect 2 open ports. <br/>
 ```sh
