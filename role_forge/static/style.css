@@ -1,0 +1,71 @@
+* {
+    padding: 0;
+    margin: 0;
+    font-family: sans-serif;
+}
+
+body {
+    background-image: url("forge_01.png");
+    background-size: cover;
+}
+
+#mainSection {
+    position: absolute;
+    left: calc(50vw - 250px);
+    top: calc(50vh - 175px);
+    width: 500px;
+    height: 350px;
+    background-color: #0008;
+    border-radius: 5px;
+    border: 1px solid #000;
+    box-shadow: #000;
+    color: #fff;
+    text-align: center;
+}
+
+#mainSection h2 {
+    margin-top: 10px;
+    font-size: 50px;
+}
+
+#mainSection li, p, ul {
+    margin-top: 10px;
+    font-size: 25px;
+    list-style: none;
+}
+
+a {
+    color: #fff;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #c2c2c2;
+    text-decoration: underline;
+}
+
+input, label {
+    margin: 5px;
+}
+
+input {
+    font-size: 25px;
+}
+
+input[type="submit"] {
+    font-size: 25px;
+    font-weight: 900;
+    border: 1px solid #000;
+    background-color: #e5e5e5;
+    padding: 5px;
+    cursor: pointer;
+}
+
+label {
+    font-size: 25px;
+    letter-spacing: 1px;
+}
+
+
+
+

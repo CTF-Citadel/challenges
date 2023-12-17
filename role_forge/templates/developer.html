@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Developer</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='./style.css') }}">
+</head>
+<body>
+    <div id="mainSection">
+        <h2>Dev-Dashboard</h2>
+        <br/>
+        <ul>
+            <li>Username: {{ decoded_cookie.username }}</li>
+            <li>Password: {{ decoded_cookie.password }}</li>
+            <li>Role: {{ decoded_cookie.role }}</li>
+        </ul>
+        <br/>
+        <p>{{ flag }}</p>
+    </div>
+</body>
+</html>
