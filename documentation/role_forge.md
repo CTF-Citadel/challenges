@@ -144,9 +144,9 @@ If decoded a user should see something like the json stuff below. <br/>
 }
 ```
 
-Of course just changing hte cookie would be pretty bland that's why the participants must also do a directory scan on the website first- <br/>
+Of course just changing the cookie would be pretty bland that's why the participants must also do a directory scan on the website first. <br/>
 There they should find `/developer` which is a webpage which can't be accessed without a cookie containing the role `developer`. <br/>
-Because this should be the easiest web challenge I included a `clue` which can be found on the index page in form of a comment in the html. <br/>
+Because this should be the easiest web challenge I included a `clue` which can be found on the index page in the form of a comment in the html. <br/>
 ```html
 <!DOCTYPE html>
 <html>
@@ -166,7 +166,6 @@ Because this should be the easiest web challenge I included a `clue` which can b
 </html>
 ```
 
-The other important functions of the flask service are as follows. <br/>
 The different endpoints apply the usage of the flask inbuild function `render_template` to render the templates being found in `/templates`. <br/>
 For authentication we simply use the base64 encoded cookies and user credentials stored in plaintext inside the cookie. <br/>
 
