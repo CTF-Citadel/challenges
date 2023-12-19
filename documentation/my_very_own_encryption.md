@@ -20,7 +20,6 @@ flag = "TH{" + str(os.environ.get("FLAG")) + "}"
 
 def encrypt(flag):
     encoded_flag = list(bytes(flag, 'utf-8').hex())
-    print(encoded_flag)
 
     for _ in range(99999):
         rndm_index_num = random.randrange(1,10)
@@ -34,7 +33,6 @@ def encrypt(flag):
             else:
                 encoded_flag[index] = chr((ord(char) - ord('a') + rndm_index_letter) % 26 + ord('a'))
 
-    print(encoded_flag)
     return base64.b64encode(bytes(''.join(encoded_flag), 'utf-8'))
 
 with open('output', 'wb') as file: 

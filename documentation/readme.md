@@ -21,6 +21,7 @@
 > | Zipception | Easy | Open | MISC | 10% done | Coming Soon! |
 > | Backrooms | Medium | Open | MISC | 70% done | Coming Soon! |
 > | My very own Encryption | Easy | Open | Crypto | 100% done | [documentation](https://github.com/CTF-Citadel/challenges/blob/main/documentation/my_very_own_encryption.md) |
+> | Sudoku as a Service | Easy | Open | MISC | 10% done | Coming Soon! |
 
 
 
