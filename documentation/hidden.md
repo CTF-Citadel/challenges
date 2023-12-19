@@ -3,6 +3,13 @@
 ## Objective
 Participants must decipher a flag concealed within an image using steghide, a tool for hiding and extracting data in various file types. The challenge incorporates scripting to generate a random flag, embed it within an image, and configure an Nginx web server to selectively serve the concealed image while restricting access to certain files.
 
+## Image Creation
+To create the image i used the Photoshop Ai and prompted it create an image with a old looking wood background and add Letters:
+
+![image](https://github.com/CTF-Citadel/challenges/assets/115781703/130bd9c6-9eca-446e-8cba-a652e9798f5b)
+
+
+
 ## Challenge Components
 
 ### 1. Scripting (`generate_flag.sh`)
@@ -73,14 +80,3 @@ This line sets permissions for the image and text file to read and write.
   }" > /etc/nginx/sites-available/default
   ```
 The script generates an Nginx configuration to serve only the image (wood.jpg) and block access to specific files (goldnugget.txt, generate_flag.sh).
-
-
-7. **Start Nginx:**
-
-  ```sh
-  Copy code
-  nginx -g 'daemon off;'
-  ```
-
-Start the Nginx server in the foreground.
-
