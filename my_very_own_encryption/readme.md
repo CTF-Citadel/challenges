@@ -8,9 +8,9 @@ This is a CTF challenge developed for `TopHack` an internal CTF of the HTBLuVa-V
 
 **Description**
 ```
-A first grader is proudly flexing his new encryption algorithm which he made during an ITP project. 
+A second grader is proudly flexing his new encryption algorithm which he made during an ITP project. 
 
-Can you humble the first grader by breaking his encryption?
+Can you humble the second grader by breaking his encryption?
 ```
 
 **Flag Format**

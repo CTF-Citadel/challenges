@@ -1,19 +1,25 @@
 import os, base64, random
 
-flag = "TH{" + str(os.environ.get("FLAG")) + "}"  # build flag  with env var
+flag = "TH{" + str(os.environ.get("FLAG")) + "}"
 
 def encrypt(flag):
-    encoded_flag = bytes(flag, 'utf-8').hex()
+    encoded_flag = list(bytes(flag, 'utf-8').hex())
+    print(encoded_flag)
 
-    shifted_pairs = [encoded_flag[i:i + 2] for i in range(0, len(encoded_flag), 2)]
+    for _ in range(99999):
+        rndm_index_num = random.randrange(1,10)
+        rndm_index_letter = random.randrange(1,26)
+        for index, char in enumerate(encoded_flag):
+            if char.isdigit():
+                if char != 9:
+                    num = int(char)
+                    num %= (9 + rndm_index_num)
+                    encoded_flag[index] = str(num)
+            else:
+                encoded_flag[index] = chr((ord(char) - ord('a') + rndm_index_letter) % 26 + ord('a'))
 
-    for i in range(999999):
-        rndm = random.randint(1, 25)
-        shifted_pairs = shifted_pairs[-rndm:] + shifted_pairs[:-rndm]
-
-    encrypted_flag = ''.join(shifted_pairs)
-
-    return base64.b64encode(bytes.fromhex(encrypted_flag))
+    print(encoded_flag)
+    return base64.b64encode(bytes(''.join(encoded_flag), 'utf-8'))
 
 with open('output', 'wb') as file: 
     file.write(encrypt(flag))

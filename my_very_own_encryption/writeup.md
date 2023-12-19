@@ -2,9 +2,9 @@
 
 ## Description
 ```
-A first grader is proudly flexing his new encryption algorithm which he made during an ITP project. 
+A second grader is proudly flexing his new encryption algorithm which he made during an ITP project. 
 
-Can you humble the first grader by breaking his encryption?
+Can you humble the second grader by breaking his encryption?
 ```
 
 ## Writeup
@@ -13,49 +13,67 @@ Starting off we should take a look at the provided files. <br/>
 ```py
 import os, base64, random
 
-flag = "TH{" + str(os.environ.get("FLAG")) + "}" 
+flag = "TH{" + str(os.environ.get("FLAG")) + "}"
 
 def encrypt(flag):
-    encoded_flag = bytes(flag, 'utf-8').hex()
+    encoded_flag = list(bytes(flag, 'utf-8').hex())
+    print(encoded_flag)
 
-    shifted_pairs = [encoded_flag[i:i + 2] for i in range(0, len(encoded_flag), 2)]
+    for _ in range(99999):
+        rndm_index_num = random.randrange(1,10)
+        rndm_index_letter = random.randrange(1,26)
+        for index, char in enumerate(encoded_flag):
+            if char.isdigit():
+                if char != 9:
+                    num = int(char)
+                    num %= (9 + rndm_index_num)
+                    encoded_flag[index] = str(num)
+            else:
+                encoded_flag[index] = chr((ord(char) - ord('a') + rndm_index_letter) % 26 + ord('a'))
 
-    for i in range(999999):
-        rndm = random.randint(1, 25)
-        shifted_pairs = shifted_pairs[-rndm:] + shifted_pairs[:-rndm]
+    print(encoded_flag)
+    return base64.b64encode(bytes(''.join(encoded_flag), 'utf-8'))
 
-    encrypted_flag = ''.join(shifted_pairs)
-
-    return base64.b64encode(bytes.fromhex(encrypted_flag))
-
-print(encrypt(flag))
+with open('output', 'wb') as file: 
+    file.write(encrypt(flag))
 ```
 
-The important things to see are the different convertions. <br/>
-From `string` to `hex`, from `hex` to `string pairs`, from `string pairs` to `random string pairs`, from `random string pairs` to `string` and from `string` to `base64`. <br/>
+The important things to keep in mind are the different encryption/encoding stages. <br/>
+After transforming the actual flag to a `hex` string the characters are being shifted randomly. <br/>
+The important thing here is that they are being shifted equally which tells us that we are able to bruteforce it. <br/>
 Knowing these steps anybody should be able to code a small script to decrypt the flag. <br/>
 ```py
 import base64
 
-with open("output", "r") as file:
-    encrypted_flag = file.readline().strip()
+for line in open("output", "r"):
+    encrypted_flag = line
 
-encrypted_flag = base64.b64decode(encrypted_flag)
+encrypted_flag = bytes.decode(base64.b64decode(encrypted_flag), "utf-8")
+array = list(encrypted_flag)
 
-hex_pairs = [hex(byte)[2:].zfill(2) for byte in encrypted_flag]
+for i1 in range(1, 26):
+    arr_copy = array.copy() 
+    for i2 in range(1, 11):
+        for index, char in enumerate(arr_copy):
+            if char.isdigit():
+                num = int(char)
+                num %= (9 + i2)
+                arr_copy[index] = str(num)
+            else:
+                arr_copy[index] = chr((ord(str(char)) - ord('a') + i1) % 26 + ord('a'))
+        
+        try:
+            yeet = bytes.fromhex(''.join(arr_copy)).decode('utf-8')
+            if yeet.startswith("TH{"):
+                print(yeet)
+                break
 
-for num in range(len(hex_pairs)):
-    shifted_pairs = hex_pairs[-num:] + hex_pairs[:-num]
-    decrypted_flag = bytes.fromhex(''.join(shifted_pairs)).decode('utf-8', 'ignore')
-
-    if decrypted_flag.startswith("TH{"):
-        print(decrypted_flag)
-        break
+        except ValueError:
+            pass
 ```
 
-This script first decodes from `base64` than converts the `hex` string to `string pairs`. <br/>
-The main problem is amount of loops and random shift. <br/>
-The problem with that is that it doesnt really matter how often you shift if the amounts of possible shifts is predictable. <br/>
-In our case we can jsut shift through the pairs until we find `TH{` at the beginning. <br/>
+In the script I first convert the file output to a hex string. <br/>
+I than bruteforce the correct flag by looping through the letters and try out every possible one and for each letter-shift I bruteforce every possible number shift. <br/>
+To get the flag I use `try` because the shift causes the output to not always be a valid `hex` string and if the output starts with the CTF prefix `TH{` print the output. <br/>
 
-Using the script we are easily able to obtain the flag `TH{REDACTED}` and finish this challenge. 
+Using the script we are easily able to obtain the flag `TH{9c2d7d44f89b46bf9ecf7eee65107185}` and finish this challenge. 

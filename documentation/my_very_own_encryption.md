@@ -16,20 +16,26 @@ For this challenge I created a simple python script. <br/>
 ```py
 import os, base64, random
 
-flag = "TH{" + str(os.environ.get("FLAG")) + "}"  # build flag  with env var
+flag = "TH{" + str(os.environ.get("FLAG")) + "}"
 
 def encrypt(flag):
-    encoded_flag = bytes(flag, 'utf-8').hex()
+    encoded_flag = list(bytes(flag, 'utf-8').hex())
+    print(encoded_flag)
 
-    shifted_pairs = [encoded_flag[i:i + 2] for i in range(0, len(encoded_flag), 2)]
+    for _ in range(99999):
+        rndm_index_num = random.randrange(1,10)
+        rndm_index_letter = random.randrange(1,26)
+        for index, char in enumerate(encoded_flag):
+            if char.isdigit():
+                if char != 9:
+                    num = int(char)
+                    num %= (9 + rndm_index_num)
+                    encoded_flag[index] = str(num)
+            else:
+                encoded_flag[index] = chr((ord(char) - ord('a') + rndm_index_letter) % 26 + ord('a'))
 
-    for i in range(999999):
-        rndm = random.randint(1, 25)
-        shifted_pairs = shifted_pairs[-rndm:] + shifted_pairs[:-rndm]
-
-    encrypted_flag = ''.join(shifted_pairs)
-
-    return base64.b64encode(bytes.fromhex(encrypted_flag))
+    print(encoded_flag)
+    return base64.b64encode(bytes(''.join(encoded_flag), 'utf-8'))
 
 with open('output', 'wb') as file: 
     file.write(encrypt(flag))
@@ -37,9 +43,10 @@ with open('output', 'wb') as file:
 
 To have dynamic flags I used a function to read the environment variable `FLAG` which is imported during deployment. <br/>
 I than created the function `encrypt(flag)` which basically converts the flag to `hex`. <br/>
-Afterwards the `hex` string is being converted to an array of 2 characters each. <br/>
-It is than being shifted to the left `999999`, the bitshift is a "random" number between 1 and 25. <br/>
-To finish the encryption I fuse those pairs together again and convert it to a `base64` encoded string and print it to a file called `output`. <br/>
+Afterwards the numbers and the letters of the `hex` string are being shifted. <br/>
+Although we shift `99999` times randomly we do always shift all numbers or all letters the same amount and this is the integration of a simple caesar cipher. <br/>
+The main point to keep in mind here is that because of the same shift the real ehx value is easily bruteforceable. <br/>
+To finish the encryption I fuse those characters back together and convert it to a `base64` encoded string and print it to a file called `output`. <br/>
 
 I use a simple docker-compose file to host a webservice. <br/>
 ```yml
