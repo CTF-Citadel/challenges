@@ -81,13 +81,14 @@ The “j” is missing in “maiesty”. So we write down the “j”.
 “testament” instead of “tesdament”. So we write down the “t”.
 
 
-![image](https://github.com/CTF-Citadel/challenges/assets/115781703/a10d9cc3-31c3-4408-808a-b8b2a366bb30)
+![image](https://github.com/CTF-Citadel/challenges/assets/115781703/60c8c32e-4d57-45a8-ad36-5e89a0382214)
 
 “skyscreper” instead of “skyscraper”. So we write down the “a”.
 
 Putting all of these together at the end, we get 'soapwdjwta.' Maybe a social media
 account name? Let's see who he is following:
-![image](https://github.com/CTF-Citadel/challenges/assets/115781703/60c8c32e-4d57-45a8-ad36-5e89a0382214)
+
+![image](https://github.com/CTF-Citadel/challenges/assets/115781703/a10d9cc3-31c3-4408-808a-b8b2a366bb30)
 
 Since he is only follwing github, lets try and search the User name there:
 ![image](https://github.com/CTF-Citadel/challenges/assets/115781703/9bc8773d-ef66-4f5e-af3e-3aae18866c49)
