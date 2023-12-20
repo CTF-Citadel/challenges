@@ -41,9 +41,22 @@ Hinting that "quandaledingle7600" is very confident in his English skills and wo
 ![image](https://github.com/CTF-Citadel/challenges/assets/115781703/6548bf56-5154-4a06-9245-2bf08b2b10c2)
 
 
-To generate the code used in the files, we requested ChatGPT to write a simple program in the 'programming language' and committed it to the repository.
+The code written inside the files from GitHub was authored by us, particularly by our senior developer, @Aryt3:
 
-![image](https://github.com/CTF-Citadel/challenges/assets/115781703/cce3db50-73aa-4e21-9702-81b89c54f574)
+![image](https://github.com/CTF-Citadel/challenges/assets/115781703/d80501ce-f3da-425e-8b65-427b52867398)
+
+The picture created by our senior developer was done by the second challenge creator, @FrozenCave:
+
+![image](https://github.com/CTF-Citadel/challenges/assets/115781703/856e250e-874a-41ff-ada9-44a3bfbc38bf)
+
+The picture taken by our second challenge creator was captured by the project leader, @maxbirnbacher:
+
+![image](https://github.com/CTF-Citadel/challenges/assets/115781703/34f62945-659f-4a1d-9dbf-23c6a1d2b4e1)
+
+The picture taken of our project leader capturing an image of our second challenge creator taking a picture of our senior developer was done by our third challenge creator, @Much.
+
+![image](https://github.com/CTF-Citadel/challenges/assets/115781703/372489d0-e60b-4171-92cb-3d9886e2e8a0)
+
 
 
 Obviously, anyone can copy the code into any AI and ask what programming language it's written in. However, we still wanted to provide some hints regarding the potential programming language by writing hints in the commits. For example:
