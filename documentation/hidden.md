@@ -1,4 +1,4 @@
-Hidden
+# Hidden
 
 ## Objective
 Participants must decipher a flag concealed within an image using steghide, a tool for hiding and extracting data in various file types. The challenge incorporates scripting to generate a random flag, embed it within an image, and configure an Nginx web server to selectively serve the concealed image while restricting access to certain files.
