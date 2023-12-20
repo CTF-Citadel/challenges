@@ -1,4 +1,4 @@
-# FileNigma CTF Challenge Documentation
+# FileNigma 
 
 ## Overview
 
