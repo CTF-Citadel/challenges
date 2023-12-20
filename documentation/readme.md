@@ -15,7 +15,7 @@
 > | Chess as a Service | Medium | Open | MISC | 60% done | Coming Soon! |
 > | Role Forge | Easy | Open | Web | 100% done | [documentation](https://github.com/CTF-Citadel/challenges/blob/main/documentation/role_forge.md) |
 > | Dans Vacation | Easy | Open | OSINT | 100% done | Coming Soon! |
-> | FileNigma | Easy | Open | MISC | 100% done | Coming Soon! |
+> | FileNigma | Easy | Open | MISC | 100% done |  [documentation](https://github.com/CTF-Citadel/challenges/blob/main/documentation/FileNigma.md) |
 > | Pcap Pandemonium | Easy | Open | Forensics | 90% done | Coming Soon! |
 > | Power to the People | Medium | Open | MISC | 10% done | Coming Soon! |
 > | Zipception | Easy | Open | MISC | 10% done | Coming Soon! |
