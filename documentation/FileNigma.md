@@ -189,5 +189,16 @@ with open(chosen_file, 'w') as file:
     file.write(updated_content)
 ```
 
+- Chooses a random file for the flag format to be written 
+```python
+chosen_file = os.path.join(directory, random.choice([f for f in os.listdir(directory) if f.endswith('.txt')]))
+```
 
+-  And writes the flag to a random position in the file so its not at the start of a file.
+```python
+with open(chosen_file, 'r') as file:
+    file_content = file.read()
+    insert_position = random.randint(0, len(file_content))
+    updated_content = file_content[:insert_position] + content + file_content[insert_position:]
+```
 
