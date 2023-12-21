@@ -14,7 +14,5 @@ Are there any traces of information in the file that was provided?
 Flag Format:
 ```
 TH{Information}
-All the words are in lowercase except the first letter.
+All the words are in lowercase except the first letter of each word.
 ```
-
-In
