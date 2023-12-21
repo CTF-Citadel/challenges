@@ -21,4 +21,4 @@
 > | My very own Encryption | Easy | Open | Crypto | 100% done | [documentation](https://github.com/CTF-Citadel/challenges/blob/main/documentation/my_very_own_encryption.md) |
 > | Sudoku as a Service | Easy | Open | MISC | 10% done | Coming Soon! |
 > | FunWithSound | Easy | Open | Steganography | 100% done | Onenote! |
-> | Shadownhunt | Unknown | Open | OSINT | 10% done | Coming Soon! |
+> | Shadowhunt | Unknown | Open | OSINT | 10% done | Coming Soon! |
