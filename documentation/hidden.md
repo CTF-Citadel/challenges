@@ -1,5 +1,9 @@
 # Hidden
 
+## Idea
+>[!NOTE]
+> I wanted to create a callenge which simply hides the flag inside a picture, which has been seen before in many CTFs, i ran into issues hiding the flag with steghide automatically without a passwords so i decided to set a password for the file hidden inside the image. Originaly the User would have had to just use steghide with an empty passphrase to get access to the flag, now the user has to use stegcracker instead. Stegcracker simply is a bruteforce tool for steghide and can be found on github or also as a package. The challenge should be an easy start into the Steganography category.
+
 ## Objective
 Participants must decipher a flag concealed within an image using steghide, a tool for hiding and extracting data in various file types. The challenge incorporates scripting to generate a random flag, embed it within an image, and configure an Nginx web server to selectively serve the concealed image while restricting access to certain files.
 
