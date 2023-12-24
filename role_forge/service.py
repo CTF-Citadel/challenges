@@ -5,7 +5,7 @@ app = Flask(__name__)
 
 users = []
 
-flag = "TH{" + os.environ.get("FLAG") + "}" # build flag
+flag = "TH{" + str(os.environ.get("FLAG")) + "}" # build flag
 
 # Function to add users to array
 def add_user(username, password):
