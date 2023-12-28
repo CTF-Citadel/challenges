@@ -34,7 +34,7 @@ def index():
             return "Access denied!"
     except:
         time.sleep(3) # Indicator for wrong User-Agent
-        return "Access denied!"
+        return "No credentials provided!"
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0')
