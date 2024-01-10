@@ -22,3 +22,4 @@
 > | Sudoku as a Service | Easy | Open | MISC | 10% done | Coming Soon! |
 > | FunWithSound | Easy | Open | Steganography | 100% done | Onenote! |
 > | Shadowhunt | Unknown | Open | OSINT | 10% done | Coming Soon! |
+> | Access Terminal | Easy | Open | Reversing | 99% done | Coming Soon! |
