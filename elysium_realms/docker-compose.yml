@@ -1,0 +1,23 @@
+version: '3.9'
+
+services:
+  flask:
+    build: .
+    restart: always
+    ports:
+      - "80:5000"
+    environment:
+      FLAG: ${FLAG}
+      DB_USER: dbadmin
+      DB_PW: eEGnsF5JrDFfNB88LMxR
+      DB_NAME: game
+  
+  db:
+    image: mariadb:latest
+    hostname: db
+    restart: always
+    environment:
+      MARIADB_ROOT_PASSWORD: 2U3Qps4cDZHJJT8LgnJR
+      MARIADB_DATABASE: game
+      MARIADB_USER: dbadmin
+      MARIADB_PASSWORD: eEGnsF5JrDFfNB88LMxR

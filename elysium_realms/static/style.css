@@ -1,0 +1,26 @@
+* {
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+}
+
+body {
+    background-image: url('background.png');
+    background-size: cover;
+}
+
+@media screen and (max-width: 2000px) and (max-height: 0px) {
+    body {
+        background-size: auto 100%;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+    }
+}
+
+#mainView {
+    position: absolute;
+    height: 100%;
+    width: 600px;
+    left: calc(50vw - 300px);
+    background-color: black;
+}
