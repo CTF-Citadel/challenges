@@ -1,11 +1,12 @@
 import random, hashlib, secrets, string, uuid
 from flask import *
-from model.database import DBSession, engine
+from model.database import DBSession
 from model import models
 from datetime import datetime, timedelta
 
 app = Flask(__name__)
 
+# hash function for passwords
 def sha256_hash(text):
     sha256 = hashlib.sha256()
     sha256.update(text.encode('utf-8'))
@@ -133,7 +134,7 @@ def signup():
                 return render_template('signup.html')
             
             new_user = models.User(
-                username=username, password_hash=sha256_hash(password), level=1
+                username=username, password_hash=sha256_hash(password), level=1, spawnpoint=locations[random.choice(list(locations.keys()))][random.randint(0,4)]
             )
 
             db.add(new_user) 

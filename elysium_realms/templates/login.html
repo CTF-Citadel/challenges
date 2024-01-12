@@ -7,15 +7,17 @@
     <title>Login</title>
 </head>
 <body>
-    <div id="mainView">
-        <form method="post" action="{{ url_for('login') }}">
+    <div id="mainViewForm">
+        <form method="post" action="{{ url_for('login') }}" id="defaultForms">
+            <h1>Log1n</h1>
             <label for="username">Username:</label>
             <input type="text" id="username" name="username" required>
             <br>
             <label for="password">Password:</label>
             <input type="password" id="password" name="password" required>
             <br>
-            <input type="submit" value="Login">
+            <input type="submit" value="Login" class="formsBtn">
+            <a href="/signup">Sign Up</a>
         </form>
     </div>
 </body>

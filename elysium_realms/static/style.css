@@ -24,3 +24,69 @@ body {
     left: calc(50vw - 300px);
     background-color: black;
 }
+
+#defaultForms {
+    position: relative;
+    width: 300px;
+    left: calc(50% - 150px);
+    top: calc(50% - 175px);
+    min-height: 350px;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    align-items: center;
+    background-color: #fff6;
+    border-radius: 5px;
+}
+
+#defaultForms input{
+    width: 90%;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    font-size: 20px;
+    text-align: center;
+}
+
+#defaultForms label {
+    font-size: 20px;
+    font-weight: 600;
+    margin-top: 20px;
+    letter-spacing: 1px;
+}
+
+.formsBtn {
+    margin-top: 10px;
+    margin-bottom: 20px;
+    font-size: 25px;
+    padding: 3px;
+    font-weight: 900;
+    letter-spacing: 1px;
+    background-color: rgba(22, 202, 103, 0.4);
+    border: 1px solid #000;
+    border-radius: 2.5px;
+    cursor: pointer;
+}
+
+.formsBtn:hover {
+    background-color: rgba(28, 176, 95, 0.4);
+}
+
+#defaultForms a {
+    font-size: 20px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    text-decoration: none;
+    color: #000;
+}
+
+#defaultForms a:hover {
+    text-decoration: underline;
+    color: #242424;
+}
+
+#mainViewForm {
+    position: absolute;
+    height: 100%;
+    width: 600px;
+    left: calc(50vw - 300px);
+}
