@@ -16,6 +16,9 @@
             <label for="password">Password:</label>
             <input type="password" id="password" name="password" required>
             <br>
+            {% if error_msg %}
+            <p class="error_msg">{{ error_msg }}</p>
+            {% endif %}
             <input type="submit" value="Login" class="formsBtn">
             <a href="/signup">Sign Up</a>
         </form>

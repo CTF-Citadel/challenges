@@ -23,6 +23,10 @@ body {
     width: 600px;
     left: calc(50vw - 300px);
     background-color: black;
+    display: flex;
+    flex-direction: column;
+    border-left: 1px solid #fff6;
+    border-right: 1px solid #fff6;
 }
 
 #defaultForms {
@@ -89,4 +93,44 @@ body {
     height: 100%;
     width: 600px;
     left: calc(50vw - 300px);
+}
+
+#nav {
+    position: relative;
+    width: 100%;
+    height: 100px;
+    background-color: #d3d3d3;
+    border-bottom: 1px solid #000;
+}
+
+#landscape {
+    position: relative;
+    width: 100%;
+    height: 550px;
+    background-color: #d3d3d3;
+    /* border-bottom: 1px solid #000; */
+}
+
+#control {
+    position: relative;
+    width: 100%;
+    height: calc(100vh - 650px);
+    background-color: #d3d3d3;
+}
+
+.landscapeImg {
+    position: relative;
+    width: 512px;
+    height: 512px;
+    left: calc(50% - 256px);
+    top: calc(50% - 256px);
+    box-shadow: 2px 2px 5px 2px rgba(0, 0, 0, 0.5);
+}
+
+.error_msg {
+    margin: 10px;
+    color: #f00;
+    font-weight: 700;
+    letter-spacing: 1px;
+    font-size: 20px;
 }

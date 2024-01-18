@@ -1,10 +1,16 @@
-import random, hashlib, secrets, string, uuid
+import random, hashlib, secrets, string, uuid, time
 from flask import *
 from model.database import DBSession
 from model import models
 from datetime import datetime, timedelta
+from flask_socketio import SocketIO
 
 app = Flask(__name__)
+
+app.config['SECRET_KEY'] = 'sauhd8sahfd82zhrahfsagf87ahgrf8zawhfd8yhxsuzcgysf'
+socketio = SocketIO(app)
+
+health = 100
 
 # hash function for passwords
 def sha256_hash(text):
@@ -89,7 +95,8 @@ def hello_world():
     if check_session(request.cookies.get('session_token')) == False:
         return redirect(url_for('login'))
 
-    return render_template('index.html')
+    image_path = '/static/img_01.png'
+    return render_template('index.html', image_path=image_path)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -105,7 +112,7 @@ def login():
 
             print(check)
             if not check:
-                return "unlucky" #render_template('login.html')
+                return render_template('login.html', error_msg='Wrong Username or Password')
             
             session_token = str(uuid.uuid4())
 
@@ -131,7 +138,7 @@ def signup():
             check = db.query(models.User).filter(models.User.username == username).all()
 
             if check:
-                return render_template('signup.html')
+                return render_template('signup.html', error_msg='This User does already exist!')
             
             new_user = models.User(
                 username=username, password_hash=sha256_hash(password), level=1, spawnpoint=locations[random.choice(list(locations.keys()))][random.randint(0,4)]
@@ -146,5 +153,12 @@ def signup():
     
     return render_template('signup.html')
 
+@socketio.on('message')
+def handle_message(data):
+    print('received message: ' + str(data))
+
+    return 'test'
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0')
+    socketio.run(app)

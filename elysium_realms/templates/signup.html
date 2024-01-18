@@ -19,6 +19,9 @@
             <label for="confirm_password">Confirm Password:</label>
             <input type="password" id="confirm_password" name="confirm_password" required>
             <br>
+            {% if error_msg %}
+            <p class="error_msg">{{ error_msg }}</p>
+            {% endif %}
             <input type="submit" value="Signup" class="formsBtn">
             <a href="/login">Login</a>
         </form>
