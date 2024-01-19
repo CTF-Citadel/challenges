@@ -1,0 +1,24 @@
+version: '3.9'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      DC_TOKEN: ${DC_TOKEN}
+      DB_NAME: users
+      DB_USER: dbadmin
+      DB_PW: eEGnsF5JrDFfNB88LMxR
+    restart: unless-stopped
+
+  db:
+    image: mariadb:latest
+    hostname: db
+    restart: unless-stopped
+    environment:
+      MARIADB_ROOT_PASSWORD: 2U3Qps4cDZHJJT8LgnJR
+      MARIADB_DATABASE: users
+      MARIADB_USER: dbadmin
+      MARIADB_PASSWORD: eEGnsF5JrDFfNB88LMxR
+

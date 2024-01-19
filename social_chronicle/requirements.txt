@@ -1,0 +1,6 @@
+async-timeout==4.0.2
+discord.py==2.3.1
+SQLAlchemy==2.0.18
+typing-extensions==4.7.1
+discord-rich-presence==1.0.3
+pymysql==1.1.0 
