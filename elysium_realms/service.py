@@ -74,9 +74,25 @@ inject_data()
 # randomly generate a spawnpoint
 spawnpoint = locations[random.choice(list(locations.keys()))][random.randint(0,4)]
 
+# store user sessions (cookies)
 sessions = {}
 
-print(spawnpoint)
+# store socket sessions (request.sid and cookie)
+socket_sessions = []
+
+# class to manage user stats temporary
+class Stats:
+    def __init__(self, session, health, stamina):
+        self.session = session
+        self.health = health
+        self.stamina = stamina
+
+    def update_stats(self, health_change, stamina_change):
+        self.health += health_change
+        self.stamina += stamina_change
+
+# Dictionary to store user stats with session as the key
+user_stats = {}
 
 # Function to check cookie session for authentication
 def check_session(session):
@@ -153,17 +169,79 @@ def signup():
     
     return render_template('signup.html')
 
-# Endpoint for mining
-@socketio.on('mine')
+# Socket Endpoint for auth
+@socketio.on('auth')
+def handle_message(data):
+    session_id = data.get('data')
+    if session_id and session_id in sessions:
+        socket_sessions.append((session_id, request.sid))
+        if session_id not in user_stats.keys():
+            user_stats[session_id] = {'health': 100, 'stamina': 100}
+
+        response_data = {
+            'message': 'Successfully authorized!',
+            'status_code': 200,
+            'health': user_stats[session]['health'],
+            'stamina': user_stats[session]['stamina']
+        }
+    else:
+        response_data = {
+            'message': 'Authentication failed!',
+            'status_code': 401
+        }
+    
+    return response_data
+
+# SocketEndpoint for attacking
+@socketio.on('stats')
+def handle_message(data):
+    if request.sid and any(request.sid == t[1] for t in socket_sessions):
+        session = next((value[0] for value in socket_sessions if value[1] == request.sid), None)
+        response_data = {
+            'health': user_stats[session]['health'],
+            'stamina': user_stats[session]['stamina']
+        }
+    else:
+        response_data = {
+            'message': 'Authentication failed!',
+            'status_code': 401
+        }
+
+    return response_data
+
+# Socket Endpoint for mining
+@socketio.on('collect')
 def handle_message(data):
     return str(data)
 
-# Endpoint for attacking
-@socketio.on('attack')
+# SocketEndpoint for attacking
+@socketio.on('hunt')
 def handle_message(data):
-    return str(data)
+    if request.sid and any(request.sid == t[1] for t in socket_sessions):
+        session = next((value[0] for value in socket_sessions if value[1] == request.sid), None)
+        if user_stats[session]['health'] > 0 and user_stats[session]['stamina'] > 0:
 
-# Endpoint for training
+            user_stats[session]['health'] -= 10
+            user_stats[session]['stamina'] -= 10
+
+            response_data = {
+                'health': user_stats[session]['health'],
+                'stamina': user_stats[session]['stamina']
+            }
+        else:
+            response_data = {
+                'health': 0,
+                'stamina': 0
+            }
+    else:
+        response_data = {
+            'message': 'Authentication failed!',
+            'status_code': 401
+        }
+
+    return response_data
+
+# Socket Endpoint for training
 @socketio.on('train')
 def handle_message(data):
     return str(data)

@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js" integrity="sha512-q/dWJ3kcmjBLU4Qc47E4A9kTB4m3wuTY7vkFJDTZKjTs8jhyGQnaUrxa0Ytd0ssMZhbNua9hE+E7Qv1j+DyZwA==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.0/socket.io.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <title>Main Interface</title>
 </head>
@@ -14,10 +15,14 @@
             <img src="{{ image_path }}" alt="landscape" class="landscapeImg">
         </div>
         <div id="control">
-            <div id="health"></div>
+            <div id="health">
+                <div class="health-bar" id="healthBar">
+                    <div class="health-fill" id="healthFill"></div>
+                </div>
+            </div>
             <div id="actions">
-                <button onclick="mine()">Mine</button>
-                <button onclick="attack()">Attack</button>
+                <button onclick="collect()">Collect</button>
+                <button onclick="hunt()">Hunt</button>
                 <button onclick="train()">Train</button>
             </div>
             <div id="stamina"></div>

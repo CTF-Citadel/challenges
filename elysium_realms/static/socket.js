@@ -1,26 +1,52 @@
-const socket = io.connect(`http://${location.hostname}:${location.port}/`); // initiate socket
+// load html components
+const healthBar = document.getElementById("healthBar");
+const healthFill = document.getElementById("healthFill");
 
-socket.on("response", function (data) {
-  console.log("Server response:", data);
+// initiate socket connection
+const socket = io.connect(`http://${location.hostname}:${location.port}/`); 
+
+// get UUID from session cookie
+const sessionToken = document.cookie.match(/session_token=([^;]+)/);
+const uuid = sessionToken ? sessionToken[1] : null;
+
+// Authenticate User when socket is established
+socket.emit("auth", { data: uuid }, function (response) {
+  if (response.status_code === 200) {
+    console.log('Connection successfully established!');
+  } else {
+    console.log('Connection denied!');
+  }
 });
 
-function mine() {
-  console.log('Mine')
-  socket.emit("mine", { data: document.cookie }, function (response) {
-    console.log("Acknowledgement from server:", response);
+// Get default stats
+socket.emit("stats", { data: document.cookie }, function (response) {
+  update_health(response.health);
+  console.log(response);
+});
+
+// function to collect items
+function collect() {
+  socket.emit("collect", { data: document.cookie }, function (response) {
+    console.log(response);
   });
 }
 
-function attack() {
-  console.log('Attack')
-  socket.emit("attack", { data: document.cookie }, function (response) {
-    console.log("Acknowledgement from server:", response);
+// function to hunt enemies
+function hunt() {
+  socket.emit("hunt", { data: document.cookie }, function (response) {
+    update_health(response.health)
+    console.log(response);
   });
 }
 
+// function to train character
 function train() {
-  console.log('Train')
   socket.emit("train", { data: document.cookie }, function (response) {
-    console.log("Acknowledgement from server:", response);
+    console.log(response);
   });
+}
+
+// function to update health bar
+function update_health(value) {
+  healthFill.style.width = `${value}%`;
 }

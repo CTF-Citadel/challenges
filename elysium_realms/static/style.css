@@ -134,3 +134,46 @@ body {
     letter-spacing: 1px;
     font-size: 20px;
 }
+
+.health-bar {
+    position: relative;
+    width: 80%;
+    left: 10%;
+    height: 10px;
+    border: 1px solid #000;
+    border-radius: 10px;
+    background-color: #000;
+    position: relative;
+}
+
+.health-fill {
+    height: 100%;
+    background-color: red;
+    width: 100%; /* Initial width is 100% */
+    transition: width 0.3s ease-in-out; /* Add smooth transition effect */
+}
+
+#actions {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-around;
+}
+
+#actions button {
+    width: 100px; 
+    height: 50px;
+    border: 1px solid #000;
+    background-color: #a5a5a5;
+    border: 0;
+    cursor: pointer;
+    font-size: 20px;
+    font-weight: 900;
+    color: #fff;
+    letter-spacing: 1px;
+}
+
+#actions button:hover {
+    background-color: #888888;
+    font-size: 22px;
+}
