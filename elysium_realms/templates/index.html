@@ -13,7 +13,16 @@
         <div id="landscape">
             <img src="{{ image_path }}" alt="landscape" class="landscapeImg">
         </div>
-        <div id="control"></div>
+        <div id="control">
+            <div id="health"></div>
+            <div id="actions">
+                <button onclick="mine()">Mine</button>
+                <button onclick="attack()">Attack</button>
+                <button onclick="train()">Train</button>
+            </div>
+            <div id="stamina"></div>
+            <div id="travel"></div>
+        </div>
     </div>
 </body>
 <script src="{{ url_for('static', filename='socket.js') }}"></script>

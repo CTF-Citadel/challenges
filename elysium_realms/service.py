@@ -1,4 +1,4 @@
-import random, hashlib, secrets, string, uuid, time
+import random, hashlib, secrets, string, uuid, os
 from flask import *
 from model.database import DBSession
 from model import models
@@ -6,11 +6,8 @@ from datetime import datetime, timedelta
 from flask_socketio import SocketIO
 
 app = Flask(__name__)
-
-app.config['SECRET_KEY'] = 'sauhd8sahfd82zhrahfsagf87ahgrf8zawhfd8yhxsuzcgysf'
+app.config['SECRET_KEY'] = os.urandom(24)
 socketio = SocketIO(app)
-
-health = 100
 
 # hash function for passwords
 def sha256_hash(text):
@@ -74,7 +71,6 @@ def inject_data():
     
 inject_data()
 
-
 # randomly generate a spawnpoint
 spawnpoint = locations[random.choice(list(locations.keys()))][random.randint(0,4)]
 
@@ -82,6 +78,7 @@ sessions = {}
 
 print(spawnpoint)
 
+# Function to check cookie session for authentication
 def check_session(session):
     if not session:
         return False
@@ -90,6 +87,7 @@ def check_session(session):
     
     return True
 
+# API Endpoint for Game Interface if authentification
 @app.route("/")
 def hello_world():
     if check_session(request.cookies.get('session_token')) == False:
@@ -98,6 +96,7 @@ def hello_world():
     image_path = '/static/img_01.png'
     return render_template('index.html', image_path=image_path)
 
+# APIEndpoint for user login
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
@@ -126,6 +125,7 @@ def login():
 
     return render_template('login.html')
 
+# API Endpoint for User signup
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
     if request.method == 'POST':
@@ -153,11 +153,20 @@ def signup():
     
     return render_template('signup.html')
 
-@socketio.on('message')
+# Endpoint for mining
+@socketio.on('mine')
 def handle_message(data):
-    print('received message: ' + str(data))
+    return str(data)
 
-    return 'test'
+# Endpoint for attacking
+@socketio.on('attack')
+def handle_message(data):
+    return str(data)
+
+# Endpoint for training
+@socketio.on('train')
+def handle_message(data):
+    return str(data)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0')
