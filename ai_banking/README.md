@@ -6,7 +6,7 @@ This is a CTF challenge developed for `TopHack` an internal CTF of the HTBLuVa-V
 > This CTF challenge is a plain Web challenge.
 > Labels: `Web`
 
-**Description**
+## Description
 ```
 Our organisation was tasked with pentesting this web appliation for a bank.
 

@@ -1,7 +1,6 @@
 # StormCast 1
 
-Description
-
+## Description
 ```
 I have obtained a prototype of the new authentication app for the StormCast Messenger. 
 My contact on the inside told me that they are using an advanced security code system called SEC_CODE. 

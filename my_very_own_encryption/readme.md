@@ -6,14 +6,14 @@ This is a CTF challenge developed for `TopHack` an internal CTF of the HTBLuVa-V
 > This CTF challenge consits of multiple stages.
 > Labels: `Crypto`
 
-**Description**
+## Description
 ```
 A second grader is proudly flexing his new encryption algorithm which he made during an ITP project. 
 
 Can you humble the second grader by breaking his encryption?
 ```
 
-**Flag Format**
+## Flag Format
 ```
 TH{UUID}
 ```

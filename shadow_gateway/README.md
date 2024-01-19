@@ -6,7 +6,7 @@ This is a CTF challenge developed for `TopHack` an internal CTF of the HTBLuVa-V
 > This CTF challenge consits of multiple stages.
 > Labels: `Web`, `Networking`, `Linux`, `Privilege Escalation` 
 
-**Description**
+## Description
 ```
 We got intel about the internal-network of a notorious hacker group. 
 Their network, accessible only from '192.168.1.0/24', has intercepted crucial documents, including a CTF flag. 
@@ -14,7 +14,7 @@ Their network, accessible only from '192.168.1.0/24', has intercepted crucial do
 Can you recover the flag?
 ```
 
-**Flag Format**
+## Flag Format
 ```
 TH{UUID}
 ```
