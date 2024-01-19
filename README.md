@@ -23,4 +23,5 @@
 > | FunWithSound | Easy | Open | Steganography | 100% done | Onenote! |
 > | Shadowhunt | Unknown | Open | OSINT | 10% done | Coming Soon! |
 > | Access Terminal | Easy | Open | Reversing | 99% done | Coming Soon! |
-> | Social Chronicle | Medium | Open | OSINT | 50% done | Coming Soon! |
+> | Social Chronicle | Medium | Open | OSINT | 80% done | Coming Soon! |
+> | Layered | Easy | Open | Steganography | 80% done | Coming Soon! |
