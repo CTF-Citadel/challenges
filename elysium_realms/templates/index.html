@@ -25,8 +25,28 @@
                 <button onclick="hunt()">Hunt</button>
                 <button onclick="train()">Train</button>
             </div>
-            <div id="stamina"></div>
-            <div id="travel"></div>
+            <div id="stamina">
+                <div class="stamina-bar" id="staminaBar">
+                    <div class="stamina-fill" id="staminaFill"></div>
+                </div>
+            </div>
+            <div id="travel">
+                <div class="directions">
+                    <button onclick="travel('NW')">North/West</button>
+                    <button onclick="travel('N')">North</button>
+                    <button onclick="travel('NE')">North/East</button>
+                </div>
+                <div class="directions">
+                    <button onclick="travel('W')">West</button>
+                    <button id="current_place">{{ current_place }}</button>
+                    <button onclick="travel('E')">East</button>
+                </div>
+                <div class="directions">
+                    <button onclick="travel('SW')">South/West</button>
+                    <button onclick="travel('S')">South</button>
+                    <button onclick="travel('SE')">South/East</button>
+                </div>
+            </div>
         </div>
     </div>
 </body>

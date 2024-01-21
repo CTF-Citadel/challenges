@@ -1,4 +1,4 @@
-import random, hashlib, secrets, string, uuid, os
+import random, hashlib, secrets, string, uuid, os, time
 from flask import *
 from model.database import DBSession
 from model import models
@@ -71,34 +71,29 @@ def inject_data():
     
 inject_data()
 
-# randomly generate a spawnpoint
-spawnpoint = locations[random.choice(list(locations.keys()))][random.randint(0,4)]
+# Function to regenerate user stats over time
+def regenerate_stats(player):
+    while True:
+        # Loop timer
+        time.sleep(10)
 
-# store user sessions (cookies)
-sessions = {}
+        # regenerate stats
+        if user_stats[player]['health'] < 100:
+            user_stats[player]['health'] += 10
+        if user_stats[player]['stamina'] < 100:
+            user_stats[player]['stamina'] += 10
 
 # store socket sessions (request.sid and cookie)
 socket_sessions = []
 
-# class to manage user stats temporary
-class Stats:
-    def __init__(self, session, health, stamina):
-        self.session = session
-        self.health = health
-        self.stamina = stamina
-
-    def update_stats(self, health_change, stamina_change):
-        self.health += health_change
-        self.stamina += stamina_change
-
-# Dictionary to store user stats with session as the key
+# Dictionary to store user stats and sessions with session-UUID as key
 user_stats = {}
 
 # Function to check cookie session for authentication
 def check_session(session):
     if not session:
         return False
-    if session not in sessions:
+    if session not in user_stats:
         return False
     
     return True
@@ -110,7 +105,7 @@ def hello_world():
         return redirect(url_for('login'))
 
     image_path = '/static/img_01.png'
-    return render_template('index.html', image_path=image_path)
+    return render_template('index.html', image_path=image_path, current_place=user_stats[request.cookies.get('session_token')]['current_place'][0])
 
 # APIEndpoint for user login
 @app.route('/login', methods=['GET', 'POST'])
@@ -122,18 +117,20 @@ def login():
         if username and password:
             db = DBSession()
 
-            check = db.query(models.User).filter(models.User.username == username, models.User.password_hash == sha256_hash(password)).all()
-            db.close()
-
-            print(check)
+            check = db.query(models.User).filter(models.User.username == username, models.User.password_hash == sha256_hash(password)).first()
+            
             if not check:
                 return render_template('login.html', error_msg='Wrong Username or Password')
             
             session_token = str(uuid.uuid4())
 
-            sessions[session_token] = {
-                'username': username
-            }
+            user_spawnpoint = db.query(models.User.spawnpoint).filter(models.User.username == username).first()
+            user_level = db.query(models.User.level).filter(models.User.username == username).first()
+
+            if session_token not in user_stats.keys():
+                user_stats[session_token] = {'health': 100, 'stamina': 100, 'current_place': user_spawnpoint, 'regenerate': False, 'username': username, 'level': user_level}
+
+            db.close()
 
             response = make_response(redirect('/'))
             response.set_cookie('session_token', session_token, expires=datetime.now() + timedelta(minutes=10), samesite='Strict')
@@ -169,20 +166,25 @@ def signup():
     
     return render_template('signup.html')
 
+
+# Socket Section
+
+
 # Socket Endpoint for auth
 @socketio.on('auth')
 def handle_message(data):
     session_id = data.get('data')
-    if session_id and session_id in sessions:
+    if session_id and session_id in user_stats:
         socket_sessions.append((session_id, request.sid))
-        if session_id not in user_stats.keys():
-            user_stats[session_id] = {'health': 100, 'stamina': 100}
+
+        if user_stats[session_id]['regenerate'] == False:
+            regenerate_stats(session_id)
 
         response_data = {
             'message': 'Successfully authorized!',
             'status_code': 200,
-            'health': user_stats[session]['health'],
-            'stamina': user_stats[session]['stamina']
+            'health': user_stats[session_id]['health'],
+            'stamina': user_stats[session_id]['stamina']
         }
     else:
         response_data = {
@@ -191,6 +193,7 @@ def handle_message(data):
         }
     
     return response_data
+
 
 # SocketEndpoint for attacking
 @socketio.on('stats')
@@ -209,29 +212,25 @@ def handle_message(data):
 
     return response_data
 
+
 # Socket Endpoint for mining
 @socketio.on('collect')
 def handle_message(data):
-    return str(data)
-
-# SocketEndpoint for attacking
-@socketio.on('hunt')
-def handle_message(data):
     if request.sid and any(request.sid == t[1] for t in socket_sessions):
         session = next((value[0] for value in socket_sessions if value[1] == request.sid), None)
-        if user_stats[session]['health'] > 0 and user_stats[session]['stamina'] > 0:
+        if user_stats[session]['stamina'] > 0:
 
-            user_stats[session]['health'] -= 10
             user_stats[session]['stamina'] -= 10
 
             response_data = {
-                'health': user_stats[session]['health'],
                 'stamina': user_stats[session]['stamina']
             }
         else:
             response_data = {
-                'health': 0,
-                'stamina': 0
+                'error': 'No stamina left for collecting!',
+                'error_code': 1,
+                'health': user_stats[session]['health'],
+                'stamina': user_stats[session]['stamina']
             }
     else:
         response_data = {
@@ -241,10 +240,103 @@ def handle_message(data):
 
     return response_data
 
+
+# SocketEndpoint for attacking
+@socketio.on('hunt')
+def handle_message(data):
+    if request.sid and any(request.sid == t[1] for t in socket_sessions):
+        session = next((value[0] for value in socket_sessions if value[1] == request.sid), None)
+        if user_stats[session]['health'] == 10 and user_stats[session]['stamina'] > 0: # Check if User will die in this hunt (health too low)
+            
+            user_stats[session]['health'] -= 10
+            user_stats[session]['stamina'] -= 10
+
+            response_data = {
+                'error': 'You died!',
+                'error_code': 0,
+                'health': user_stats[session]['health'],
+                'stamina': user_stats[session]['health']
+            }
+        elif user_stats[session]['stamina'] == 0: # Check if there is stamina available to hunt
+            response_data = {
+                'error': 'No stamina left for hunting!',
+                'error_code': 1,
+                'health': user_stats[session]['health'],
+                'stamina': user_stats[session]['stamina']
+            }
+        elif user_stats[session]['health'] > 0 and user_stats[session]['stamina'] > 0: # Check if there is stamina and health available to hunt
+
+            user_stats[session]['health'] -= 10
+            user_stats[session]['stamina'] -= 10
+
+            response_data = {
+                'health': user_stats[session]['health'],
+                'stamina': user_stats[session]['stamina']
+            }
+    else:
+        response_data = {
+            'message': 'Authentication failed!',
+            'status_code': 401
+        }
+
+    return response_data
+
+
 # Socket Endpoint for training
 @socketio.on('train')
 def handle_message(data):
-    return str(data)
+    if request.sid and any(request.sid == t[1] for t in socket_sessions):
+        session = next((value[0] for value in socket_sessions if value[1] == request.sid), None)
+        if user_stats[session]['stamina'] > 0:
+
+            user_stats[session]['stamina'] -= 10
+
+            response_data = {
+                'stamina': user_stats[session]['stamina']
+            }
+        else:
+            response_data = {
+                'error': 'No stamina left for training!',
+                'error_code': 1,
+                'health': user_stats[session]['health'],
+                'stamina': user_stats[session]['stamina']
+            }
+    else:
+        response_data = {
+            'message': 'Authentication failed!',
+            'status_code': 401
+        }
+
+    return response_data
+
+
+# Socket Endpoint for travelling
+@socketio.on('travel')
+def handle_message(direction):
+    if request.sid and any(request.sid == t[1] for t in socket_sessions):
+        session = next((value[0] for value in socket_sessions if value[1] == request.sid), None)
+
+        db = DBSession()
+
+        # Load spawnpoint to check level requirement for travelling to another place 
+        spawnpoint = db.query(models.User.spawnpoint).filter(models.User.username == user_stats[session]['username']).first()
+        
+        db.close()
+
+        # Determine next place to travel to from direction from request
+        next_place = '?'
+
+        response_data = {
+            'next_place': next_place,
+        }
+
+    else:
+        response_data = {
+            'message': 'Authentication failed!',
+            'status_code': 401
+        }
+
+    return response_data
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0')
