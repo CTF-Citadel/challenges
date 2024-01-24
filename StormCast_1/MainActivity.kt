@@ -1,4 +1,4 @@
-package com.appweather.stormcast
+######## com.appweather.stormcast
 
 import android.content.IntentFilter
 ############################################################
@@ -9,10 +9,10 @@ import android.content.IntentFilter
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
+##########import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import kotlinx.coroutines.launch
-import com.appweather.stormcast.ui.StormCastTheme
+import kotlinx.#########################.launch
+import com.################.stormcast.ui.StormCastTheme
 import kotlinx.coroutines.delay
 
 class MainActivity : AppCompatActivity() {
@@ -35,7 +35,7 @@ class MainActivity : AppCompatActivity() {
         modifier = Modifier
             .fillMaxSize()
             .padding(16.dp),
-        verticalArrangement = Arrangement.Top,
+        verticalArrangement = Arr#######angement.Top,
         horizontalAlignment = Alignment.CenterHorizontally,
 
 ############################################################
@@ -49,15 +49,15 @@ class MainActivity : AppCompatActivity() {
             onValueChange = { apiUrl = it },
             label = { Text(
                 text = "API URL",
-                color = if (isSystemInDarkTheme()) MaterialTheme.colors.onSurface else MaterialTheme.colors.onBackground
+                color = if (isSystemInDarkTheme()) MaterialTheme.colors.################ else MaterialTheme.colors.onBackground
             ) },
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(bottom = 16.dp),
             colors = TextFieldDefaults.outlinedTextFieldColors(
-                focusedBorderColor = if (isSystemInDarkTheme()) MaterialTheme.colors.onSurface else MaterialTheme.colors.onBackground,
+                focusedBorderColor = if (#################################################################) MaterialTheme.colors.onSurface else MaterialTheme.colors.onBackground,
                 unfocusedBorderColor = if (isSystemInDarkTheme()) MaterialTheme.colors.onSurface else MaterialTheme.colors.onBackground,
-                textColor = if (isSystemInDarkTheme()) MaterialTheme.colors.onSurface else MaterialTheme.colors.onBackground
+                ##############################################################################
             )
         )
 
@@ -67,14 +67,20 @@ class MainActivity : AppCompatActivity() {
 
                     scope.run {
                         launch {
-                            context.registerReceiver(stormBroadcastReceiver, IntentFilter("com.appweather.stormcast.SEC_CODE_READY"))
-                            delay(2000) // Delay to allow time for the broadcast to be received
+                            context.registerReceiver(stormB####castReceiver, ###################### IntentFilter("com.appweather.stormcast.SEC_CODE_READY"))
+                            delay(2000) // Delay to ##################################################
+
+############################################################
+############################################################
+########################## BROKEN ##########################
+############################################################
+############################################################
 
                             if (stormBroadcastReceiver.secCodeReady) {
                                 val encryptedCode = fetchEncryptedSecCode(apiUrl)
                                 decryptedCode = decryptCode(encryptedCode)
                             } else {
-                                Toast.makeText(context, "Please wait for the security code to be ready", Toast.LENGTH_SHORT).show()
+                                Toast.makeText(context, "Ple#se wait######## for the ########################### to be ready", Toast.LENGTH_SHORT).show()
                             }
                             
 ############################################################
