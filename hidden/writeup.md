@@ -16,7 +16,7 @@ Lets use the popular tool "steghide" with the command steghide --info 'file_name
 
 The issue we run into is that the image has a passphrase we don't know. So, I am going to use StegCracker to try and brute-force it (https://github.com/Paradoxis/StegCracker)."
 
-We use the command "stegracker <filename> <wordlist> and we can see it finds the password quite quickly:
+We use the command 'stegracker -filename- -wordlist- and we can see it finds the password quite quickly:
 
 ![image](https://github.com/CTF-Citadel/challenges/assets/115781703/dd901e3a-d023-4b86-8ebb-628e7f1447b3)
 
