@@ -23,5 +23,5 @@
 > | FunWithSound | Easy | Open | Steganography | 100% done | Onenote! |
 > | Shadowhunt | Unknown | Open | OSINT | 10% done | Coming Soon! |
 > | Access Terminal | Easy | Open | Reversing | 99% done | Coming Soon! |
-> | Social Chronicle | Medium | Open | OSINT | 100% done | [documentation](https://github.com/CTF-Citadel/challenges/blob/main/documentation/layered.md) |
-> | Layered | Easy | Open | Steganography | 100% done | [documentation](https://github.com/CTF-Citadel/challenges/blob/main/documentation/social_chronicle.md) |
+> | Social Chronicle | Medium | Open | OSINT | 100% done | [documentation](https://github.com/CTF-Citadel/challenges/blob/main/documentation/social_chronicle.md) |
+> | Layered | Easy | Open | Steganography | 100% done | [documentation](https://github.com/CTF-Citadel/challenges/blob/main/documentation/layered.md) |
