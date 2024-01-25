@@ -5,8 +5,7 @@
 
 ## Challenge creation
 
-After creating the account, we also needed fitting descriptions. Therefore, we asked ChatGPT to create picture descriptions for a person who loves their AI and the pictures it produces. Consequently, all the descriptions emphasize again how good the AI is and how beautiful the pictures look when created by it.
-
 I selected the Hungaroring because it looks like some other tracks and therefor the players don't have it to easy.
+![image](https://github.com/CTF-Citadel/challenges/assets/113849651/77b9436d-c2b7-470d-a7e1-47ca8aaf91a5)
 
 The screenshot is from a 360° camera of the racetrack from Google Earth.
