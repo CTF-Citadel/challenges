@@ -107,6 +107,7 @@ def hello_world():
     image_path = '/static/img_01.png'
     return render_template('index.html', image_path=image_path, current_place=user_stats[request.cookies.get('session_token')]['current_place'][0])
 
+
 # APIEndpoint for user login
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -323,12 +324,25 @@ def handle_message(direction):
         
         db.close()
 
-        # Determine next place to travel to from direction from request
-        next_place = '?'
+        if user_stats[session]['current_place'] and user_stats[session]['current_place'][0] is not None:
+            cur_place = user_stats[session]['current_place'][0]
+        else:
+            cur_place = user_stats[session]['current_place']
 
-        response_data = {
-            'next_place': next_place,
-        }
+        # Determine next place to travel to from direction from request
+        next_place = travel(direction.get('data'), cur_place)
+        if next_place == 'Invalid direction!' or next_place == 'No place to travel to in this direction!':
+            response_data = {
+                'error': next_place,
+                'dir': direction.get('data')
+            }
+        
+        else:
+            user_stats[session]['current_place'] = next_place
+            response_data = {
+                'next_place': next_place,
+                'dir': direction.get('data')
+            }
 
     else:
         response_data = {
@@ -337,6 +351,88 @@ def handle_message(direction):
         }
 
     return response_data
+
+
+# Function to determine next place to travel to
+def travel(dir, cur_location):
+    check_before = False
+    check_after = False
+
+    cur_location
+    # Get biome of current place
+    for index, biome in enumerate(locations):
+        with open('yeet.txt', 'a') as file:
+            file.write(f"{cur_location}\n{locations[biome]}\n")
+        if check_after == True and index != 4: # Check if new location was found and set biome after
+            biome_after = biome
+            index_after = index
+            check_after = False
+        if cur_location in locations[biome]: # Check if new location was found
+            check_before = True
+            check_after = True
+            current_biome = biome
+            current_index = index
+        if check_before == False: # Check if new location was found and set biome before
+            biome_before = biome
+            index_before = index
+
+    # Get new place for direction
+    if dir == 'N':
+        if current_index != 0:
+            new_location_index = locations[current_biome].index(cur_location)
+            new_location = locations[biome_before][new_location_index]
+        else:
+            return 'No place to travel to in this direction!'
+    elif dir == 'NW':
+        if current_index != 0:
+            new_location_index = locations[current_biome].index(cur_location) - 1
+            new_location = locations[biome_before][new_location_index]
+        else:
+            return 'No place to travel to in this direction!'
+    elif dir == 'NE':
+        if current_index != 0:
+            new_location_index = locations[current_biome].index(cur_location) + 1
+            new_location = locations[biome_before][new_location_index]
+        else:
+            return 'No place to travel to in this direction!'
+    elif dir == 'E':
+        if locations[current_biome].index(cur_location) != 0:
+            new_location_index = locations[current_biome].index(cur_location) + 1
+            new_location = locations[current_biome][new_location_index]
+        else:
+            return 'No place to travel to in this direction!'
+    elif dir == 'S':
+        if current_index != 4:
+            new_location_index = locations[current_biome].index(cur_location)
+            new_location = locations[biome_after][new_location_index]
+        else:
+            return 'No place to travel to in this direction!'
+    elif dir == 'SW':
+        if current_index != 4:
+            new_location_index = locations[current_biome].index(cur_location) - 1
+            new_location = locations[biome_after][new_location_index]
+        else:
+            return 'No place to travel to in this direction!'
+    elif dir == 'SE':
+        if current_index != 4:
+            new_location_index = locations[current_biome].index(cur_location) + 1
+            new_location = locations[biome_after][new_location_index]
+        else:
+            return 'No place to travel to in this direction!'
+    elif dir == 'W':
+        if locations[current_biome].index(cur_location) != 4:
+            new_location_index = locations[current_biome].index(cur_location) - 1
+            new_location = locations[current_biome][new_location_index]
+        else:
+            return 'No place to travel to in this direction!'
+    else:
+        return 'Invalid direction!'
+
+    with open('yeet.txt', 'a') as file:
+        file.write(f'{new_location}\n')
+
+    return new_location    
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0')

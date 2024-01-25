@@ -1,5 +1,5 @@
 import os, socket, time
-from sudoku import generate_sudoku, prepare_sudoku
+from sudoku import *
 
 # Build flag from env var
 flag = "TH{" + str(os.environ.get("FLAG")) + "}"
@@ -15,6 +15,9 @@ while True:
 
         client_socket.send('Welcome challenger! Are you fast enough to solve all my Sudokus?\n\n'.encode('utf-8'))
 
+        # Set max time for client to respond to 5 sec
+        client_socket.settimeout(10)
+
         # Initiate counter
         count = 1
 
@@ -25,28 +28,25 @@ while True:
             # Generate random Sudoku
             solved_sudoku = generate_sudoku()
 
-            print(solved_sudoku)
-
             # Empty Sudoku spots
             random_sudoku = prepare_sudoku(solved_sudoku)
-
-            print(random_sudoku)
-
-            # Initiate empty vars
-            message = ""
-            output = {}
 
             client_socket.send(random_sudoku.encode('utf-8'))
 
             data = client_socket.recv(1024)
-            decoded_data = client_socket.recv(1024).decode()
+            decoded_data = data.decode('utf-8')
 
-            # Loop through array to convert solved sudoku array to a dictionary
-            for index, line in enumerate(random_sudoku):
-                output[index] = line
+            if is_valid_input(decoded_data) == False:
+                break
 
-            # Using eval to convert decoded string to an actual dictionary
-            if eval(decoded_data) != output:
+            # Format input to readable sudoku
+            rows = random_sudoku.strip().split('\n')
+            sudoku_grid = [[cell if cell != '.' else '.' for cell in row.split()] for row in rows]
+
+            check = check_sudoku_mapping(eval(decoded_data), sudoku_grid)
+
+            # Check if Client Sudoku is valid
+            if not check[0]:
                 client_socket.send('Wrong format or wrong sudoku solution!'.encode('utf-8'))
                 client_socket.close()
 
@@ -56,8 +56,16 @@ while True:
             time.sleep(1)
 
         # Send flag if client successfully solved 50 sudokus
-        client_socket.send(flag.encode('utf-8'))
+        if count == 50:
+            client_socket.send(flag.encode('utf-8'))
+        else:
+            client_socket.send('Wrong Sudoku!'.encode('utf-8')) 
+
         client_socket.close()
+
+    except socket.timeout:
+        client_socket.send('Timeout: No response received within 10 seconds'.encode('utf-8')) 
+        client_socket.close() 
 
     except:
         client_socket.close()

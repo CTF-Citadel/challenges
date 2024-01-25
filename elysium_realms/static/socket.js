@@ -52,9 +52,14 @@ function train() {
 }
 
 // function to travel to another place
-function travel() {
-  socket.emit("travel", {}, function (response) {
-    update_place(response.next_place);
+function travel(direction) {
+  socket.emit("travel", { data: direction }, function (response) {
+    console.log(response)
+    if (response.error) {
+      // Output Error message on screen
+    } else {
+      update_place(response.next_place);
+    }
   });
 }
 

@@ -1,6 +1,35 @@
 from random import sample
 
 
+## Check format
+
+def is_valid_input(input_string):
+    try:
+        # Attempt to evaluate the input string
+        result = eval(input_string)
+        
+        # Check if the result is a list
+        if not isinstance(result, list):
+            return False
+        
+        # Check if each element in the list is also a list
+        for sublist in result:
+            if not isinstance(sublist, list):
+                return False
+        
+        # Check if each sublist has the same length
+        sublist_length = len(result[0])
+        for sublist in result:
+            if len(sublist) != sublist_length:
+                return False
+        
+        return True
+        
+    except Exception as e:
+        # If any error occurs during evaluation or validation, return False
+        return False
+
+
 ## For solving sudokus
 
 def is_valid(board, row, col, num):
@@ -90,3 +119,40 @@ def check_uniqueness(sudoku):
 
     # Try solving the Sudoku and check if there is a unique solution
     return solve_sudoku(sudoku_copy)
+
+
+## For checkign if sent back Sudoku is valid
+
+def check_sudoku_mapping(solved_sudoku, empty_sudoku):
+    print(f'Sudoku from Client:\n{solved_sudoku}\n')
+    print(f'Empty Sudoku:\n{empty_sudoku}')
+
+    def is_valid_sudoku(sudoku):
+        # Check rows and columns
+        for i in range(9):
+            row = sudoku[i]
+            col = [sudoku[j][i] for j in range(9)]
+            if len(set(row)) != 9 or len(set(col)) != 9:
+                return False
+
+        # Check 3x3 subgrids
+        for i in range(0, 9, 3):
+            for j in range(0, 9, 3):
+                subgrid = [sudoku[x][y] for x in range(i, i + 3) for y in range(j, j + 3)]
+                if len(set(subgrid)) != 9:
+                    return False
+
+        return True
+
+    # Check if solved Sudoku is valid
+    if not is_valid_sudoku(solved_sudoku):
+        return False, "Solved Sudoku is not valid."
+
+    # Check if empty Sudoku correctly maps to solved Sudoku
+    for i in range(9):
+        for j in range(9):
+            if empty_sudoku[i][j] != '.':
+                if empty_sudoku[i][j] != str(solved_sudoku[i][j]):
+                    return False, "Empty Sudoku does not map correctly to the solved Sudoku."
+
+    return True, "Sudoku mapping is valid."
