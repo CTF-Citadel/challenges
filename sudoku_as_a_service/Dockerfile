@@ -7,4 +7,4 @@ COPY . /app
 ARG FLAG
 ENV FLAG=${FLAG}
 
-CMD ["python", "service.py"]
+CMD ["python3", "service.py"]
