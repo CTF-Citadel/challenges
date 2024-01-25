@@ -181,9 +181,128 @@ It looked like this when it was done:
 
 ### Discord-Bot
 
+The discord bot was built using python and some simple docker logic to host it anywhere in case of failure on 1 system. <br/>
+It is important to note that the discord bot in this challenge although it is a central service which is accessed by multiple users does also provide dynamic flags. <br/>
 
+The `docker-compose.yml` file below sets up 2 containers for the challenge. <br/>
+1 container for the discord bot and 1 container to store users and map flags to each new user (No critical data from user is saved, pls believe me ;'{ ). <br/>
+```yml
+version: '3.9'
 
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      DC_TOKEN: ${DC_TOKEN}
+      DB_NAME: users
+      DB_USER: dbadmin
+      DB_PW: eEGnsF5JrDFfNB88LMxR
+    restart: unless-stopped
 
+  db:
+    image: mariadb:latest
+    hostname: db
+    restart: unless-stopped
+    environment:
+      MARIADB_ROOT_PASSWORD: 2U3Qps4cDZHJJT8LgnJR
+      MARIADB_DATABASE: users
+      MARIADB_USER: dbadmin
+      MARIADB_PASSWORD: eEGnsF5JrDFfNB88LMxR
+```
 
+The passwords are hardcoded because it doesn't matter as this application is only being hosted locally. <br/>
+Users stored in database with following schema: 
+```py
+class User(Base):
 
+    __tablename__ = "user_info"
 
+    id = Column(String(length=255), primary_key=True)
+    name = Column(String(length=255))
+    flag = Column(String(length=255))
+
+    def __repr__(self):
+        return f'User(id={self.id}, name={self.name}, flag={self.flag})'
+```
+
+For the database connection I used `SQL-Alchemy`. <br/>
+```py
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+import os
+
+db_user = os.environ.get("DB_USER")
+db_password = os.environ.get("DB_PW")
+db_name = os.environ.get("DB_NAME")
+
+SQLALCHEMY_DB_URL = f'mariadb+pymysql://{db_user}:{db_password}@db:3306/{db_name}'
+
+engine = create_engine(SQLALCHEMY_DB_URL, echo=True)
+DBSession = sessionmaker(engine, autoflush=False)
+```
+
+Mapping flags to users:
+```py
+if message.author == bot.user:
+        return
+
+    users = db.query(models.User).filter(models.User.name == message.author).all() # check if user already exists in db
+
+    if users:
+        pass
+    else:
+        new_flag = ''
+        for flag in open('flags.txt', 'r'):
+            flags = db.query(models.User).filter(models.User.flag == flag.strip()).all() # check if flag has already been used (make sure its unique)
+
+            if flags:
+                pass
+            else:
+                new_flag = flag.split()
+                break
+
+        new_user = models.User( # create the new user locally
+            id=message.author.id, name=message.author.name, flag=new_flag
+        )
+        db.add(new_user) 
+        db.commit()
+        db.refresh(new_user)
+        db.close()
+        print(f"Added new user: {message.author.name}")
+```
+
+Now this code checks if the user writes the discord bot for the first time. <br/>
+If this is the case the bot makes a database entry with user_id, name and unique flag. <br/>
+
+The actual challenge where the user is being asked three different cyber-security questions can be seen below. <br/>
+```py
+    for word in words:
+        if word.lower() == "password" or word.lower() == "passwort":
+            encrypted_text = caesar_cipher("I am a vigilant guardian, shielding networks from danger. Intruders test my defenses, but I swiftly sound the alarm. I scrutinize data flow, sieving out the malevolent. With my protective measures, safety is assured. What am I?", 2)
+            
+            async with message.channel.typing():
+                await message.channel.send(f"```{encrypted_text}```")
+
+            response_sent = True
+            break
+
+        elif word.lower() == "firewall":
+            encrypted_text = caesar_cipher("I lurk in the shadows, unseen and unknown. Exploiting weaknesses, my presence is never shown. I infiltrate networks, spreading like a plague. A malicious force, causing havoc at my stage. What am I?", 1)
+            
+            async with message.channel.typing():
+                await message.channel.send(f"```{encrypted_text}```")
+
+            response_sent = True
+            break
+
+        elif word.lower() == "malware":
+            async with message.channel.typing():
+                await message.channel.send(f"```Congratulations, the flag is:\nTH{{{db.query(models.User.flag).filter(models.User.name == message.author.name).scalar()}}}```")
+            
+            response_sent = True
+```
+
+Those are three simple if cases which check for correct answers on the questions. <br/>
+If they are answered correctly the user obtains the flag which was mapped to the user on initiation. <br/>
