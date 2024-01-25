@@ -22,7 +22,9 @@ This challenge only needs a few basic things to get up and running.
 
 ### Preparing a properly vulnerable C program
 
-The C program doesnt need to do much, other than having a function that *does* do much out of scope and never called.
+The C program doesnt need to do much, other than having a function that *does* do much.
+
+It basically just needs to read and print our flag somehow (in this case from and env-var called `$FLAG`) and be **out of scope** and **never called**.
 
 ```c
 #include <stdio.h>
