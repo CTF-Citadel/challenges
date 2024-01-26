@@ -53,10 +53,11 @@ function train() {
 
 // function to travel to another place
 function travel(direction) {
+  console.log(direction)
   socket.emit("travel", { data: direction }, function (response) {
     console.log(response)
     if (response.error) {
-      // Output Error message on screen
+      // console.log(response)
     } else {
       update_place(response.next_place);
     }
