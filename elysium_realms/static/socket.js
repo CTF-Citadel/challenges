@@ -2,6 +2,7 @@
 const healthFill = document.getElementById("healthFill");
 const staminaFill = document.getElementById("staminaFill");
 const current_place = document.getElementById('current_place');
+const img_display = document.getElementById('img_display');
 
 // initiate socket connection
 const socket = io.connect(`http://${location.hostname}:${location.port}/`); 
@@ -19,9 +20,10 @@ socket.emit("auth", { data: uuid }, function (response) {
   }
 });
 
-// Get stat updates every second
+// Start interval to update player stats every second
 setInterval(update_stats, 1000);
 
+// function for stat updates
 function update_stats() {
   socket.emit("stats", {}, function (response) {
     update_health(response.health);
@@ -60,6 +62,7 @@ function travel(direction) {
       // console.log(response)
     } else {
       update_place(response.next_place);
+      update_img(response.img_url);
     }
   });
 }
@@ -77,4 +80,9 @@ function update_stamina(value) {
 // function to update UI after travelling
 function update_place(place) {
   current_place.textContent = place;
+}
+
+// function to update image
+function update_img(url) {
+  img_display.setAttribute('src', url);
 }

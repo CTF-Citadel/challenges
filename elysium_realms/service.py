@@ -4,6 +4,7 @@ from model.database import DBSession
 from model import models
 from datetime import datetime, timedelta
 from flask_socketio import SocketIO
+from game import *
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.urandom(24)
@@ -15,15 +16,7 @@ def sha256_hash(text):
     sha256.update(text.encode('utf-8'))
     return sha256.hexdigest()
 
-# List of fantasy places for the text rpg
-locations = {
-    'Mountain': ['Dragonspire Peaks', 'Mystic Summit', 'Thunderpeak Range', "Eagle's Eyrie", 'Celestial Crest'],
-    'Swamp': ['Shadowfen Marsh', 'Mistwood Bog', "Serpent's Lair", 'Foghaven Wetlands', 'Fiery Swamp'],
-    'Desert': ['Dunes of Mirage', 'Sands of Serenity', 'Eternal Sun Wastes', 'Oasis of Dreams', 'Quicksand Mirage'],
-    'Forest': ['Enchanted Arbor', 'Moonshade Grove', 'Elderwood Realm', 'Feywild Thicket', 'Sylvan Whisperwoods'],
-    'Plains': ['Gilded Grasslands', 'Azure Savannah', 'Golden Horizon Fields', 'Elysian Meadowlands', 'Windswept Plains']
-}
-
+# Function to inject fake data for
 def inject_data():
     db = DBSession()
 
@@ -331,8 +324,6 @@ def handle_message(direction):
 
         # Determine next place to travel to from direction from request
         next_place = travel(direction.get('data'), cur_place)
-        with open('yeet.txt', 'a') as file:
-            file.write(f"\n\n{next_place}\n\n")
 
         if next_place == 'Invalid direction!' or next_place == 'No place to travel to in this direction!':
             response_data = {
@@ -341,9 +332,10 @@ def handle_message(direction):
             }
         
         else:
-            user_stats[session]['current_place'] = next_place
+            user_stats[session]['current_place'] = next_place[0]
             response_data = {
-                'next_place': next_place,
+                'next_place': next_place[0],
+                'img_url': next_place[1],
                 'dir': direction.get('data')
             }
 
@@ -353,81 +345,7 @@ def handle_message(direction):
             'status_code': 401
         }
 
-    return response_data
-
-
-# Function to determine next place to travel to
-def travel(dir, cur_location):
-    check_before = False
-    check_after = False
-
-    # Get biome of current place
-    for index, biome in enumerate(locations):
-        if check_after == True and index < 5: # Check if new location was found and set biome after
-            biome_after = biome
-            check_after = False
-        if cur_location in locations[biome]: # Check if new location was found
-            check_before = True
-            check_after = True
-            current_biome = biome
-            current_index = index
-        if check_before == False: # Check if new location was found and set biome before
-            biome_before = biome
-
-    # Get new place for direction
-    if dir == 'N':
-        if current_index > 0:
-            new_location_index = locations[current_biome].index(cur_location)
-            new_location = locations[biome_before][new_location_index]
-        else:
-            return 'No place to travel to in this direction!'
-    elif dir == 'NW':
-        if current_index > 0 and locations[current_biome].index(cur_location) > 0:
-            new_location_index = locations[current_biome].index(cur_location) - 1
-            new_location = locations[biome_before][new_location_index]
-        else:
-            return 'No place to travel to in this direction!'
-    elif dir == 'NE':
-        if current_index > 0 and locations[current_biome].index(cur_location) < 4:
-            new_location_index = locations[current_biome].index(cur_location) + 1
-            new_location = locations[biome_before][new_location_index]
-        else:
-            return 'No place to travel to in this direction!'
-    elif dir == 'E':
-        if locations[current_biome].index(cur_location) < 4:
-            new_location_index = locations[current_biome].index(cur_location) + 1
-            new_location = locations[current_biome][new_location_index]
-        else:
-            return 'No place to travel to in this direction!'
-    elif dir == 'S':
-        if current_index < 4:
-            new_location_index = locations[current_biome].index(cur_location)
-            new_location = locations[biome_after][new_location_index]
-        else:
-            return 'No place to travel to in this direction!'
-    elif dir == 'SW':
-        if current_index < 4 and locations[current_biome].index(cur_location) > 0:
-            new_location_index = locations[current_biome].index(cur_location) - 1
-            new_location = locations[biome_after][new_location_index]
-        else:
-            return 'No place to travel to in this direction!'
-    elif dir == 'SE':
-        if current_index < 4 and locations[current_biome].index(cur_location) < 4:
-            new_location_index = locations[current_biome].index(cur_location) + 1
-            new_location = locations[biome_after][new_location_index]
-        else:
-            return 'No place to travel to in this direction!'
-    elif dir == 'W':
-        if locations[current_biome].index(cur_location) > 0:
-            new_location_index = locations[current_biome].index(cur_location) - 1
-            new_location = locations[current_biome][new_location_index]
-        else:
-            return 'No place to travel to in this direction!'
-    else:
-        return 'Invalid direction!'
-
-    return new_location    
-
+    return response_data  
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0')
