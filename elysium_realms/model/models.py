@@ -12,9 +12,10 @@ class User(Base):
     level = Column(Integer())
     affiliation = Column(String(length=255), ForeignKey("guilds.title"))
     spawnpoint = Column(String(length=255))
+    current_place = Column(String(length=255))
 
     def __repr__(self):
-        return f'User(username={self.username}, password_hash={self.password_hash}, level={self.level}, affiliation={self.affiliation}, spawnpoint={self.spawnpoint})'
+        return f'User(username={self.username}, password_hash={self.password_hash}, level={self.level}, affiliation={self.affiliation}, spawnpoint={self.spawnpoint}, current_place={self.current_place})'
 
 class Guild(Base):
 

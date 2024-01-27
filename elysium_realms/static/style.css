@@ -238,3 +238,17 @@ body {
     font-size: 22px;
 }
 
+#img_display {
+    z-index: 2;
+}
+
+#error_msg {
+    letter-spacing: 1px;
+    position: relative;
+    top: -20px;
+    z-index: 10;
+    text-align: center;
+    color: #f00;
+    opacity: 0;
+    transition: opacity 1s ease-out; /* Transition for fade-out effect */
+}

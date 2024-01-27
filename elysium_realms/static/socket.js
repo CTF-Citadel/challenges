@@ -3,6 +3,7 @@ const healthFill = document.getElementById("healthFill");
 const staminaFill = document.getElementById("staminaFill");
 const current_place = document.getElementById('current_place');
 const img_display = document.getElementById('img_display');
+const error_msg = document.getElementById('error_msg');
 
 // initiate socket connection
 const socket = io.connect(`http://${location.hostname}:${location.port}/`); 
@@ -34,32 +35,42 @@ function update_stats() {
 // function to collect items
 function collect() {
   socket.emit("collect", {}, function (response) {
-    update_stamina(response.stamina);
+    if (response.error) {
+      show_error(response.error)
+    } else {
+      update_stamina(response.stamina);
+    }
   });
 }
 
 // function to hunt enemies
 function hunt() {
   socket.emit("hunt", {}, function (response) {
-    update_health(response.health)
-    update_stamina(response.stamina);
+    if (response.error) {
+      show_error(response.error)
+    } else {
+      update_health(response.health)
+      update_stamina(response.stamina);
+    }
   });
 }
 
 // function to train character
 function train() {
   socket.emit("train", {}, function (response) {
-    update_stamina(response.stamina);
+    if (response.error) {
+      show_error(response.error)
+    } else {
+      update_stamina(response.stamina);
+    }
   });
 }
 
 // function to travel to another place
 function travel(direction) {
-  console.log(direction)
   socket.emit("travel", { data: direction }, function (response) {
-    console.log(response)
     if (response.error) {
-      // console.log(response)
+      show_error(response.error);
     } else {
       update_place(response.next_place);
       update_img(response.img_url);
@@ -85,4 +96,15 @@ function update_place(place) {
 // function to update image
 function update_img(url) {
   img_display.setAttribute('src', url);
+}
+
+// function to display error_msg
+function show_error(error) {
+  error_msg.innerText = error;
+  error_msg.style.opacity = 1;
+
+  // Interval to make an effect with opacity fading out
+  setTimeout(() => {
+    error_msg.style.opacity = 0;
+  }, 2000);
 }

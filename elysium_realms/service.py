@@ -1,95 +1,18 @@
-import random, hashlib, secrets, string, uuid, os, time
+import random, uuid, os, time
 from flask import *
 from model.database import DBSession
 from model import models
 from datetime import datetime, timedelta
 from flask_socketio import SocketIO
 from game import *
+from manage_sessions import *
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.urandom(24)
 socketio = SocketIO(app)
 
-# hash function for passwords
-def sha256_hash(text):
-    sha256 = hashlib.sha256()
-    sha256.update(text.encode('utf-8'))
-    return sha256.hexdigest()
-
-# Function to inject fake data for
-def inject_data():
-    db = DBSession()
-
-    # insert guilds
-    for guild in open('data/guilds.txt', 'r'):
-        check = db.query(models.Guild).filter(models.Guild.title == guild.split('\n')[0]).all()
-
-        if check:
-            continue
-
-        if guild.strip() != 'Ainz Ooal Gown': # check for custom details
-            new_guild = models.Guild(
-                title=guild.strip(), level=random.randint(1, 6)
-            )
-        else:
-            new_guild = models.Guild(
-                title=guild.strip(), level=10
-            )
-        
-        db.add(new_guild) # commit new entry to db
-        db.commit()
-        db.refresh(new_guild)
-
-    # insert users
-    for user in open('data/users.txt', 'r'):
-        check = db.query(models.User).filter(models.User.username == user.strip()).all()
-
-        if check:
-            continue
-
-        if user.strip() != 'Aryt3': # check for custom details
-            new_user = models.User(
-                username=user.strip(), password_hash=sha256_hash(''.join(secrets.choice(string.ascii_letters + string.digits + string.punctuation) for _ in range(10))), level=random.randint(1, 99), affiliation=random.choice(open('data/guilds.txt').readlines()[1:]).rstrip('\n') if open('data/guilds.txt').readlines()[1:] else None
-            )
-        else:
-            new_user = models.User(
-                username=user.strip(), password_hash=sha256_hash(''.join(secrets.choice(string.ascii_letters + string.digits + string.punctuation) for _ in range(10))), level=100, affiliation='Ainz Ooal Gown'
-            )
-        
-        db.add(new_user) # commit new entry to db
-        db.commit()
-        db.refresh(new_user)
-
-    db.close()
-    
+# Inject fake users and guilds
 inject_data()
-
-# Function to regenerate user stats over time
-def regenerate_stats(player):
-    while True:
-        # Loop timer
-        time.sleep(10)
-
-        # regenerate stats
-        if user_stats[player]['health'] < 100:
-            user_stats[player]['health'] += 10
-        if user_stats[player]['stamina'] < 100:
-            user_stats[player]['stamina'] += 10
-
-# store socket sessions (request.sid and cookie)
-socket_sessions = []
-
-# Dictionary to store user stats and sessions with session-UUID as key
-user_stats = {}
-
-# Function to check cookie session for authentication
-def check_session(session):
-    if not session:
-        return False
-    if session not in user_stats:
-        return False
-    
-    return True
 
 # API Endpoint for Game Interface if authentification
 @app.route("/")
@@ -97,9 +20,7 @@ def hello_world():
     if check_session(request.cookies.get('session_token')) == False:
         return redirect(url_for('login'))
 
-    image_path = '/static/img_01.png'
-    return render_template('index.html', image_path=image_path, current_place=user_stats[request.cookies.get('session_token')]['current_place'][0])
-
+    return render_template('index.html', image_path=get_img(user_stats[request.cookies.get('session_token')]['current_place']), current_place=user_stats[request.cookies.get('session_token')]['current_place'])
 
 # APIEndpoint for user login
 @app.route('/login', methods=['GET', 'POST'])
@@ -118,11 +39,11 @@ def login():
             
             session_token = str(uuid.uuid4())
 
-            user_spawnpoint = db.query(models.User.spawnpoint).filter(models.User.username == username).first()
+            current_place = db.query(models.User.current_place).filter(models.User.username == username).first()
             user_level = db.query(models.User.level).filter(models.User.username == username).first()
 
             if session_token not in user_stats.keys():
-                user_stats[session_token] = {'health': 100, 'stamina': 100, 'current_place': user_spawnpoint, 'regenerate': False, 'username': username, 'level': user_level}
+                user_stats[session_token] = {'health': 100, 'stamina': 100, 'current_place': current_place[0], 'regenerate': False, 'username': username, 'level': user_level, 'last_action': time.time() - throttle_interval}
 
             db.close()
 
@@ -147,8 +68,10 @@ def signup():
             if check:
                 return render_template('signup.html', error_msg='This User does already exist!')
             
+            spawnpoint = locations[random.choice(list(locations.keys()))][random.randint(0,4)]
+
             new_user = models.User(
-                username=username, password_hash=sha256_hash(password), level=1, spawnpoint=locations[random.choice(list(locations.keys()))][random.randint(0,4)]
+                username=username, password_hash=sha256_hash(password), level=1, spawnpoint=spawnpoint, current_place=spawnpoint
             )
 
             db.add(new_user) 
@@ -161,8 +84,14 @@ def signup():
     return render_template('signup.html')
 
 
-# Socket Section
-
+#     /$$$$$$                      /$$                   /$$            /$$$$$$                        /$$     /$$                    
+#    /$$__  $$                    | $$                  | $$           /$$__  $$                      | $$    |__/                    
+#   | $$  \__/  /$$$$$$   /$$$$$$$| $$   /$$  /$$$$$$  /$$$$$$        | $$  \__/  /$$$$$$   /$$$$$$$ /$$$$$$   /$$  /$$$$$$  /$$$$$$$ 
+#   |  $$$$$$  /$$__  $$ /$$_____/| $$  /$$/ /$$__  $$|_  $$_/        |  $$$$$$  /$$__  $$ /$$_____/|_  $$_/  | $$ /$$__  $$| $$__  $$
+#    \____  $$| $$  \ $$| $$      | $$$$$$/ | $$$$$$$$  | $$           \____  $$| $$$$$$$$| $$        | $$    | $$| $$  \ $$| $$  \ $$
+#    /$$  \ $$| $$  | $$| $$      | $$_  $$ | $$_____/  | $$ /$$       /$$  \ $$| $$_____/| $$        | $$ /$$| $$| $$  | $$| $$  | $$
+#   |  $$$$$$/|  $$$$$$/|  $$$$$$$| $$ \  $$|  $$$$$$$  |  $$$$/      |  $$$$$$/|  $$$$$$$|  $$$$$$$  |  $$$$/| $$|  $$$$$$/| $$  | $$
+#    \______/  \______/  \_______/|__/  \__/ \_______/   \___/         \______/  \_______/ \_______/   \___/  |__/ \______/ |__/  |__/
 
 # Socket Endpoint for auth
 @socketio.on('auth')
@@ -172,6 +101,7 @@ def handle_message(data):
         socket_sessions.append((session_id, request.sid))
 
         if user_stats[session_id]['regenerate'] == False:
+            user_stats[session_id]['regenerate'] = True
             regenerate_stats(session_id)
 
         response_data = {
@@ -187,7 +117,6 @@ def handle_message(data):
         }
     
     return response_data
-
 
 # SocketEndpoint for attacking
 @socketio.on('stats')
@@ -206,103 +135,73 @@ def handle_message(data):
 
     return response_data
 
-
 # Socket Endpoint for mining
 @socketio.on('collect')
 def handle_message(data):
-    if request.sid and any(request.sid == t[1] for t in socket_sessions):
-        session = next((value[0] for value in socket_sessions if value[1] == request.sid), None)
-        if user_stats[session]['stamina'] > 0:
+    if request.sid not in (t[1] for t in socket_sessions):
+        return {'auth': 'Authentication failed!', 'status_code': 401}
+        
+    session = next((value[0] for value in socket_sessions if value[1] == request.sid), None)
 
-            user_stats[session]['stamina'] -= 10
+    if throttle(session):
+        return {'error': 'Wait a bit before collecting again!', 'error_code': 2}
 
-            response_data = {
-                'stamina': user_stats[session]['stamina']
-            }
-        else:
-            response_data = {
-                'error': 'No stamina left for collecting!',
-                'error_code': 1,
-                'health': user_stats[session]['health'],
-                'stamina': user_stats[session]['stamina']
-            }
-    else:
-        response_data = {
-            'message': 'Authentication failed!',
-            'status_code': 401
-        }
+    if user_stats[session]['stamina'] <= 0:
+        return {'error': 'No stamina left for collecting!', 'error_code': 1}
 
-    return response_data
+    user_stats[session]['stamina'] -= 10
+    user_stats[session]['last_action'] = time.time()
 
+    return {'stamina': user_stats[session]['stamina']}
 
 # SocketEndpoint for attacking
 @socketio.on('hunt')
 def handle_message(data):
-    if request.sid and any(request.sid == t[1] for t in socket_sessions):
-        session = next((value[0] for value in socket_sessions if value[1] == request.sid), None)
-        if user_stats[session]['health'] == 10 and user_stats[session]['stamina'] > 0: # Check if User will die in this hunt (health too low)
-            
-            user_stats[session]['health'] -= 10
-            user_stats[session]['stamina'] -= 10
+    if request.sid not in (t[1] for t in socket_sessions):
+        return {'auth': 'Authentication failed!', 'status_code': 401}
+    
+    session = next((value[0] for value in socket_sessions if value[1] == request.sid), None)
 
-            response_data = {
-                'error': 'You died!',
-                'error_code': 0,
-                'health': user_stats[session]['health'],
-                'stamina': user_stats[session]['health']
-            }
-        elif user_stats[session]['stamina'] == 0: # Check if there is stamina available to hunt
-            response_data = {
-                'error': 'No stamina left for hunting!',
-                'error_code': 1,
-                'health': user_stats[session]['health'],
-                'stamina': user_stats[session]['stamina']
-            }
-        elif user_stats[session]['health'] > 0 and user_stats[session]['stamina'] > 0: # Check if there is stamina and health available to hunt
+    if throttle(session):
+        return {'error': 'Wait a bit before hunting again!', 'error_code': 2}
 
-            user_stats[session]['health'] -= 10
-            user_stats[session]['stamina'] -= 10
+    health, stamina = user_stats[session]['health'], user_stats[session]['stamina']
 
-            response_data = {
-                'health': user_stats[session]['health'],
-                'stamina': user_stats[session]['stamina']
-            }
-    else:
-        response_data = {
-            'message': 'Authentication failed!',
-            'status_code': 401
-        }
+    if health == 0:
+        return {'error': 'You are dead!', 'error_code': 0, 'health': 0, 'stamina': 0}
 
-    return response_data
+    if stamina == 0:
+        return {'error': 'No stamina left for hunting!', 'error_code': 1, 'health': health, 'stamina': stamina}
 
+    user_stats[session].update({'health': health - 10, 'stamina': stamina - 10})
+
+    if health == 10: # Check if User will die in this hunt (health too low)
+        user_stats[session]['regenerate'] = False
+        return {'error': 'You died!', 'error_code': 1, 'health': health, 'stamina': stamina}
+    
+    user_stats[session]['last_action'] = time.time()
+
+    return {'health': health - 10, 'stamina': stamina - 10}
 
 # Socket Endpoint for training
 @socketio.on('train')
 def handle_message(data):
-    if request.sid and any(request.sid == t[1] for t in socket_sessions):
-        session = next((value[0] for value in socket_sessions if value[1] == request.sid), None)
-        if user_stats[session]['stamina'] > 0:
+    if request.sid not in (t[1] for t in socket_sessions):
+        return {'auth': 'Authentication failed!', 'status_code': 401}
 
-            user_stats[session]['stamina'] -= 10
+    session = next((value[0] for value in socket_sessions if value[1] == request.sid), None)
 
-            response_data = {
-                'stamina': user_stats[session]['stamina']
-            }
-        else:
-            response_data = {
-                'error': 'No stamina left for training!',
-                'error_code': 1,
-                'health': user_stats[session]['health'],
-                'stamina': user_stats[session]['stamina']
-            }
+    if throttle(session):
+        return {'error': 'Wait a bit before training again!', 'error_code': 2}
+
+    if user_stats[session]['stamina'] > 0:
+
+        user_stats[session]['stamina'] -= 10
+        user_stats[session]['last_action'] = time.time()
+        return {'stamina': user_stats[session]['stamina']}
+
     else:
-        response_data = {
-            'message': 'Authentication failed!',
-            'status_code': 401
-        }
-
-    return response_data
-
+        return {'error': 'No stamina left for training!', 'error_code': 1, 'health': user_stats[session]['health'], 'stamina': user_stats[session]['stamina']}
 
 # Socket Endpoint for travelling
 @socketio.on('travel')
@@ -314,8 +213,6 @@ def handle_message(direction):
 
         # Load spawnpoint to check level requirement for travelling to another place 
         spawnpoint = db.query(models.User.spawnpoint).filter(models.User.username == user_stats[session]['username']).first()
-        
-        db.close()
 
         if user_stats[session]['current_place'][0] is not None and len(user_stats[session]['current_place'][0]) > 1:
             cur_place = user_stats[session]['current_place'][0]
@@ -325,25 +222,32 @@ def handle_message(direction):
         # Determine next place to travel to from direction from request
         next_place = travel(direction.get('data'), cur_place)
 
-        if next_place == 'Invalid direction!' or next_place == 'No place to travel to in this direction!':
+        if next_place in error_msg:
             response_data = {
                 'error': next_place,
                 'dir': direction.get('data')
             }
         
         else:
-            user_stats[session]['current_place'] = next_place[0]
+            user_stats[session]['current_place'] = next_place
             response_data = {
-                'next_place': next_place[0],
-                'img_url': next_place[1],
+                'next_place': next_place,
+                'img_url': get_img(next_place),
                 'dir': direction.get('data')
             }
+
+            current_place = db.query(models.User).filter(models.User.username == user_stats[session]['username']).first()
+
+            current_place.current_place = next_place
+            db.commit()
 
     else:
         response_data = {
             'message': 'Authentication failed!',
             'status_code': 401
         }
+
+    db.close()
 
     return response_data  
 
