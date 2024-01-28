@@ -11,7 +11,7 @@
 <body>
     <div id="mainView">
         <div id="nav">
-            <button id="menuBtn" onclick="popup('menu')">Menu</button>
+            <button id="menuBtn" onclick="popup()">Menu</button>
         </div>
         <div id="landscape">
             <img id="img_display" src="{{ image_path }}" alt="landscape" class="landscapeImg">
@@ -54,14 +54,19 @@
             </div>
         </div>
     </div>
-    <div id="leaderboard" class="popup">
-        <h1>Leaderboard</h1>
-    </div>
     <div id="menu" class="popup">
-        <h1>Menu</h1>
-    </div>
-    <div id="inventory" class="popup">
-        <h1>Inventory</h1>
+        <div id="subMenus">
+            <div class="subMenus">
+                <button>Inventory</button>
+                <button>Guide</button>
+                <button>Transfer</button>
+            </div>
+            <div class="subMenus">
+                <button onclick="loadLeaderboard()">Leaderboard</button>
+                <button>Marketplace</button>
+            </div>
+        </div>
+        <div id="display"></div>
     </div>
 </body>
 <script src="{{ url_for('static', filename='socket.js') }}"></script>

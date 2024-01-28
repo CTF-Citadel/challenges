@@ -3,9 +3,7 @@ const healthFill = document.getElementById("healthFill");
 const staminaFill = document.getElementById("staminaFill");
 const img_display = document.getElementById('img_display');
 const error_msg = document.getElementById('error_msg');
-const leaderboardPopup = document.getElementById('leaderboard');
 const menuPopup = document.getElementById('menu');
-const inventoryPopup = document.getElementById('inventory');
 const healthStat = document.getElementById('healthStat');
 const staminaStat = document.getElementById('staminaStat');
 
@@ -110,49 +108,50 @@ function show_error(error) {
   }, 2000);
 }
 
-// Function for Leaderboard-Popup
-function leaderboard() {
-  console.log(leaderboardPopup.style.display)
-  if (leaderboardPopup.style.visibility == 'hidden') {
-    leaderboardPopup.style.visibility = 'visible';
-  } else {
-    leaderboardPopup.style.visibility = 'hidden';
-  }
-}
-
-// Function for Menu-Popup
-function menu() {
-  console.log(leaderboardPopup.style.display)
-  if (leaderboardPopup.style.visibility == 'hidden') {
-    leaderboardPopup.style.visibility = 'visible';
-  } else {
-    leaderboardPopup.style.visibility = 'hidden';
-  }
-}
-
-// Function for Inventory-Popup
-function inventory() {
-  console.log(leaderboardPopup.style.display)
-  if (leaderboardPopup.style.visibility == 'hidden') {
-    leaderboardPopup.style.visibility = 'visible';
-  } else {
-    leaderboardPopup.style.visibility = 'hidden';
-  }
-}
-
 // function for check on 1 popup appearance
-function popup(popup) {
-  if (popup === 'leaderboard') {
-    leaderboardPopup.style.visibility = leaderboardPopup.style.visibility === 'visible' ? 'hidden' : 'visible';
-    menuPopup.style.visibility = 'hidden';
-    inventoryPopup.style.visibility = 'hidden';
-  } else if (popup === 'menu') {
-    leaderboardPopup.style.visibility = 'hidden';
-    menuPopup.style.visibility = menuPopup.style.visibility === 'visible' ? 'hidden' : 'visible';
-    inventoryPopup.style.visibility = 'hidden';
-  } else {
-    leaderboardPopup.style.visibility = 'hidden';
-    menuPopup.style.visibility = 'hidden';
-    inventoryPopup.style.visibility = inventoryPopup.style.visibility === 'visible' ? 'hidden' : 'visible';
-  }
+function popup() {
+  menuPopup.style.visibility = menuPopup.style.visibility === 'visible' ? 'hidden' : 'visible';
 }
+
+// Function to load leaderboard from backend
+function loadLeaderboard() {
+  socket.emit("leaderboard", function (response) {
+    if (typeof response === 'string') {
+      response = JSON.parse(response); 
+    }
+    createUserElements(response);
+  })
+}
+
+function createUserElements(users) {
+  let userListDiv = document.getElementById('display');
+
+  let titleDiv = document.createElement('div');
+  titleDiv.className = 'user-container';
+  titleDiv.innerHTML = '<p>User:</p><p>Level:</p><p>Guild:</p>';
+  userListDiv.appendChild(titleDiv);
+
+  users.forEach(function(user) {
+    let userDiv = document.createElement('div');
+    userDiv.className = 'user-container';
+    userDiv.innerHTML = `<p>${user.username}</p><p>${user.level}</p><p>${user.affiliation}</p>`;
+    userListDiv.appendChild(userDiv);
+  });
+}
+
+let styleElement = document.createElement('style');
+styleElement.textContent = `
+  .user-container {
+    display: flex;
+    flex-direction: row;
+  }
+
+  .user-container p {
+    margin: 0;
+    padding: 5px;
+    border: 1px solid #ccc;
+    flex: 1;
+    text-align: center;
+    letter-spacing: 1px;
+  }`;
+document.head.appendChild(styleElement);

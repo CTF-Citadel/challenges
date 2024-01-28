@@ -71,7 +71,7 @@ def signup():
             spawnpoint = locations[random.choice(list(locations.keys()))][random.randint(0,4)]
 
             new_user = models.User(
-                username=username, password_hash=sha256_hash(password), level=1, spawnpoint=spawnpoint, current_place=spawnpoint
+                username=username, password_hash=sha256_hash(password), level=1, spawnpoint=spawnpoint, current_place=spawnpoint, affiliation=None
             )
 
             db.add(new_user) 
@@ -242,7 +242,20 @@ def handle_message(direction):
 # Socket Endpoint for leaderboard updates
 @socketio.on('leaderboard')
 def leaderboard():
-    return
+    if request.sid not in (t[1] for t in socket_sessions):
+        return {'auth': 'Authentication failed!', 'status_code': 401}
+    
+    db = DBSession()
+
+    users_data = db.query(models.User.username, models.User.level, models.User.affiliation).order_by(models.User.level.desc()).all()
+
+    result = [{'username': username, 'level': level, 'affiliation': affiliation if affiliation is not None else 'None'} for username, level, affiliation in users_data]
+
+    result_json = json.dumps(result)
+
+    db.close()
+
+    return result_json
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0')
