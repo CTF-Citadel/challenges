@@ -20,7 +20,7 @@ def hello_world():
     if check_session(request.cookies.get('session_token')) == False:
         return redirect(url_for('login'))
 
-    return render_template('index.html', image_path=get_img(user_stats[request.cookies.get('session_token')]['current_place']), current_place=user_stats[request.cookies.get('session_token')]['current_place'])
+    return render_template('index.html', image_path=get_img(user_stats[request.cookies.get('session_token')]['current_place']))
 
 # APIEndpoint for user login
 @app.route('/login', methods=['GET', 'POST'])
@@ -206,50 +206,43 @@ def handle_message(data):
 # Socket Endpoint for travelling
 @socketio.on('travel')
 def handle_message(direction):
-    if request.sid and any(request.sid == t[1] for t in socket_sessions):
-        session = next((value[0] for value in socket_sessions if value[1] == request.sid), None)
+    if request.sid not in (t[1] for t in socket_sessions):
+        return {'auth': 'Authentication failed!', 'status_code': 401}
 
-        db = DBSession()
+    session = next((value[0] for value in socket_sessions if value[1] == request.sid), None)
 
-        # Load spawnpoint to check level requirement for travelling to another place 
-        spawnpoint = db.query(models.User.spawnpoint).filter(models.User.username == user_stats[session]['username']).first()
+    db = DBSession()
 
-        if user_stats[session]['current_place'][0] is not None and len(user_stats[session]['current_place'][0]) > 1:
-            cur_place = user_stats[session]['current_place'][0]
-        else:
-            cur_place = user_stats[session]['current_place']
+    # Load spawnpoint to check level requirement for travelling to another place 
+    spawnpoint = db.query(models.User.spawnpoint).filter(models.User.username == user_stats[session]['username']).first()
 
-        # Determine next place to travel to from direction from request
-        next_place = travel(direction.get('data'), cur_place)
-
-        if next_place in error_msg:
-            response_data = {
-                'error': next_place,
-                'dir': direction.get('data')
-            }
-        
-        else:
-            user_stats[session]['current_place'] = next_place
-            response_data = {
-                'next_place': next_place,
-                'img_url': get_img(next_place),
-                'dir': direction.get('data')
-            }
-
-            current_place = db.query(models.User).filter(models.User.username == user_stats[session]['username']).first()
-
-            current_place.current_place = next_place
-            db.commit()
-
+    if user_stats[session]['current_place'][0] is not None and len(user_stats[session]['current_place'][0]) > 1:
+        cur_place = user_stats[session]['current_place'][0]
     else:
-        response_data = {
-            'message': 'Authentication failed!',
-            'status_code': 401
-        }
+        cur_place = user_stats[session]['current_place']
 
+    # Determine next place to travel to from direction from request
+    next_place = travel(direction.get('data'), cur_place)
+
+    if next_place in error_msg:
+        db.close()
+        return {'error': next_place, 'dir': direction.get('data')}
+        
+    user_stats[session]['current_place'] = next_place
+
+    # Update new location in db
+    current_place = db.query(models.User).filter(models.User.username == user_stats[session]['username']).first()
+    current_place.current_place = next_place
+
+    db.commit()
     db.close()
 
-    return response_data  
+    return {'next_place': next_place, 'img_url': get_img(next_place), 'dir': direction.get('data')}
+
+# Socket Endpoint for leaderboard updates
+@socketio.on('leaderboard')
+def leaderboard():
+    return
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0')

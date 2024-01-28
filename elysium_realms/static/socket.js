@@ -1,9 +1,13 @@
 // load html components
 const healthFill = document.getElementById("healthFill");
 const staminaFill = document.getElementById("staminaFill");
-const current_place = document.getElementById('current_place');
 const img_display = document.getElementById('img_display');
 const error_msg = document.getElementById('error_msg');
+const leaderboardPopup = document.getElementById('leaderboard');
+const menuPopup = document.getElementById('menu');
+const inventoryPopup = document.getElementById('inventory');
+const healthStat = document.getElementById('healthStat');
+const staminaStat = document.getElementById('staminaStat');
 
 // initiate socket connection
 const socket = io.connect(`http://${location.hostname}:${location.port}/`); 
@@ -72,7 +76,7 @@ function travel(direction) {
     if (response.error) {
       show_error(response.error);
     } else {
-      update_place(response.next_place);
+      // update_place(response.next_place);
       update_img(response.img_url);
     }
   });
@@ -81,16 +85,13 @@ function travel(direction) {
 // function to update health bar
 function update_health(value) {
   healthFill.style.width = `${value}%`;
+  healthStat.innerText = `${value}/100`;
 }
 
 // function to update stamina bar
 function update_stamina(value) {
   staminaFill.style.width = `${value}%`;
-}
-
-// function to update UI after travelling
-function update_place(place) {
-  current_place.textContent = place;
+  staminaStat.innerText = `${value}/100`;
 }
 
 // function to update image
@@ -107,4 +108,51 @@ function show_error(error) {
   setTimeout(() => {
     error_msg.style.opacity = 0;
   }, 2000);
+}
+
+// Function for Leaderboard-Popup
+function leaderboard() {
+  console.log(leaderboardPopup.style.display)
+  if (leaderboardPopup.style.visibility == 'hidden') {
+    leaderboardPopup.style.visibility = 'visible';
+  } else {
+    leaderboardPopup.style.visibility = 'hidden';
+  }
+}
+
+// Function for Menu-Popup
+function menu() {
+  console.log(leaderboardPopup.style.display)
+  if (leaderboardPopup.style.visibility == 'hidden') {
+    leaderboardPopup.style.visibility = 'visible';
+  } else {
+    leaderboardPopup.style.visibility = 'hidden';
+  }
+}
+
+// Function for Inventory-Popup
+function inventory() {
+  console.log(leaderboardPopup.style.display)
+  if (leaderboardPopup.style.visibility == 'hidden') {
+    leaderboardPopup.style.visibility = 'visible';
+  } else {
+    leaderboardPopup.style.visibility = 'hidden';
+  }
+}
+
+// function for check on 1 popup appearance
+function popup(popup) {
+  if (popup === 'leaderboard') {
+    leaderboardPopup.style.visibility = leaderboardPopup.style.visibility === 'visible' ? 'hidden' : 'visible';
+    menuPopup.style.visibility = 'hidden';
+    inventoryPopup.style.visibility = 'hidden';
+  } else if (popup === 'menu') {
+    leaderboardPopup.style.visibility = 'hidden';
+    menuPopup.style.visibility = menuPopup.style.visibility === 'visible' ? 'hidden' : 'visible';
+    inventoryPopup.style.visibility = 'hidden';
+  } else {
+    leaderboardPopup.style.visibility = 'hidden';
+    menuPopup.style.visibility = 'hidden';
+    inventoryPopup.style.visibility = inventoryPopup.style.visibility === 'visible' ? 'hidden' : 'visible';
+  }
 }

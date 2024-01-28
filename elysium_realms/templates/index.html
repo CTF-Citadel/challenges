@@ -10,45 +10,58 @@
 </head>
 <body>
     <div id="mainView">
-        <div id="nav"></div>
+        <div id="nav">
+            <button id="menuBtn" onclick="popup('menu')">Menu</button>
+        </div>
         <div id="landscape">
             <img id="img_display" src="{{ image_path }}" alt="landscape" class="landscapeImg">
             <h2 id="error_msg"></h2>
         </div>
         <div id="control">
+            <div id="actions">
+                <button onclick="collect()" id="collect">Collect</button>
+                <button onclick="hunt()" id="hunt">Hunt</button>
+                <button onclick="train()" id="train">Train</button>
+            </div>
             <div id="health">
                 <div class="health-bar" id="healthBar">
                     <div class="health-fill" id="healthFill"></div>
                 </div>
-            </div>
-            <div id="actions">
-                <button onclick="collect()">Collect</button>
-                <button onclick="hunt()">Hunt</button>
-                <button onclick="train()">Train</button>
-            </div>
+                <h2 id="healthStat">100/100</h2>
+            </div>            
             <div id="stamina">
                 <div class="stamina-bar" id="staminaBar">
                     <div class="stamina-fill" id="staminaFill"></div>
                 </div>
+                <h2 id="staminaStat">100/100</h2>
             </div>
             <div id="travel">
                 <div class="directions">
-                    <button onclick="travel('NW')">North/West</button>
+                    <button onclick="travel('NW')">North West</button>
                     <button onclick="travel('N')">North</button>
-                    <button onclick="travel('NE')">North/East</button>
+                    <button onclick="travel('NE')">North East</button>
                 </div>
                 <div class="directions">
                     <button onclick="travel('W')">West</button>
-                    <button id="current_place">{{ current_place }}</button>
+                    <img src="https://cdn.discordapp.com/attachments/769652008939814942/1201214327793930260/directions.png?ex=65c90105&is=65b68c05&hm=1593aabbdd2bafd1f10c64fa7b577255ede8ff0b77a34126286815229f32c4c0&" id="compass" alt="">
                     <button onclick="travel('E')">East</button>
                 </div>
                 <div class="directions">
-                    <button onclick="travel('SW')">South/West</button>
+                    <button onclick="travel('SW')">South West</button>
                     <button onclick="travel('S')">South</button>
-                    <button onclick="travel('SE')">South/East</button>
+                    <button onclick="travel('SE')">South East</button>
                 </div>
             </div>
         </div>
+    </div>
+    <div id="leaderboard" class="popup">
+        <h1>Leaderboard</h1>
+    </div>
+    <div id="menu" class="popup">
+        <h1>Menu</h1>
+    </div>
+    <div id="inventory" class="popup">
+        <h1>Inventory</h1>
     </div>
 </body>
 <script src="{{ url_for('static', filename='socket.js') }}"></script>
