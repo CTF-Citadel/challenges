@@ -2,7 +2,10 @@ version: '3.9'
 
 services:
   flask:
-    build: .
+    build:
+      context: .
+      args:
+        FLAG: ${FLAG}
     restart: always
     ports:
       - "80:5000"

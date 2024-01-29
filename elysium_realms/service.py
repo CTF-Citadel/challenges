@@ -6,6 +6,7 @@ from datetime import datetime, timedelta
 from flask_socketio import SocketIO
 from game import *
 from manage_sessions import *
+from sqlalchemy import func
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.urandom(24)
@@ -104,19 +105,9 @@ def handle_message(data):
             user_stats[session_id]['regenerate'] = True
             regenerate_stats(session_id)
 
-        response_data = {
-            'message': 'Successfully authorized!',
-            'status_code': 200,
-            'health': user_stats[session_id]['health'],
-            'stamina': user_stats[session_id]['stamina']
-        }
+        return {'message': 'Successfully authorized!', 'status_code': 200, 'health': user_stats[session_id]['health'], 'stamina': user_stats[session_id]['stamina']}
     else:
-        response_data = {
-            'message': 'Authentication failed!',
-            'status_code': 401
-        }
-    
-    return response_data
+        return {'message': 'Authentication failed!', 'status_code': 401}
 
 # SocketEndpoint for attacking
 @socketio.on('stats')
@@ -241,21 +232,40 @@ def handle_message(direction):
 
 # Socket Endpoint for leaderboard updates
 @socketio.on('leaderboard')
-def leaderboard():
+def leaderboard(data):
     if request.sid not in (t[1] for t in socket_sessions):
         return {'auth': 'Authentication failed!', 'status_code': 401}
     
+    group = data.get('data')
     db = DBSession()
 
-    users_data = db.query(models.User.username, models.User.level, models.User.affiliation).order_by(models.User.level.desc()).all()
-
-    result = [{'username': username, 'level': level, 'affiliation': affiliation if affiliation is not None else 'None'} for username, level, affiliation in users_data]
+    match group:
+        case 'users':
+            users_data = db.query(models.User.username, models.User.level, models.User.affiliation).order_by(models.User.level.desc()).all()
+            result = [{'column1': username, 'column2': level, 'column3': affiliation if affiliation is not None else 'None'} for username, level, affiliation in users_data]
+        case 'guilds':
+            guild_member_count_query = db.query(models.Guild.title, models.Guild.level, func.count(models.User.username).label('member_count')).outerjoin(models.User).group_by(models.Guild.title, models.Guild.level).order_by(models.Guild.level.desc())
+            guilds_with_member_count = guild_member_count_query.all()
+            result = [{'column1': guild.title, 'column2': guild.level, 'column3': guild.member_count} for guild in guilds_with_member_count]
+        case _:
+            result = {'error': 'No such group in database!'}
 
     result_json = json.dumps(result)
-
     db.close()
-
     return result_json
+
+# Socket Endpoint for Transferrng Credits
+@socketio.on('transfer')
+def transfer(data):
+    if request.sid not in (t[1] for t in socket_sessions):
+        return {'auth': 'Authentication failed!', 'status_code': 401}
+    
+    target = data.get('target')
+    amount = data.get('amount')
+
+    db = DBSession()
+
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0')

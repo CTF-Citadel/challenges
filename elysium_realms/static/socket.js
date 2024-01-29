@@ -6,6 +6,7 @@ const error_msg = document.getElementById('error_msg');
 const menuPopup = document.getElementById('menu');
 const healthStat = document.getElementById('healthStat');
 const staminaStat = document.getElementById('staminaStat');
+const display = document.getElementById('display');
 
 // initiate socket connection
 const socket = io.connect(`http://${location.hostname}:${location.port}/`); 
@@ -113,45 +114,121 @@ function popup() {
   menuPopup.style.visibility = menuPopup.style.visibility === 'visible' ? 'hidden' : 'visible';
 }
 
-// Function to load leaderboard from backend
 function loadLeaderboard() {
-  socket.emit("leaderboard", function (response) {
-    if (typeof response === 'string') {
-      response = JSON.parse(response); 
-    }
-    createUserElements(response);
-  })
+  clearDisplay();
+
+  // Function to handle guild button click
+  function handleGuildButtonClick() {
+    clearDisplay();
+    loadLeaderboard();
+    socket.emit("leaderboard", { data: 'guilds'}, function (response) {
+      console.log(response)
+      if (typeof response === 'string') {
+        response = JSON.parse(response); 
+        createUserElements(response, 'Guild', 'Level', 'Member-Count');
+        updateFlexStyles(1.5, 0.5, 1);
+      } else {
+        console.log(response)
+      }
+    });
+  }
+  
+  // Function to handle users button click
+  function handleUsersButtonClick() {
+    clearDisplay();
+    loadLeaderboard();
+    socket.emit("leaderboard", { data: 'users'}, function (response) {
+      if (typeof response === 'string') {
+        response = JSON.parse(response); 
+        createUserElements(response, 'User', 'Level', 'Guild');
+        updateFlexStyles(1, 0.5, 1.5);
+      } else {
+        console.log(response)
+      }
+    });
+  }
+  
+  // Create buttons and attach event listeners
+  let guildButton = document.createElement('button');
+  guildButton.textContent = 'Guild';
+  guildButton.classList.add('fetchButton');
+  guildButton.addEventListener('click', handleGuildButtonClick);
+  
+  let usersButton = document.createElement('button');
+  usersButton.textContent = 'Users';
+  usersButton.classList.add('fetchButton');
+  usersButton.addEventListener('click', handleUsersButtonClick);    
+
+  // Append buttons to the display element
+  let buttonContainer = document.createElement('div');
+  buttonContainer.appendChild(guildButton);
+  buttonContainer.appendChild(usersButton);
+  display.insertBefore(buttonContainer, display.firstChild);
 }
 
-function createUserElements(users) {
-  let userListDiv = document.getElementById('display');
+// Function to load marketplace
+function loadMarketplace() {
+  clearDisplay();
+}
 
+// Function to 
+function loadTransfer() {
+  clearDisplay();
+}
+
+// Function to 
+function loadGuide() {
+  clearDisplay();
+}
+
+// Function to 
+function loadInventory() {
+  clearDisplay();
+}
+
+// function to clear display board
+function clearDisplay() {
+  let display = document.getElementById('display');
+  display.innerHTML = ''; 
+}
+
+// function to render fetched content
+function createUserElements(users, header1, header2, header3) {
   let titleDiv = document.createElement('div');
   titleDiv.className = 'user-container';
-  titleDiv.innerHTML = '<p>User:</p><p>Level:</p><p>Guild:</p>';
-  userListDiv.appendChild(titleDiv);
+  titleDiv.innerHTML = `<p>${header1}</p><p>${header2}</p><p>${header3}</p>`;
+  titleDiv.style.fontWeight = '900';
+  display.appendChild(titleDiv);
 
   users.forEach(function(user) {
     let userDiv = document.createElement('div');
     userDiv.className = 'user-container';
-    userDiv.innerHTML = `<p>${user.username}</p><p>${user.level}</p><p>${user.affiliation}</p>`;
-    userListDiv.appendChild(userDiv);
+    userDiv.innerHTML = `<p>${user.column1}</p><p>${user.column2}</p><p>${user.column3}</p>`;
+    display.appendChild(userDiv);
   });
 }
 
-let styleElement = document.createElement('style');
-styleElement.textContent = `
-  .user-container {
-    display: flex;
-    flex-direction: row;
-  }
+// Function to dynamically update table structure
+function updateFlexStyles(flex1, flex2, flex3) {
+  let userContainers = document.querySelectorAll('.user-container');
 
-  .user-container p {
-    margin: 0;
-    padding: 5px;
-    border: 1px solid #ccc;
-    flex: 1;
-    text-align: center;
-    letter-spacing: 1px;
-  }`;
-document.head.appendChild(styleElement);
+  userContainers.forEach(userContainer => {
+      let paragraphs = userContainer.querySelectorAll('p');
+
+      paragraphs.forEach((paragraph, index) => {
+          switch (index) {
+              case 0:
+                  paragraph.style.flex = flex1;
+                  break;
+              case 1:
+                  paragraph.style.flex = flex2;
+                  break;
+              case 2:
+                  paragraph.style.flex = flex3;
+                  break;
+              default:
+                  break;
+          }
+      });
+  });
+}

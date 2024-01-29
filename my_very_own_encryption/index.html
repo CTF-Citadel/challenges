@@ -1,11 +1,3 @@
-<?php
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["crypto_code"])) {
-    $userInput = $_POST["crypto_code"];
-
-    $searchResults = shell_exec("ls /opt/filestash/ | grep " . $userInput);
-}
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -74,13 +66,5 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["crypto_code"])) {
         <button type="submit">Search</button>
     </form>
     
-    <?php
-    if (!empty($searchResults)) {
-        echo "<h2>Search Results:</h2>";
-        echo "<pre>" . $searchResults . "</pre>";
-    } elseif (isset($_POST["crypto_code"])) {
-        echo "<p>No matching items found.</p>";
-    }
-    ?>
-</body>
+    </body>
 </html>

@@ -21,3 +21,4 @@ def encrypt(flag):
 
 with open('output', 'wb') as file: 
     file.write(encrypt(flag))
+
