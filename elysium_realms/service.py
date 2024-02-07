@@ -263,9 +263,20 @@ def transfer(data):
     target = data.get('target')
     amount = data.get('amount')
 
+
     db = DBSession()
 
+    db.close()
 
+    return
+
+# Socket Endpoint for displaying current inventory
+@socketio.on('inventory')
+def inventory():
+    if request.sid not in (t[1] for t in socket_sessions):
+        return {'auth': 'Authentication failed!', 'status_code': 401}
+
+    return
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0')

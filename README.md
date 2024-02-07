@@ -25,5 +25,8 @@
 > | Access Terminal | Medium | Open | Reversing | 100% done | [documentation](https://github.com/CTF-Citadel/challenges/blob/main/documentation/access_terminal.md) |
 > | Social Chronicle | Medium | Open | OSINT | 100% done | [documentation](https://github.com/CTF-Citadel/challenges/blob/main/documentation/social_chronicle.md) |
 > | Layered | Easy | Open | Steganography | 100% done | [documentation](https://github.com/CTF-Citadel/challenges/blob/main/documentation/layered.md) |
-> | Elysium Realms | Hard | Open | Web | 50% done | Coming Soon! |
+> | Elysium Realms | Hard | Open | Web | 70% done | Coming Soon! |
 > | Peeling an Onion | Easy | Open | Networking | 30% done | Coming Soon! |
+> | Zero to Hero | Easy | Open | Crypto | 100% done | [documentation](https://github.com/CTF-Citadel/challenges/blob/main/documentation/zero_to_hero.md) |
+> | Behind the Curtain | Easy | Open | Web | 100% done | [documentation](https://github.com/CTF-Citadel/challenges/blob/main/documentation/behind_the_curtain.md) |
+> | Encased | Easy | Open | Reversing | 80% done | [documentation](https://github.com/CTF-Citadel/challenges/blob/main/documentation/encased.md) |
