@@ -41,8 +41,5 @@ Twitter is the solution for the problem:
 ![image](https://github.com/CTF-Citadel/challenges/assets/113849651/86ebfb49-8778-4480-8f94-92b5896646e6)
 He lost something to lock something, lets search for Gasparri Maurizio Password
 
-
-
-
+![image](https://github.com/CTF-Citadel/challenges/assets/113849651/defb8a91-672b-4946-87a3-73a69c80b13e)
 We found the leaked information!
-
