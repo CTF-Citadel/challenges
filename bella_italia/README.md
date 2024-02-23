@@ -1,4 +1,4 @@
-# Bella Italia
+# Bella Italia (sponsored by addIT employee Chiara Handler)
 
 ## Introduction
 ```
