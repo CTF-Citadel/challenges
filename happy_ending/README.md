@@ -4,12 +4,12 @@
 ```
 Welcome to the OSINT (Open-Source Intelligence) Puzzle: 'Happy Ending'
 
-
+A friend of mine went missing, this here is the last picture he sent me before his phone died.
 ```
 
 ## Task
 ```
-
+Can you help me find his location.
 ```
 
 ## Flag Format
