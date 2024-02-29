@@ -1,4 +1,4 @@
-# Access Terminal
+# Code Zip
 
 > This is a very easy git forensics challenge that requires the
 > player to know the basics of git, analyze the repository and
