@@ -32,3 +32,4 @@
 > | Zero to Hero | Easy | Open | Crypto | 100% done | [documentation](https://github.com/CTF-Citadel/challenges/blob/main/documentation/zero_to_hero.md) |
 > | Behind the Curtain | Easy | Open | Web | 100% done | [documentation](https://github.com/CTF-Citadel/challenges/blob/main/documentation/behind_the_curtain.md) |
 > | Encased | Easy | Open | Reversing | 80% done | [documentation](https://github.com/CTF-Citadel/challenges/blob/main/documentation/encased.md) |
+> | Redacted | Easy | Open | Forensics | 80% done | [documentation](https://github.com/CTF-Citadel/challenges/blob/main/documentation/redacted.md) |

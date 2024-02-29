@@ -1,9 +1,6 @@
 from flask import Flask, render_template, send_from_directory
-import os
 
 app = Flask(__name__)
-
-flag = "TH{" + os.environ.get("FLAG") + "}" # build flag
 
 # Index page to provide files
 @app.route('/')

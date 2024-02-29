@@ -26,7 +26,7 @@ services:
       - "80:5000"
 ```
 
-Mapping the port `5000` which is exposed by `Flask` to the exposed port `80` to the user. <br/>
+Mapping the port `5000` which is used by `Flask` to the exposed port `80`, which can be used be the user. <br/>
 The `Dockerfile` sets up the latest python container and installs its dependencies, the `flag` is also being imported in the `Dockerfile`. <br/>
 ```docker
 FROM python:3.8-slim
