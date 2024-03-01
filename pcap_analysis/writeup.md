@@ -23,4 +23,5 @@ With CyberChef we find the xml file:
 ![image](https://github.com/CTF-Citadel/challenges/assets/113849651/7adf3f8f-488f-419d-ab26-e7df3a8967b4)
 
 In the excel file we find the flag:
+
 ![image](https://github.com/CTF-Citadel/challenges/assets/113849651/a24fde01-273d-4087-b64e-4693f2e5dd81)
