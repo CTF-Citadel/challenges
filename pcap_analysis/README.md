@@ -3,7 +3,6 @@
 ## Introduction
 ```
 This traffic was caught by me on our network. Perhaps you could locate something?
-
 ```
 
 ## Task
