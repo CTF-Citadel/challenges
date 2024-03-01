@@ -31,3 +31,4 @@
 > | Behind the Curtain | Easy | Open | Web | 100% done | [documentation](https://github.com/CTF-Citadel/challenges/blob/main/documentation/behind_the_curtain.md) |
 > | Encased | Easy | Open | Reversing | 100% done | [documentation](https://github.com/CTF-Citadel/challenges/blob/main/documentation/encased.md) |
 > | Redacted | Easy | Open | Forensics | 80% done | [documentation](https://github.com/CTF-Citadel/challenges/blob/main/documentation/redacted.md) |
+> | Code Zip | Easy | Open | Forensics | 100% done | [documentation](https://github.com/CTF-Citadel/challenges/blob/main/documentation/code_zip.md) |
