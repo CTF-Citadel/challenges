@@ -3,7 +3,7 @@
 This traffic was caught by me on our network. Perhaps you could locate something?
 Find anything that you mind find suspicious
 
-##Solution
+## Solution
 For this challenge we got a pcap file.
 When we open it in Wireshark it looks like this:
 ![image](https://github.com/CTF-Citadel/challenges/assets/113849651/a96d864c-4397-41e5-9806-148513a531af)
