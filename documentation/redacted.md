@@ -39,7 +39,7 @@ COPY . /app
 ARG FLAG
 ENV FLAG=${FLAG}
 
-RUN python3 /app/encryption.py
+RUN python3 /app/generation.py
 
 CMD ["python", "service.py"]
 ```

@@ -4,7 +4,4 @@ WORKDIR /app
 
 COPY . /app
 
-ARG FLAG
-ENV FLAG=${FLAG}
-
 CMD ["python3", "service.py"]

@@ -4,8 +4,8 @@ services:
   flask:
     build:
       context: .
-      args:
-        FLAG: ${FLAG}
+    environment:
+      FLAG: ${FLAG}
     restart: always
     ports:
       - "80:5000"

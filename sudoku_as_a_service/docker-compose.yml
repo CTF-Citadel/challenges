@@ -4,7 +4,7 @@ services:
   python:
     build:
       context: .
-      args:
-        FLAG: ${FLAG}
+    environment:
+      FLAG: ${FLAG}
     ports:
       - "1337:1337"

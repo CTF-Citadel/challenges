@@ -8,9 +8,6 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
 
-ARG FLAG
-ENV FLAG=${FLAG}
-
 EXPOSE 5000
 
 CMD ["python3", "service.py"]

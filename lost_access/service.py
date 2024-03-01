@@ -1,9 +1,9 @@
 from flask import Flask, request
-import os, time, hashlib
+import os, hashlib
 
 app = Flask(__name__)
 
-flag = "TH{" + str(os.environ.get("FLAG")) + "}" # build flag
+flag = f"TH{{{os.environ.get('FLAG')}}}" # build flag
 
 # MD5 hash function
 def md5(input_string):
@@ -30,10 +30,8 @@ def index():
             else:
                 return "Unknown user!"
         else:
-            time.sleep(3) # Indicator for wrong User-Agent
-            return "Access denied!"
+            return "Can only connect from same device-type!" # Indicator for wrong User-Agent
     except:
-        time.sleep(3) # Indicator for wrong User-Agent
         return "No credentials provided!"
 
 if __name__ == '__main__':

@@ -21,4 +21,4 @@ services:
     ports:
       - '22:22'
     environment:
-      - flag=${flag}
+      - flag=${FLAG}
