@@ -9,12 +9,12 @@ A friend of mine went missing, this here is the last picture he sent me before h
 
 ## Task
 ```
-Can you help me find his location.
+Can you help me find the location/region of the 2 images.
 ```
 
 ## Flag Format
 ```
-TH{Leak}
+Flag:{Hint1_Hint2}
 All the words are in lowercase except the first letter.
 ```
 
