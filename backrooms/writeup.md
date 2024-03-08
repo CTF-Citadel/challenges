@@ -13,8 +13,9 @@ The need to go to the spot shown in the picture. There will be the Flag inside t
 ## --> Players finds clue (Flag)
 
 ### Nice work detective, you found another trace of "The Phantom"! Our head of IT alerted us that the creature installed some kind of weird backroom tech onto the internal network. Can you find this device?: Footage03
-The player need to find the printer in the 1. OG., there will be a device plugged into the printer. On the device will be an IP-Address. The IP-Address will be the Flag
+The player need to find the printer in the 1. OG., there will be a device plugged into the printer. On the device will be a message. The message will lead you to the end of the challenge.
 ## --> Player finds clue (Flag)
 
-### Okay we found the strange device plugged into our printer network. You need to find out what that thing is doing to our network. Connect to the device and find the answer. DON'T UNPLUG IT, IT MAY CAUSE PROBLEMS!
+### Okay we found the strange device plugged into our printer network. On the printer was a message to go to the start of the challenge and get a shredded piece of paper.
+The player need to put the shredded piece of paper together again to get the flag.
 ## --> Player finds last clue (Flag)
