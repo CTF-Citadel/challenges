@@ -34,3 +34,4 @@
 > | Encased | Easy | Open | Reversing | 80% done | [documentation](https://github.com/CTF-Citadel/challenges/blob/main/documentation/encased.md) |
 > | Redacted | Easy | Open | Forensics | 80% done | [documentation](https://github.com/CTF-Citadel/challenges/blob/main/documentation/redacted.md) |
 > | Code Zip | Easy | Open | Forensics | 100% done | [documentation](https://github.com/CTF-Citadel/challenges/blob/main/documentation/code_zip.md) |
+> | LetHimCook | Easy | Open | Forensics | 80% done | [documentation](https://github.com/CTF-Citadel/challenges/blob/main/documentation/lethimcook.md) |

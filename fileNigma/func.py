@@ -1,7 +1,6 @@
 import os
 import random
 import string
-import uuid
 
 flag = os.environ.get('FLAG', 'default_value')
 

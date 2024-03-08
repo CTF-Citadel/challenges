@@ -1,6 +1,7 @@
 version: '3'
+
 services:
-  hidden-container:
+  lethimcook-container:
     build:
       context: .
     ports:
