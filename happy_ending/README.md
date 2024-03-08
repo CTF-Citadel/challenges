@@ -4,7 +4,7 @@
 ```
 Welcome to the OSINT (Open-Source Intelligence) Puzzle: 'Happy Ending'
 
-A friend of mine went missing, this here is the last picture he sent me before his phone died.
+A friend of mine went missing, this here were the last pictures he sent me before his phone died.
 ```
 
 ## Task
