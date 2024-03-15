@@ -4,8 +4,9 @@ services:
   flask:
     build:
       context: .
-    environment:
-      FLAG: ${FLAG}
+      dockerfile: Dockerfile
+      args:
+        - FLAG=${FLAG}
     restart: always
     ports:
       - "80:5000"

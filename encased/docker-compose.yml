@@ -4,7 +4,8 @@ services:
   web:
     build:
       context: .
-    environment:
-      FLAG: ${FLAG}
+      dockerfile: Dockerfile
+      args:
+        - FLAG=${FLAG}
     ports:
       - "80:5000"

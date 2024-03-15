@@ -1,34 +1,21 @@
-from Crypto.PublicKey import RSA
-from Crypto.Cipher import PKCS1_OAEP
+from Crypto.Util.number import getPrime, isPrime, bytes_to_long
+import os
 
-def generate_faulty_key_pair():
-    key = RSA.generate(2048, e=1)  # Set e to 1
-    private_key = key.export_key()
-    public_key = key.publickey().export_key()
-    return private_key, public_key
+flag = f'TH{{{os.getenv("FLAG")}}}'
+FLAG = bytes_to_long(flag.encode())
 
-def encrypt_flag(flag, public_key):
-    key = RSA.import_key(public_key)
-    cipher = PKCS1_OAEP.new(key)
-    encrypted_flag = cipher.encrypt(flag.encode())
-    return encrypted_flag
+p = getPrime(300)
 
-if __name__ == "__main__":
-    # Generate faulty RSA key pair with e=1
-    private_key, public_key = generate_faulty_key_pair()
+while (not isPrime(p + 50)):
+    p = getPrime(300)
 
-    # Extract e and N from the public key
-    key = RSA.import_key(public_key)
-    e = key.e
-    N = key.n
+q = p + 50
 
-    # Your flag to be encrypted
-    flag = "CTF{YourFlagHere}"
+n = p * q
+e = 65537
+ct = pow(FLAG, e, n)
 
-    # Encrypt the flag using e=1
-    encrypted_flag = encrypt_flag(flag, public_key)
-
-    # Display results
-    print(f"e = {e}")
-    print(f"c = {int.from_bytes(encrypted_flag, 'big')}")
-    print(f"n = {N}")
+with open('output', 'w') as file: 
+    file.write(f'n: {n}\n')
+    file.write(f'e: {e}\n')
+    file.write(f'ct: {ct}')

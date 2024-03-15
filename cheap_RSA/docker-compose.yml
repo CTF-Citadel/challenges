@@ -2,7 +2,7 @@ version: '3.9'
 
 services:
   web:
-    image: 10.0.0.2:5000/redacted
+    image: 10.0.0.2:5000/cheap_rsa
     build:
       context: .
       dockerfile: Dockerfile

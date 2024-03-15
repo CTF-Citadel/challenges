@@ -16,6 +16,8 @@ services:
     build:
       context: .
       dockerfile: Dockerfile_PY
+      args:
+        - FLAG=${FLAG}
     hostname: flask-app
     command: ["python3", "service.py"]
     depends_on:
@@ -24,7 +26,6 @@ services:
       DB_USER: dbadmin
       DB_PW: eEGnsF5JrDFfNB88LMxR
       DB_NAME: users
-      FLAG: ${FLAG}
     restart: always
 
   react_app:

@@ -11,14 +11,15 @@ services:
     links:
       - php-fpm
     command: ["/bin/sh", "-c", "nginx -g 'daemon off;'"]
+
   php-fpm:
     build:
       context: .  
-      dockerfile: Dockerfile_php  
+      dockerfile: Dockerfile_php
+      args:
+        - FLAG=${FLAG}
     volumes:
       - ./instructions.txt:/home/h4ckt1v1st/instructions.txt
       - ./web_files:/var/www/html
     ports:
       - '22:22'
-    environment:
-      - flag=${FLAG}

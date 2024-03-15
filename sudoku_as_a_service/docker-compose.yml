@@ -2,9 +2,11 @@ version: '3.9'
 
 services:
   python:
+    image: 10.0.0.2:5000/sudoku_as_a_service
     build:
       context: .
-    environment:
-      FLAG: ${FLAG}
+      dockerfile: Dockerfile
+      args:
+        - FLAG=${FLAG}
     ports:
       - "1337:1337"

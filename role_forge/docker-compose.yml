@@ -2,8 +2,11 @@ version: '3.9'
 
 services:
   web:
-    build: .
+    image: 10.0.0.2:5000/role_forge
+    build: 
+      context: .
+      dockerfile: Dockerfile
+      args:
+        - FLAG=${FLAG}
     ports:
       - "80:5000"
-    environment:
-      FLAG: ${FLAG}
