@@ -18,8 +18,8 @@
 > | Power to the People | Medium | Open | MISC | 10% done | Coming Soon! |
 > | Zipception | Easy | Open | MISC | 100% done | [documentation](https://github.com/CTF-Citadel/challenges/blob/main/documentation/zipception.md) |
 > | Backrooms | Medium | Open | MISC | 70% done | [documentation](https://github.com/CTF-Citadel/challenges/blob/main/documentation/backrooms.md) |
-> | My very own Encryption | Easy | Open | Crypto | 100% done | [documentation](https://github.com/CTF-Citadel/challenges/blob/main/documentation/my_very_own_encryption.md) |
-> | Sudoku as a Service | Easy | Open | MISC | 100% done | [documentation](https://github.com/CTF-Citadel/challenges/blob/main/documentation/sudoku_as_a_service.md) |
+> | My very own Encryption | Medium | Open | Crypto | 100% done | [documentation](https://github.com/CTF-Citadel/challenges/blob/main/documentation/my_very_own_encryption.md) |
+> | Sudoku as a Service | Medium | Open | MISC | 100% done | [documentation](https://github.com/CTF-Citadel/challenges/blob/main/documentation/sudoku_as_a_service.md) |
 > | FunWithSound | Easy | Open | Steganography | 100% done | [documentation](https://github.com/CTF-Citadel/challenges/blob/main/documentation/funwithsound.md) |
 > | Shadowhunt | Medium | Open | OSINT | 100% done | [documentation](https://github.com/CTF-Citadel/challenges/blob/main/documentation/shadowhunt.md) |
 > | Access Terminal | Medium | Open | Reversing | 100% done | [documentation](https://github.com/CTF-Citadel/challenges/blob/main/documentation/access_terminal.md) |
@@ -30,6 +30,6 @@
 > | Zero to Hero | Easy | Open | Crypto | 100% done | [documentation](https://github.com/CTF-Citadel/challenges/blob/main/documentation/zero_to_hero.md) |
 > | Behind the Curtain | Easy | Open | Web | 100% done | [documentation](https://github.com/CTF-Citadel/challenges/blob/main/documentation/behind_the_curtain.md) |
 > | Encased | Easy | Open | Reversing | 100% done | [documentation](https://github.com/CTF-Citadel/challenges/blob/main/documentation/encased.md) |
-> | Redacted | Easy | Open | Forensics | 80% done | [documentation](https://github.com/CTF-Citadel/challenges/blob/main/documentation/redacted.md) |
+> | Redacted | Easy | Open | Forensics | 100% done | [documentation](https://github.com/CTF-Citadel/challenges/blob/main/documentation/redacted.md) |
 > | Code Zip | Easy | Open | Forensics | 100% done | [documentation](https://github.com/CTF-Citadel/challenges/blob/main/documentation/code_zip.md) |
-> | LetHimCook | Easy | Open | Forensics | 80% done | [documentation](https://github.com/CTF-Citadel/challenges/blob/main/documentation/lethimcook.md) |
+> | LetHimCook | Easy | Open | MISC | 100% done | [documentation](https://github.com/CTF-Citadel/challenges/blob/main/documentation/lethimcook.md) |
