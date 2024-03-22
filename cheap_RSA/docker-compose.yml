@@ -1,12 +1,22 @@
 version: '3.9'
 
 services:
-  web:
-    image: 10.0.0.2:5000/cheap_rsa
+  flask:
+    image: felixslama/${INSTANCE_ID}
     build:
       context: .
       dockerfile: Dockerfile
       args:
-        - FLAG=${FLAG}
-    ports:
-      - "80:5000"
+        - FLAG=$FLAG
+    networks:
+      - traefik-public
+    deploy:
+      replicas: 1
+      labels:
+        - "traefik.enable=true"
+        - "traefik.http.routers.${INSTANCE_ID}.rule=Host(`${INSTANCE_ID}.cluster.tophack.at`)"
+        - "traefik.http.routers.${INSTANCE_ID}.entrypoints=http"
+        - "traefik.http.services.${INSTANCE_ID}.loadbalancer.server.port=5000"
+networks:
+  traefik-public:
+    external: true

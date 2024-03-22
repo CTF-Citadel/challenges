@@ -1,5 +1,6 @@
 FROM ubuntu:latest
-
+ARG FLAG
+ENV FLAG=${FLAG}
 RUN apt-get update && \
     apt-get install -y steghide python3 uuid-runtime && \
     rm -rf /var/lib/apt/lists/*

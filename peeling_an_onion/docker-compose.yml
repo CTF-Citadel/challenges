@@ -1,9 +1,22 @@
-version: "3"
+version: '3.9'
+
 services:
-  tor:
+  flask:
+    image: felixslama/${INSTANCE_ID}
     build:
       context: .
       dockerfile: Dockerfile
-    command: tail -f /dev/null
-    ports:
-    - "9050:9050"
+      args:
+        - FLAG=$FLAG
+    networks:
+      - traefik-public
+    deploy:
+      replicas: 1
+      labels:
+        - "traefik.enable=true"
+        - "traefik.http.routers.${INSTANCE_ID}.rule=Host(`${INSTANCE_ID}.cluster.tophack.at`)"
+        - "traefik.http.routers.${INSTANCE_ID}.entrypoints=http"
+        - "traefik.http.services.${INSTANCE_ID}.loadbalancer.server.port=9050"
+networks:
+  traefik-public:
+    external: true
