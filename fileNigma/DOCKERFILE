@@ -1,5 +1,6 @@
 FROM httpd:latest
-
+ARG FLAG
+ENV FLAG=${FLAG}
 WORKDIR /usr/local/apache2/htdocs
 
 ARG FLAG=default_value

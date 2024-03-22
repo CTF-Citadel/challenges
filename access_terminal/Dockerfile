@@ -1,5 +1,6 @@
 FROM python:3.11-slim-bookworm
-
+ARG FLAG
+ENV FLAG=${FLAG}
 WORKDIR /app
 
 # install gcc

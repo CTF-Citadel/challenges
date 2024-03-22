@@ -1,6 +1,7 @@
 # Use a base image with necessary tools
 FROM ubuntu:latest
-
+ARG FLAG
+ENV FLAG=${FLAG}
 # Update package lists and install required packages
 RUN apt-get update && \
     apt-get install -y \

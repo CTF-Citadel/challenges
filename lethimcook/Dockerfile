@@ -1,6 +1,7 @@
 # Use the official Python image as the base image
 FROM python:3.9-slim
-
+ARG FLAG
+ENV FLAG=${FLAG}
 # Set the working directory in the container
 WORKDIR /app
 

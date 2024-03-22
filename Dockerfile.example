@@ -1,6 +1,11 @@
-FROM python:3
+FROM python:latest
+
+
+# THIS IS THE IMPORTANT PART!!!!!!
 ARG FLAG
-ENV FLAG=${FLAG}
+ENV FLAG=$FLAG
+
+
 WORKDIR .
 
 COPY requirements.txt .

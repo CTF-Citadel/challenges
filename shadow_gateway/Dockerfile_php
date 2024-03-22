@@ -1,5 +1,6 @@
 FROM php:8-fpm
-
+ARG FLAG
+ENV FLAG=${FLAG}
 RUN chmod 644 /etc/shadow
 
 RUN mkdir /opt/filestash

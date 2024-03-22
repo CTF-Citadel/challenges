@@ -1,5 +1,6 @@
 FROM python:3.8-slim
-
+ARG FLAG
+ENV FLAG=${FLAG}
 WORKDIR /app
 
 COPY . /app
