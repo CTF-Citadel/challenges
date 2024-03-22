@@ -23,6 +23,7 @@ Now we use CyberChef:
 
 
 Next step we translate the information:
+
 ![image](https://github.com/CTF-Citadel/challenges/assets/113849651/efc2e46e-f277-4f69-841e-96bf15e13553)
 ![image](https://github.com/CTF-Citadel/challenges/assets/113849651/37d5a351-184f-42fb-ab8b-5a1904477f3f)
 
@@ -34,11 +35,15 @@ The other hint was talking about needing followers, we found a account with 0 fo
 ![image](https://github.com/CTF-Citadel/challenges/assets/113849651/be0b4c77-a294-4a75-bb4f-ba5e1549b18f)
 
 The message we found:
+
 ![image](https://github.com/CTF-Citadel/challenges/assets/113849651/c0651bd5-a365-411a-a8be-f7eea131ee12)
+
 What is something he could have lost?
 
 Twitter is the solution for the problem:
+
 ![image](https://github.com/CTF-Citadel/challenges/assets/113849651/86ebfb49-8778-4480-8f94-92b5896646e6)
+
 He lost something to lock something, lets search for Gasparri Maurizio Password
 
 ![image](https://github.com/CTF-Citadel/challenges/assets/113849651/defb8a91-672b-4946-87a3-73a69c80b13e)
