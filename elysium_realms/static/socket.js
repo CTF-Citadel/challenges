@@ -81,6 +81,27 @@ function travel(direction) {
   });
 }
 
+// function to fetch user credits
+function getCredits() {
+  return new Promise((resolve, reject) => {
+    socket.emit("showCredits", function (response) {
+      if (response.error) {
+        console.log(response.error);
+        reject("error");
+      } else {
+        try {
+          const creditsObject = JSON.parse(response);
+          const credits = creditsObject.credits;
+          resolve(credits); // Resolve the Promise with the credits value
+        } catch (error) {
+          console.error("Error parsing response:", error);
+          reject("error");
+        }
+      }
+    });
+  });
+}
+
 // function to update health bar
 function update_health(value) {
   healthFill.style.width = `${value}%`;
@@ -114,6 +135,7 @@ function popup() {
   menuPopup.style.visibility = menuPopup.style.visibility === 'visible' ? 'hidden' : 'visible';
 }
 
+// Function to load UI and fetch leaderboards
 function loadLeaderboard() {
   clearDisplay();
 
@@ -163,16 +185,93 @@ function loadLeaderboard() {
   let buttonContainer = document.createElement('div');
   buttonContainer.appendChild(guildButton);
   buttonContainer.appendChild(usersButton);
+  buttonContainer.classList.add('subBtns')
   display.insertBefore(buttonContainer, display.firstChild);
+}
+
+// Function to load transfer-page
+function loadTransfer() {
+  clearDisplay();
+
+  // Declare currentCredits variable
+  let currentCredits;
+
+  // Call getCredits() and wait for the Promise to resolve
+  getCredits()
+    .then((credits) => {
+      currentCredits = credits; // Assign credits to currentCredits
+
+      // Use currentCredits here or call functions that depend on it
+      if (currentCredits == 'error') {
+        let error_msg = 'An error occurred'; // Update error message
+        // Display error
+      } else {
+        // Function to handle users button click
+        function transfer() {
+          // Logic for transfer
+        }
+
+        // Create credit count element
+        let creditCount = document.createElement('h2');
+        creditCount.textContent = `Current Credits: ${currentCredits}`;
+        creditCount.classList.add('creditCount');
+
+        //
+        let transferTargetLabel = document.createElement('h2');
+        transferTargetLabel.textContent = 'User to transfer to';
+        transferTargetLabel.classList.add('transferInput');
+
+        // input for user to transfer to 
+        let transferTarget = document.createElement('input');
+        transferTarget.classList.add('transferInput');
+
+        //
+        let transferAmountLabel = document.createElement('h2');
+        transferAmountLabel.textContent = 'Amount to transfer';
+        transferAmountLabel.classList.add('transferInput');
+
+        // input for amount to transfer to another user
+        let transferAmount = document.createElement('input');
+        transferAmount.classList.add('transferInput');
+
+        //
+        let confirmationTextLabel = document.createElement('h2');
+        confirmationTextLabel.textContent = 'Type CONFIRM to confirm transfer';
+        confirmationTextLabel.classList.add('transferInput');
+
+        // input for user to confirm transfer
+        let confirmationText = document.createElement('input');
+        transferAmount.classList.add('transferInput');
+
+        // Create transfer button
+        let transferBtn = document.createElement('button');
+        transferBtn.textContent = 'Transfer Amount';
+        transferBtn.classList.add('fetchButton');
+        transferBtn.addEventListener('click', transfer);
+
+        // Create container for credit count and transfer button
+        let buttonContainer = document.createElement('div');
+        buttonContainer.appendChild(creditCount);
+        buttonContainer.appendChild(transferTargetLabel);
+        buttonContainer.appendChild(transferTarget);
+        buttonContainer.appendChild(transferAmountLabel);
+        buttonContainer.appendChild(transferAmount);
+        buttonContainer.appendChild(confirmationTextLabel);
+        buttonContainer.appendChild(confirmationText);
+        buttonContainer.appendChild(transferBtn);
+
+        // Insert button container into display
+        display.insertBefore(buttonContainer, display.firstChild);
+      }
+    })
+    .catch((error) => {
+      // Handle error if getCredits() Promise rejects
+      console.error("Error:", error);
+    });
 }
 
 // Function to load marketplace
 function loadMarketplace() {
-  clearDisplay();
-}
-
-// Function to 
-function loadTransfer() {
   clearDisplay();
 }
 

@@ -72,7 +72,7 @@ def signup():
             spawnpoint = locations[random.choice(list(locations.keys()))][random.randint(0,4)]
 
             new_user = models.User(
-                username=username, password_hash=sha256_hash(password), level=1, spawnpoint=spawnpoint, current_place=spawnpoint, affiliation=None
+                username=username, password_hash=sha256_hash(password), level=1, spawnpoint=spawnpoint, current_place=spawnpoint, affiliation=None, credits=0
             )
 
             db.add(new_user) 
@@ -250,6 +250,23 @@ def leaderboard(data):
         case _:
             result = {'error': 'No such group in database!'}
 
+    result_json = json.dumps(result)
+    db.close()
+    return result_json
+
+# Socket Endpoint to fetch user credits
+@socketio.on('showCredits')
+def showCredits():
+    if request.sid not in (t[1] for t in socket_sessions):
+        return {'auth': 'Authentication failed!', 'status_code': 401}
+    
+    session = next((value[0] for value in socket_sessions if value[1] == request.sid), None)
+    
+    db = DBSession()
+
+    users_credits = db.query(models.User.credits).filter(models.User.username == user_stats[session]['username']).first()
+
+    result = { 'credits': users_credits[0] }
     result_json = json.dumps(result)
     db.close()
     return result_json

@@ -7,6 +7,12 @@ A second grader is proudly flexing his new encryption algorithm which he made du
 Can you humble the second grader by breaking his encryption?
 ```
 
+## Provided Files
+```
+- encryption.py
+- output
+```
+
 ## Writeup
 
 Starting off we should take a look at the provided files. <br/>
