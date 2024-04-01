@@ -1,0 +1,24 @@
+version: '3.9'
+
+services:
+  flask:
+    image: felixslama/${INSTANCE_ID}
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        - FLAG=${FLAG}
+    networks:
+      - traefik-public
+    deploy:
+      replicas: 1
+      labels:
+        - "traefik.enable=true"
+        - "traefik.tcp.routers.${INSTANCE_ID}.rule=HostSNI(`${INSTANCE_ID}.cluster.tophack.at`)"
+        - "traefik.tcp.routers.${INSTANCE_ID}.entrypoints=tcp"
+        - "traefik.tcp.services.${INSTANCE_ID}.loadbalancer.server.port=1337"
+        - "traefik.tcp.routers.${INSTANCE_ID}.tls=true"
+        - "traefik.tcp.routers.${INSTANCE_ID}.tls.certresolver=le"
+networks:
+  traefik-public:
+    external: true
