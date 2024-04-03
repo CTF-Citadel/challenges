@@ -259,10 +259,22 @@ body {
 #error_msg {
     letter-spacing: 1px;
     position: relative;
-    top: -20px;
+    top: -50px;
     z-index: 10;
     text-align: center;
     color: #f00;
+    opacity: 0;
+    transition: opacity 1s ease-out;
+    /* Transition for fade-out effect */
+}
+
+#result_msg {
+    letter-spacing: 1px;
+    position: relative;
+    top: -90%;
+    z-index: 10;
+    text-align: center;
+    color: #0f0;
     opacity: 0;
     transition: opacity 1s ease-out;
     /* Transition for fade-out effect */
@@ -371,6 +383,7 @@ body {
     color: #fff;
     scrollbar-width: thin;
     scrollbar-color: #c0c0c0 #808080;
+    text-align: center;
 }
 
 .user-container {
@@ -398,13 +411,36 @@ body {
     flex: 1.5;
 }
 
+.item-container {
+    width: 100%;
+    height: 100px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    border: 1px solid #429600;
+}
+
+.item-container p {
+    margin: 10px;
+}
+
+.item-container button {
+    position: relative;
+    border: 1px solid #429600;
+    background-color: #000;
+    color: #fff;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
 .button-container {
     display: flex;
     width: 100%;
 }
 
 .fetchButton {
-    height: 100%;
+    height: 30px;
     width: 50%;
     font-size: 20px;
     font-weight: 500;
@@ -413,7 +449,6 @@ body {
     color: white;
     text-align: center;
     text-decoration: none;
-    display: inline-block;
     cursor: pointer;
 }
 
@@ -426,4 +461,41 @@ body {
     height: 50px;
     display: flex;
     flex-direction: row;
+}
+
+.creditCount {
+    margin: 10px;
+}
+
+.transferUser{
+    width: 50%;
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.transferAmount {
+    width: 50%;
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.transferConfirm {
+    width: 50%;
+    font-size: 20px;
+    margin: 10px;
+}
+
+.transferWindow {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    align-self: center;
+}
+
+.errorMsgCreds {
+    margin: 10px;
+    color: #f00;
+    font-size: 25px;
 }

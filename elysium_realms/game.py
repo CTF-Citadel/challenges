@@ -1,6 +1,6 @@
 from model import models
 from model.database import DBSession
-import hashlib, random, secrets, string
+import hashlib, random, secrets, string, os
 
 # List of fantasy places for the text rpg 
 locations = {
@@ -11,8 +11,60 @@ locations = {
     'Desert': ['Dunes of Mirage', 'Sands of Serenity', 'Eternal Sun Wastes', 'Oasis of Dreams', 'Quicksand Mirage']
 }
 
-base_img_URL = 'https://tophack.at/imgs/'
+base_img_URL = 'https://winklersblog.net/imgs/elysium_realms/'
 error_msg = ['No place to travel to in this direction!', 'Invalid direction!']
+
+materials = [
+    "Wood", "Stone", "Iron Ore", "Gold Ore", "Copper Ore",
+    "Silver Ore", "Diamond", "Coal", "Clay", "Flint", "Obsidian",
+    "Sulfur", "Quartz", "Leather", "Wool", "Feathers", "Bone",
+    "Hide", "Fur", "Shell", "Wolf-Fangs"
+]
+
+hunting_materials = [
+    "Leather", "Wool", "Feathers", "Bone",
+    "Hide", "Fur", "Shell", "Wolf-Fangs", 
+]
+
+collecting_materials = [
+    "Wood", "Stone", "Iron Ore", "Gold Ore", "Copper Ore",
+    "Silver Ore", "Diamond", "Coal", "Clay", "Flint", "Obsidian",
+    "Sulfur", "Quartz"
+]
+
+def rndm_tool():
+    choices = ['shovel', 'chisel', 'pickaxe']
+    tool = random.choice(choices)
+
+    ranks = ['common', 'rare', 'epic', 'legendary', 'mythic']
+    rank = random.choice(ranks)
+
+    properties = ['Sharp','Durable','Lightweight (baby!)','Efficient','Versatile','Sturdy','Wide-blade','Heavy-duty','Precision','Multi-functional']
+    my_property = random.choice(properties)
+
+    return {
+        'toolname': f'{my_property} {tool}',
+        'durability':random.uniform(1, 99),
+        'efficiency': random.randrange(1, 10),
+        'rank': rank,
+        'type': f'tool_0{random.randrange(0, 5)}'
+    }
+
+def rndm_weapon():
+    ranks = ['common', 'rare', 'epic', 'legendary', 'mythic']
+    rank = random.choice(ranks)
+
+    properties = ['Sharp','Durable','Lightweight (baby!)','Deahtly','Versatile','Sturdy','Wide','Heavy-duty','Precision','Multi-functional']
+    my_property = random.choice(properties)
+
+    return {
+        'weaponname': f'{my_property} blade',
+        'damage': random.randrange(1, 1000),
+        'attack_speed': random.uniform(1, 1000),
+        'durability': random.uniform(1, 99),
+        'rank': rank,
+        'type': f'blade_0{random.randrange(0, 6)}'
+    }
 
 # hash function for passwords
 def sha256_hash(text):
@@ -63,6 +115,42 @@ def inject_data():
         db.add(new_user) # commit new entry to db
         db.commit()
         db.refresh(new_user)
+
+    # insert random items
+    for _ in range(0, 50):
+        new_item = models.Item(
+            itemname=random.choice(materials), description='An item which is very dear to me.', quantity=random.randrange(1, 100), type='materials', price=random.randint(1000, 100000), affiliation='Aryt3'
+        )
+        db.add(new_item)
+        db.commit()
+        db.refresh(new_item)
+    
+    for _ in range(0, 50):
+        tool = rndm_tool()
+        
+        new_tool = models.Tool(
+            toolname=tool['toolname'], description='A tool which is very dear to me.', durability=tool['durability'], efficiency=tool['efficiency'], rank=tool['rank'], type=tool['type'], price=random.randint(1000, 100000), affiliation='Aryt3'
+        )
+        db.add(new_tool)
+        db.commit()
+        db.refresh(new_tool)
+
+    for _ in range(0, 50):
+        weapon = rndm_weapon()
+
+        new_weapon = models.Weapon(
+            weaponname=weapon['weaponname'], description='A weapon which is very dear to me.', damage=weapon['damage'], attack_speed=weapon['attack_speed'], durability=weapon['durability'], rank=weapon['rank'], type=weapon['type'], price=random.randint(1000, 100000), affiliation='Aryt3'
+        )
+        db.add(new_weapon)
+        db.commit()
+        db.refresh(new_weapon)
+
+    flag = models.Item(
+        itemname='super secret flag', description=f'TH{{{os.environ.get("FLAG")}}}', quantity=1, type='flag', price=1234567890, affiliation='Aryt3'
+    )
+    db.add(flag)
+    db.commit()
+    db.refresh(flag)
 
     db.close()
 

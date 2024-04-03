@@ -128,26 +128,50 @@ def handle_message(data):
 
 # Socket Endpoint for mining
 @socketio.on('collect')
-def handle_message(data):
+def handle_collect():
     if request.sid not in (t[1] for t in socket_sessions):
         return {'auth': 'Authentication failed!', 'status_code': 401}
         
     session = next((value[0] for value in socket_sessions if value[1] == request.sid), None)
 
+    health, stamina = user_stats[session]['health'], user_stats[session]['stamina']
+
     if throttle(session):
         return {'error': 'Wait a bit before collecting again!', 'error_code': 2}
 
-    if user_stats[session]['stamina'] <= 0:
+    if health == 0:
+        user_stats[session]['regenerate'] = False
+        return {'error': 'You are dead!', 'error_code': 1, 'health': 0, 'stamina': 0}
+
+    if stamina <= 0:
         return {'error': 'No stamina left for collecting!', 'error_code': 1}
 
     user_stats[session]['stamina'] -= 10
     user_stats[session]['last_action'] = time.time()
 
-    return {'stamina': user_stats[session]['stamina']}
+    collected_item = random.choice(collecting_materials)
+
+    try:
+        db = DBSession()
+
+        user = db.query(models.User).filter(models.User.username == user_stats[session]['username']).first()
+
+        found_material = models.Item(
+            itemname=collected_item, quantity=1, type='materials', price=random.randint(10, 1000), affiliation=user.username
+        )
+        db.add(found_material)
+        db.commit()
+        db.refresh(found_material)
+
+        return {'stamina': user_stats[session]['stamina'], 'collected_material': collected_item }
+
+    finally:
+        db.close()
+
 
 # SocketEndpoint for attacking
 @socketio.on('hunt')
-def handle_message(data):
+def handle_message():
     if request.sid not in (t[1] for t in socket_sessions):
         return {'auth': 'Authentication failed!', 'status_code': 401}
     
@@ -172,27 +196,49 @@ def handle_message(data):
     
     user_stats[session]['last_action'] = time.time()
 
-    return {'health': health - 10, 'stamina': stamina - 10}
+    hunted_item = random.choice(hunting_materials)
+
+    try:
+        db = DBSession()
+
+        user = db.query(models.User).filter(models.User.username == user_stats[session]['username']).first()
+
+        found_material = models.Item(
+            itemname=hunted_item, quantity=1, type='materials', price=random.randint(10, 1000), affiliation=user.username
+        )
+        db.add(found_material)
+        db.commit()
+        db.refresh(found_material)
+
+        return { 'health': health - 10, 'stamina': stamina - 10, 'hunted_material': hunted_item }
+
+    finally:
+        db.close()
 
 # Socket Endpoint for training
 @socketio.on('train')
-def handle_message(data):
+def handle_train():
     if request.sid not in (t[1] for t in socket_sessions):
         return {'auth': 'Authentication failed!', 'status_code': 401}
-
+        
     session = next((value[0] for value in socket_sessions if value[1] == request.sid), None)
+
+    health, stamina = user_stats[session]['health'], user_stats[session]['stamina']
 
     if throttle(session):
         return {'error': 'Wait a bit before training again!', 'error_code': 2}
 
-    if user_stats[session]['stamina'] > 0:
+    if health == 0:
+        user_stats[session]['regenerate'] = False
+        return {'error': 'You are dead!', 'error_code': 1, 'health': 0, 'stamina': 0}
 
-        user_stats[session]['stamina'] -= 10
-        user_stats[session]['last_action'] = time.time()
-        return {'stamina': user_stats[session]['stamina']}
+    if stamina <= 0:
+        return {'error': 'No stamina left for training!', 'error_code': 1}
 
-    else:
-        return {'error': 'No stamina left for training!', 'error_code': 1, 'health': user_stats[session]['health'], 'stamina': user_stats[session]['stamina']}
+    user_stats[session]['stamina'] -= 10
+    user_stats[session]['last_action'] = time.time()
+
+    return {'stamina': user_stats[session]['stamina']}
 
 # Socket Endpoint for travelling
 @socketio.on('travel')
@@ -277,23 +323,203 @@ def transfer(data):
     if request.sid not in (t[1] for t in socket_sessions):
         return {'auth': 'Authentication failed!', 'status_code': 401}
     
+    session = next((value[0] for value in socket_sessions if value[1] == request.sid), None)
+
     target = data.get('target')
     amount = data.get('amount')
 
-
     db = DBSession()
 
-    db.close()
+    try:
+        user_from = db.query(models.User).filter(models.User.username == user_stats[session]['username']).first()
 
-    return
+        target_user = db.query(models.User).filter(models.User.username == target).first()
+
+        if user_from.username == target:
+            return {'error': "Can't transfer money to yourself!"}
+
+        if target_user:
+            target_user.credits = target_user.credits + int(amount)
+            user_from.credits = user_from.credits - int(amount)
+            db.commit()
+
+            return {'success': f'amount transferred!'}
+        else:
+            return {'error': "Transfer-User doesn't exist!"}
+
+    except Exception as e:
+        db.rollback()
+        return {'error': str(e)}
+
+    finally:
+        db.close()
 
 # Socket Endpoint for displaying current inventory
 @socketio.on('inventory')
-def inventory():
+def inventory(data):
     if request.sid not in (t[1] for t in socket_sessions):
         return {'auth': 'Authentication failed!', 'status_code': 401}
 
-    return
+    session = next((value[0] for value in socket_sessions if value[1] == request.sid), None)
+
+    db = DBSession()
+    type = data.get('type')
+
+    try:
+        user = db.query(models.User).filter(models.User.username == user_stats[session]['username']).first()
+
+        match type:
+            case 'items':
+                items_data = db.query(models.Item.itemname, models.Item.description, models.Item.quantity, models.Item.type, models.Item.price, models.Item.affiliation, models.Item.id).filter(models.Item.affiliation == user.username).order_by(models.Item.quantity.desc()).all()
+                result_items = [{'column1': f'https://winklersblog.net/imgs/elysium_realms/{item.type}.png', 'column2': item.itemname, 'column3': item.quantity, 'column4': item.id, 'column5': item.description} for item in items_data]
+
+                return json.dumps(result_items)
+
+            case 'tools':
+                tools_data = db.query(models.Tool.toolname, models.Tool.description, models.Tool.durability, models.Tool.efficiency, models.Tool.rank, models.Tool.type, models.Tool.price, models.Tool.affiliation, models.Tool.id).filter(models.Tool.affiliation == user.username).order_by(models.Tool.rank.desc()).all()
+                result_items = [{'column1': f'https://winklersblog.net/imgs/elysium_realms/{tool.type}.png', 'column2': tool.toolname, 'column3': tool.durability, 'column4': tool.efficiency, 'column5': tool.rank, 'column6': tool.id, 'column7': tool.description} for tool in tools_data]
+
+                return json.dumps(result_items)
+
+            case 'weapons':
+                weapons_data = db.query(models.Weapon.weaponname, models.Weapon.description, models.Weapon.damage, models.Weapon.attack_speed, models.Weapon.durability, models.Weapon.rank, models.Weapon.type, models.Weapon.price, models.Weapon.affiliation, models.Weapon.id).filter(models.Weapon.affiliation == user.username).order_by(models.Weapon.rank.desc()).all()
+                result_items = [{'column1': f'https://winklersblog.net/imgs/elysium_realms/{weapon.type}.png', 'column2': weapon.weaponname, 'column3': weapon.damage, 'column4': weapon.attack_speed, 'column5': weapon.durability, 'column6': weapon.rank, 'column7': weapon.id, 'column8': weapon.description} for weapon in weapons_data]
+
+                return json.dumps(result_items)
+            
+            case _:
+                return {'error': 'No such item-type!'}
+
+    except Exception as e:
+        db.rollback()
+        return {'error': str(e)}
+
+    finally:
+        db.close()
+
+@socketio.on('user_info')
+def user_info():
+    if request.sid not in (t[1] for t in socket_sessions):
+        return {'auth': 'Authentication failed!', 'status_code': 401}
+
+    session = next((value[0] for value in socket_sessions if value[1] == request.sid), None)
+
+    db = DBSession()
+
+    try:
+        user = db.query(models.User).filter(models.User.username == user_stats[session]['username']).first()
+
+        return {
+            'username': user.username,
+            'level': user.level,
+            'affiliation': user.affiliation,
+            'current_place': user.current_place,
+            'credits': user.credits
+        }
+
+    except Exception as e:
+        db.rollback()
+        return {'error': str(e)}
+
+    finally:
+        db.close()
+
+@socketio.on('marketPlace')
+def market_Place(data):
+    if request.sid not in (t[1] for t in socket_sessions):
+        return {'auth': 'Authentication failed!', 'status_code': 401}
+
+    db = DBSession()
+    group = data.get('data')
+
+    try:
+        match group:
+            case 'items':
+                items_data = db.query(models.Item.itemname, models.Item.quantity, models.Item.type, models.Item.price, models.Item.affiliation, models.Item.id).order_by(models.Item.quantity.desc()).all()
+                result_items = [{'column1': f'https://winklersblog.net/imgs/elysium_realms/{item.type}.png', 'column2': item.itemname, 'column3': item.quantity, 'column4': item.price, 'column5': item.affiliation, 'column6': item.id} for item in items_data]
+
+                return json.dumps(result_items)
+
+            case 'tools':
+                tools_data = db.query(models.Tool.toolname, models.Tool.durability, models.Tool.efficiency, models.Tool.rank, models.Tool.type, models.Tool.price, models.Tool.affiliation, models.Tool.id).order_by(models.Tool.rank.desc()).all()
+                result_items = [{'column1': f'https://winklersblog.net/imgs/elysium_realms/{tool.type}.png', 'column2': tool.toolname, 'column3': tool.durability, 'column4': tool.efficiency, 'column5': tool.rank, 'column6': tool.price, 'column7': tool.affiliation, 'column8': tool.id} for tool in tools_data]
+
+                return json.dumps(result_items)
+
+            case 'weapons':
+                weapons_data = db.query(models.Weapon.weaponname, models.Weapon.damage, models.Weapon.attack_speed, models.Weapon.durability, models.Weapon.rank, models.Weapon.type, models.Weapon.price, models.Weapon.affiliation, models.Weapon.id).order_by(models.Weapon.rank.desc()).all()
+                result_items = [{'column1': f'https://winklersblog.net/imgs/elysium_realms/{weapon.type}.png', 'column2': weapon.weaponname, 'column3': weapon.damage, 'column4': weapon.attack_speed, 'column5': weapon.durability, 'column6': weapon.rank, 'column7': weapon.price, 'column8': weapon.affiliation, 'column9': weapon.id} for weapon in weapons_data]
+
+                return json.dumps(result_items)
+
+            case _:
+                return json.dumps({'error': 'No such group in database!'})
+
+    except Exception as e:
+        db.rollback()
+        return {'error': str(e)}
+
+    finally:
+        db.close()
+
+@socketio.on('buy')
+def buy_item(data):
+    if request.sid not in (t[1] for t in socket_sessions):
+        return {'auth': 'Authentication failed!', 'status_code': 401}
+
+    session = next((value[0] for value in socket_sessions if value[1] == request.sid), None)
+
+    db = DBSession()
+
+    type = data.get('type')
+    id = data.get('id')
+
+    try:
+        user = db.query(models.User).filter(models.User.username == user_stats[session]['username']).first()
+
+        match type:
+            case 'item':
+                item = db.query(models.Item).filter(models.Item.id == id).first()
+
+                if user.credits >= item.price:
+                    user.credits -= item.price
+                    item.affiliation = user.username
+                    db.commit()
+                    return {'success': 'Item bought!'}
+                else:
+                    return {'error': "Can't afford item!"}
+
+            case 'tool':
+                tool = db.query(models.Tool).filter(models.Tool.id == id).first()
+
+                if user.credits >= tool.price:
+                    user.credits -= tool.price
+                    tool.affiliation = user.username
+                    db.commit()
+                    return {'success': 'Tool bought!'}
+                else:
+                    return {'error': "Can't afford tool!"}
+            
+            case 'weapon':
+                weapon = db.query(models.Weapon).filter(models.Weapon.id == id).first()
+
+                if user.credits >= weapon.price:
+                    user.credits -= weapon.price
+                    weapon.affiliation = user.username
+                    db.commit()
+                    return {'success': 'Weapon bought!'}
+                else:
+                    return {'error': "Can't afford weapon!"}
+                
+            case _:
+                return {'error': f'No such type found'}
+    
+    except Exception as e:
+        db.rollback()
+        return {'error': str(e)}
+
+    finally:
+        db.close()
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0')
