@@ -4,13 +4,39 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../static/style.css">
+    <script src="https://kit.fontawesome.com/b7b4b27f8b.js" crossorigin="anonymous"></script>
     <title>R4P1D-BL0G</title>
 </head>
 <body>
     <nav id="navBar">
         <a class="navTitle" href="/">R4P1D-BL0G</a>
-        <a class="navLink" href="/about">About</a>
-        <a class="navLink" href="/contact">Contact</a>
+        <div class="navLinks">
+            {% if not display_login %}
+            <a class="navLink" href="/dashboard">Dashboard</a>
+            {% endif %}
+            {% if display_login %}
+            <a class="navLink" href="/login">Login</a>
+            {% endif %}
+            <a class="navLink" href="/about">About</a>
+            <a class="navLink" href="/contact">Contact</a>
+        </div>
     </nav>
+
+    <div id="posts">
+        {% for post in posts %}
+            <div class="postContainer">
+                <h1 style="margin-top: 10px; margin-bottom: 10px;">{{ post.Title }}</h1>
+                <p>{{ post.Content }}</p>
+                <div class="postBottom">
+                    <div class="author-info">Written by: {{ post.Author }}</div>
+                    <ul class="social-icons">
+                        <li><a href="{{ post.Socials.twitter }}" target="_blank"><i class="fab fa-twitter"></i></a></li>
+                        <li><a href="{{ post.Socials.instagram }}" target="_blank"><i class="fab fa-instagram"></i></a></li>
+                        <li><a href="{{ post.Socials.linkedin }}" target="_blank"><i class="fab fa-linkedin"></i></a></li>
+                    </ul>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
 </body>
 </html>

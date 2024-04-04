@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../static/style.css">
+    <script src="https://kit.fontawesome.com/b7b4b27f8b.js" crossorigin="anonymous"></script>
+    <title>R4P1D-BL0G</title>
+</head>
+<body>
+    <nav id="navBar">
+        <a class="navTitle" href="/">R4P1D-BL0G</a>
+        <div class="navLinks">
+            {% if not display_login %}
+            <a class="navLink" href="/dashboard">Dashboard</a>
+            {% endif %}
+            {% if display_login %}
+            <a class="navLink" href="/login">Login</a>
+            {% endif %}
+            <a class="navLink" href="/about">About</a>
+            <a class="navLink" href="/contact">Contact</a>
+        </div>
+    </nav>
+
+    <div class="postContainer">
+        <h1 style="margin-top: 10px; margin-bottom: 10px;">About R4P1D-BL0G</h1>
+        <p>Welcome to R4P1D-BL0G, your go-to source for all things tech-related! We strive to provide you with the latest news, insights, and tutorials in the world of technology. Whether you're a seasoned tech enthusiast or just getting started, we've got something for everyone.</p>
+        <br/>
+        <p>Our team of passionate writers and contributors are dedicated to delivering high-quality content that informs, educates, and entertains. From reviews of the latest gadgets to in-depth analysis of industry trends, R4P1D-BL0G is your trusted companion on your tech journey.</p>
+        <br/>
+        <p>So sit back, relax, and explore our blog. We hope you enjoy your time here and find value in the content we provide. Feel free to reach out to us if you have any questions, suggestions, or feedback. Happy reading!</p>
+    </div>
+</body>
+</html>

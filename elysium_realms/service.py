@@ -157,7 +157,7 @@ def handle_collect():
         user = db.query(models.User).filter(models.User.username == user_stats[session]['username']).first()
 
         found_material = models.Item(
-            itemname=collected_item, quantity=1, type='materials', price=random.randint(10, 1000), affiliation=user.username
+            itemname=collected_item, quantity=1, type='materials', price=random.randint(10, 1000), affiliation=user.username, description='An item aquired while collecting.'
         )
         db.add(found_material)
         db.commit()
@@ -204,7 +204,7 @@ def handle_message():
         user = db.query(models.User).filter(models.User.username == user_stats[session]['username']).first()
 
         found_material = models.Item(
-            itemname=hunted_item, quantity=1, type='materials', price=random.randint(10, 1000), affiliation=user.username
+            itemname=hunted_item, quantity=1, type='materials', price=random.randint(10, 1000), affiliation=user.username, description='An item aquired while hunting.'
         )
         db.add(found_material)
         db.commit()
@@ -338,6 +338,9 @@ def transfer(data):
         if user_from.username == target:
             return {'error': "Can't transfer money to yourself!"}
 
+        if user_from.credits < int(amount):
+            return {'error': "You don't have enough social-credits to transfer!"}
+
         if target_user:
             target_user.credits = target_user.credits + int(amount)
             user_from.credits = user_from.credits - int(amount)
@@ -349,7 +352,7 @@ def transfer(data):
 
     except Exception as e:
         db.rollback()
-        return {'error': str(e)}
+        return {'error': f"Transfer can't be processed!{e}"}
 
     finally:
         db.close()

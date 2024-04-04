@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../static/style.css">
+    <script src="https://kit.fontawesome.com/b7b4b27f8b.js" crossorigin="anonymous"></script>
+    <title>R4P1D-BL0G</title>
+    <style>
+        /* Form styling */
+        .postContainer {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .postContainer h1 {
+            margin-bottom: 20px;
+            font-size: 24px;
+            color: #333;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            margin-bottom: 10px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        input[type="url"] {
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        button[type="submit"] {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <nav id="navBar">
+        <a class="navTitle" href="/">R4P1D-BL0G</a>
+        <div class="navLinks">
+            {% if not display_login %}
+            <a class="navLink" href="/dashboard">Dashboard</a>
+            {% endif %}
+            {% if display_login %}
+            <a class="navLink" href="/login">Login</a>
+            {% endif %}
+            <a class="navLink" href="/about">About</a>
+            <a class="navLink" href="/contact">Contact</a>
+        </div>
+    </nav>
+
+    <div style="margin-top: 50px;" class="postContainer">
+        <h1>URL-Checker</h1>
+
+        <form action="/dashboard" method="POST" style="margin-bottom: 20px;">
+            <label for="url">URL:</label>
+            <input type="text" name="url" id="url" style="width: 100%; margin-bottom: 20px;">
+            <button type="submit">Check URL</button>
+        </form>
+        
+        {% if request_result %}
+        <p>{{ request_result }}</p>
+        {% endif %}
+    </div>
+
+    <div style="margin-top: 50px;" class="postContainer">
+        <h1>Create Blog-Post</h1>
+
+        <form action="/blog" method="POST">
+            <label for="title">Title:</label>
+            <input type="title" name="title" id="title" style="width: 100%;">
+            <label for="text"></label>
+            <textarea type="text" name="text" id="text" style="resize: vertical; margin-bottom: 20px;"></textarea>
+            <button type="submit">Create new Post</button>
+        </form>
+        
+        {% if blog_request_result %}
+        <div class="status-message" style="margin-top: 10px; color: green;">{{ blog_request_result }}</div>
+        {% endif %}
+    </div>
+</body>
+</html>

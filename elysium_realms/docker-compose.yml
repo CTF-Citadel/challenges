@@ -2,6 +2,7 @@ version: '3.9'
 
 services:
   flask:
+    image: felixslama/${INSTANCE_ID}
     build:
       context: .
       dockerfile: Dockerfile
@@ -15,7 +16,17 @@ services:
     restart: always
     ports:
       - "80:5000"
-  
+    networks:
+      - traefik-public
+      - default
+    deploy:
+      replicas: 1
+      labels:
+        - "traefik.enable=true"
+        - "traefik.http.routers.${INSTANCE_ID}.rule=Host(`${INSTANCE_ID}.cluster.tophack.org`)"
+        - "traefik.http.routers.${INSTANCE_ID}.entrypoints=http"
+        - "traefik.http.services.${INSTANCE_ID}.loadbalancer.server.port=80"
+
   db:
     image: mariadb:latest
     hostname: db
@@ -25,3 +36,7 @@ services:
       MARIADB_DATABASE: game
       MARIADB_USER: dbadmin
       MARIADB_PASSWORD: eEGnsF5JrDFfNB88LMxR
+
+networks:
+  traefik-public:
+    external: true

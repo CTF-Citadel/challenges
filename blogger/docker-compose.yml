@@ -8,15 +8,19 @@ services:
       dockerfile: Dockerfile
       args:
         - FLAG=$FLAG
+    ports:
+      - "80:5000"
     networks:
       - traefik-public
+      - default
     deploy:
       replicas: 1
       labels:
         - "traefik.enable=true"
-        - "traefik.http.routers.${INSTANCE_ID}.rule=Host(`${INSTANCE_ID}.cluster.tophack.at`)"
+        - "traefik.http.routers.${INSTANCE_ID}.rule=Host(`${INSTANCE_ID}.cluster.tophack.org`)"
         - "traefik.http.routers.${INSTANCE_ID}.entrypoints=http"
-        - "traefik.http.services.${INSTANCE_ID}.loadbalancer.server.port=5000"
+        - "traefik.http.services.${INSTANCE_ID}.loadbalancer.server.port=80"
+
 networks:
   traefik-public:
     external: true

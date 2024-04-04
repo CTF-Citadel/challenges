@@ -7,19 +7,69 @@
 #navBar {
     z-index: 10;
     position: sticky;
+    top: 0;
     width: 100%;
     height: 75px;
     background-color: rgb(100, 193, 255);
-    justify-content: center;
+    display: flex;
+    justify-content: space-between; /* First link to the right, other links to the left */
+    align-items: center; /* Center vertically */
 }
 
 .navTitle {
     font-size: 25px;
     letter-spacing: 1px;
     color: lightgrey;
-    left: 25px;
+    margin-left: 25px; /* Adjust margin as needed */
+}
+
+.navLinks {
+    margin-right: 25px; /* Adjust margin as needed */
 }
 
 .navLink {
-    padding-left: 50px; /* Adjust as needed */
+    margin-left: 20px; /* Adjust margin between links */
+    color: lightgrey;
+    text-decoration: none;
+}
+
+.navLink:first-child {
+    margin-left: auto; /* Push the first link to the right */
+}
+
+.postContainer {
+    max-width: 800px;
+    width: 90%; /* Adjust as needed */
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+    margin-bottom: 20px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.author-info {
+    margin-top: 20px;
+    font-size: 14px;
+    color: #888;
+}
+
+.social-icons {
+    margin-top: 10px;
+}
+
+.social-icons li {
+    display: inline-block;
+    margin-right: 10px;
+}
+
+.social-icons li a:visited {
+    text-decoration: none;
+}
+
+.postBottom {
+    display: flex;
+    justify-content: space-between;
 }
