@@ -1,7 +1,6 @@
 # Use a base image with necessary tools
 FROM ubuntu:latest
-ARG FLAG
-ENV FLAG=${FLAG}
+
 # Update package lists and install required packages
 RUN apt-get update && \
     apt-get install -y \
@@ -23,7 +22,7 @@ WORKDIR /app
 # Start Apache and expose port 80
 EXPOSE 80
 
-# Define an environment variable for the new password
-ENV FLAG=""
+ARG FLAG
+ENV FLAG=${FLAG}
 
 CMD ["/bin/bash", "/app/script.sh"]
