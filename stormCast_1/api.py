@@ -1,5 +1,6 @@
 import os
 from fastapi import FastAPI, HTTPException, status
+from fastapi.responses import FileResponse
 from cryptography.fernet import Fernet
 
 app = FastAPI()
@@ -27,8 +28,13 @@ async def get_flag():
 
 # Download the apk file automatically when the user visits the root path
 @app.get('/', status_code=status.HTTP_200_OK)
-async def download_apk():
-    return {'download': 'http://localhost:8000/static/StormCast-Authenticator.apk'}
+async def download_response():
+    return {'message': 'Download the apk file at /confidential.zip'}
+
+@app.get('/confidential.zip', status_code=status.HTTP_200_OK)
+async def zip_file():
+    # download the zip file with the kotlin source code and the apk file
+    return FileResponse('confidential.zip')
 
 @app.get('/health', status_code=status.HTTP_200_OK)
 async def health():
