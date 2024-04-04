@@ -1,16 +1,6 @@
 version: "3"
 
 services:
-  db:
-    image: mariadb:latest
-    hostname: db
-    restart: always
-    environment:
-      MARIADB_ROOT_PASSWORD: 2U3Qps4cDZHJJT8LgnJR
-      MARIADB_DATABASE: users
-      MARIADB_USER: dbadmin
-      MARIADB_PASSWORD: eEGnsF5JrDFfNB88LMxR
-
   flask_app:
     image: python:3.9-slim
     build:
@@ -20,22 +10,13 @@ services:
         - FLAG=${FLAG}
     hostname: flask-app
     command: ["python3", "service.py"]
-    depends_on:
-      - db
-    environment:
-      DB_USER: dbadmin
-      DB_PW: eEGnsF5JrDFfNB88LMxR
-      DB_NAME: users
-    restart: always
 
   react_app:
-    restart: always
     build:
       context: ./react_app
       dockerfile: Dockerfile_REACT
     networks:
       - traefik-public
-      - default
     deploy:
       replicas: 1
       labels:

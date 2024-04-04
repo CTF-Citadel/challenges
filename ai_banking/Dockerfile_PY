@@ -1,6 +1,8 @@
-FROM python:3
+FROM python:3.9-slim
+
 ARG FLAG
 ENV FLAG=${FLAG}
+
 WORKDIR .
 
 COPY requirements.txt .
