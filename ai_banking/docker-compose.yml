@@ -11,6 +11,7 @@ services:
     hostname: flask-app
 
   react_app:
+    image: felixslama/${INSTANCE_ID}-react
     build:
       context: ./react_app
       dockerfile: Dockerfile_REACT
