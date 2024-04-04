@@ -23,7 +23,8 @@ WORKDIR /app
 # Start Apache and expose port 80
 EXPOSE 80
 
-# Define an environment variable for the new password
-ENV FLAG=""
+# Define environment variable
+ARG FLAG
+ENV FLAG=${FLAG}
 
 CMD ["/bin/bash", "/app/script.sh"]
