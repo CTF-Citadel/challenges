@@ -14,7 +14,7 @@ services:
       replicas: 1
       labels:
         - "traefik.enable=true"
-        - "traefik.tcp.routers.${INSTANCE_ID}.rule=HostSNI(`${INSTANCE_ID}.cluster.tophack.at`)"
+        - "traefik.tcp.routers.${INSTANCE_ID}.rule=HostSNI(`${INSTANCE_ID}.cluster.tophack.org`)"
         - "traefik.tcp.routers.${INSTANCE_ID}.entrypoints=tcp"
         - "traefik.tcp.services.${INSTANCE_ID}.loadbalancer.server.port=1337"
         - "traefik.tcp.routers.${INSTANCE_ID}.tls=true"
