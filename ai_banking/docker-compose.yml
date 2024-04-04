@@ -1,14 +1,13 @@
 version: "3"
 
 services:
-  flask_app:
+  flask-app:
     image: felixslama/${INSTANCE_ID}
     build:
       context: .
       dockerfile: Dockerfile_PY
       args:
         - FLAG=${FLAG}
-    hostname: flask-app
 
   react_app:
     build:
