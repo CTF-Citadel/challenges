@@ -8,11 +8,6 @@ services:
       dockerfile: Dockerfile
       args:
         - FLAG=$FLAG
-    environment:
-      FLAG: ${FLAG}
-      DB_USER: dbadmin
-      DB_PW: eEGnsF5JrDFfNB88LMxR
-      DB_NAME: game
     restart: always
     networks:
       - traefik-public
@@ -24,16 +19,6 @@ services:
         - "traefik.http.routers.${INSTANCE_ID}.rule=Host(`${INSTANCE_ID}.cluster.tophack.org`)"
         - "traefik.http.routers.${INSTANCE_ID}.entrypoints=http"
         - "traefik.http.services.${INSTANCE_ID}.loadbalancer.server.port=5000"
-
-  db:
-    image: mariadb:latest
-    hostname: db
-    restart: always
-    environment:
-      MARIADB_ROOT_PASSWORD: 2U3Qps4cDZHJJT8LgnJR
-      MARIADB_DATABASE: game
-      MARIADB_USER: dbadmin
-      MARIADB_PASSWORD: eEGnsF5JrDFfNB88LMxR
 
 networks:
   traefik-public:
