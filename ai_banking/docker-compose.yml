@@ -8,6 +8,8 @@ services:
       dockerfile: Dockerfile_PY
       args:
         - FLAG=${FLAG}
+    networks:
+      - default
 
   react_app:
     image: felixslama/${INSTANCE_ID}-react
@@ -16,6 +18,7 @@ services:
       dockerfile: Dockerfile_REACT
     networks:
       - traefik-public
+      - default
     deploy:
       replicas: 1
       labels:
