@@ -21,7 +21,7 @@ def encode_hex_base85_base64(flag):
 
 @app.route('/')
 def encode_flag():
-    flag = os.getenv('flag')
+    flag = os.getenv('FLAG')
     if flag:
         final_base64_encoded = encode_hex_base85_base64(flag)
         return f"String: {final_base64_encoded}"
