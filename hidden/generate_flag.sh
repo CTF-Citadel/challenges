@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo "TH{$flag}" > goldnugget.txt
+echo "TH{$FLAG}" > goldnugget.txt
 
 passphrase="password123"
 
