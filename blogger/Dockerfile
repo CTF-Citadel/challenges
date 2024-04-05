@@ -16,4 +16,6 @@ COPY . /app
 
 RUN echo "Here, grab your flag: TH{${FLAG}}" > /root/flag.txt
 
+EXPOSE 5000
+
 CMD ["python", "service.py"]

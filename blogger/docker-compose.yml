@@ -10,7 +10,6 @@ services:
         - FLAG=$FLAG
     networks:
       - traefik-public
-      - default
     deploy:
       replicas: 1
       labels:
