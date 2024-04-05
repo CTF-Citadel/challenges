@@ -11,7 +11,7 @@ def md5(input_string):
     md5_hash.update(input_string.encode('utf-8'))
     return md5_hash.hexdigest()
 
-# Index page only accessanle with correct credentials
+# Index page only accessible with correct credentials
 @app.route('/')
 def index():
     try:

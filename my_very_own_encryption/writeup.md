@@ -15,7 +15,7 @@ Can you humble the second grader by breaking his encryption?
 
 ## Writeup
 
-Starting off we should take a look at the provided files. <br/>
+Starting off, we should take a look at the provided files. <br/>
 ```py
 import os, base64, random
 
