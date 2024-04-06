@@ -250,7 +250,7 @@ def handle_message(direction):
 
     db = DBSession()
 
-    # Load spawnpoint to check level requirement for travelling to another place 
+    # Load spawnpoint to check level requirement for travelling to another place (never implemented)
     spawnpoint = db.query(models.User.spawnpoint).filter(models.User.username == user_stats[session]['username']).first()
 
     if user_stats[session]['current_place'][0] is not None and len(user_stats[session]['current_place'][0]) > 1:
