@@ -13,7 +13,7 @@ StromCast is a mobile analysis and exploitation challenge. It is designed to be 
 ## Creation
 Because it is a mobile android challenge we need an APK. To make this challenge also dynamic, an API service is needed to send the flag to the app.
 
-### Creating a exploitable APK
+### Creating an exploitable APK
 The app is very simple. It consist out of a input filed for the API URL and a button that fetches the "SEC_CODE" aka the flag:
 
 ```Kotlin
