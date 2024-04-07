@@ -1,4 +1,4 @@
-0# challenges
+# Challenges
 
 > [!Note]
 > This repository stores and displays different challenges & writeups
