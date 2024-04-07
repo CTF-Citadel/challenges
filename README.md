@@ -22,7 +22,7 @@
 > | Sudoku as a Service | Medium | MISC | 100% done | [documentation](https://github.com/CTF-Citadel/challenges/blob/main/documentation/sudoku_as_a_service.md) | [Aryt3](https://github.com/Aryt3) |
 > | FunWithSound | Easy | Steganography | 100% done | [documentation](https://github.com/CTF-Citadel/challenges/blob/main/documentation/funwithsound.md) | [Much](https://github.com/Much69) |
 > | Shadowhunt | Medium | OSINT | 100% done | [documentation](https://github.com/CTF-Citadel/challenges/blob/main/documentation/shadowhunt.md) | [Much](https://github.com/Much69) |
-> | Access Terminal | Medium | Reversing | 100% done | [documentation](https://github.com/CTF-Citadel/challenges/blob/main/documentation/access_terminal.md) | [k1f0](https://github.com/0xk1f0) |
+> | Access Terminal | Medium | Reversing | 100% done | [documentation](https://github.com/CTF-Citadel/challenges/blob/main/documentation/access_terminal.md) | [0xk1f0](https://github.com/0xk1f0) |
 > | Social Chronicle | Medium | OSINT | 100% done | [documentation](https://github.com/CTF-Citadel/challenges/blob/main/documentation/social_chronicle.md) | [Aryt3](https://github.com/Aryt3), [FrozenCave](https://github.com/FrozenCave) |
 > | Layered | Easy | Steganography | 100% done | [documentation](https://github.com/CTF-Citadel/challenges/blob/main/documentation/layered.md) | [FrozenCave](https://github.com/FrozenCave) |
 > | Elysium Realms | Hard | Web | 100% done | [documentation](https://github.com/CTF-Citadel/challenges/blob/main/documentation/elysium_realms.md) | [Aryt3](https://github.com/Aryt3) |
@@ -31,7 +31,7 @@
 > | Behind the Curtain | Easy | Web | 100% done | [documentation](https://github.com/CTF-Citadel/challenges/blob/main/documentation/behind_the_curtain.md) | [Aryt3](https://github.com/Aryt3) |
 > | Encased | Easy | Reversing | 100% done | [documentation](https://github.com/CTF-Citadel/challenges/blob/main/documentation/encased.md) | [Aryt3](https://github.com/Aryt3) |
 > | Redacted | Easy | Forensics | 100% done | [documentation](https://github.com/CTF-Citadel/challenges/blob/main/documentation/redacted.md) | [Aryt3](https://github.com/Aryt3) |
-> | Code Zip | Easy | Forensics | 100% done | [documentation](https://github.com/CTF-Citadel/challenges/blob/main/documentation/code_zip.md) | [k1f0](https://github.com/0xk1f0) |
+> | Code Zip | Easy | Forensics | 100% done | [documentation](https://github.com/CTF-Citadel/challenges/blob/main/documentation/code_zip.md) | [0xk1f0](https://github.com/0xk1f0) |
 > | LetHimCook | Easy | MISC | 100% done | [documentation](https://github.com/CTF-Citadel/challenges/blob/main/documentation/lethimcook.md) | [FrozenCave](https://github.com/FrozenCave) |
 > | Mixup | Medium | Crypto | 100% done | [documentation](https://github.com/CTF-Citadel/challenges/blob/main/documentation/mixup.md) | [Aryt3](https://github.com/Aryt3) |
 > | CheapRSA | Medium | Crypto | 100% done | [documentation](https://github.com/CTF-Citadel/challenges/blob/main/documentation/cheap_rsa.md) | [Aryt3](https://github.com/Aryt3) |
