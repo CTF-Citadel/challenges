@@ -35,4 +35,4 @@
 > | LetHimCook | Easy | MISC | 100% done | [documentation](https://github.com/CTF-Citadel/challenges/blob/main/documentation/lethimcook.md) | [FrozenCave](https://github.com/FrozenCave) |
 > | Mixup | Medium | Crypto | 100% done | [documentation](https://github.com/CTF-Citadel/challenges/blob/main/documentation/mixup.md) | [Aryt3](https://github.com/Aryt3) |
 > | CheapRSA | Medium | Crypto | 100% done | [documentation](https://github.com/CTF-Citadel/challenges/blob/main/documentation/cheap_rsa.md) | [Aryt3](https://github.com/Aryt3) |
-> | Stormcast | Medium | Mobile | 100% done | No documentation | [maxbirnbacher](https://github.com/maxbirnbacher) |
+> | Stormcast | Medium | Mobile | 100% done | [documentation](https://github.com/CTF-Citadel/challenges/blob/main/documentation/stormcast_1.md) | [maxbirnbacher](https://github.com/maxbirnbacher) |
